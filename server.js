@@ -47,7 +47,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit("logging", {message: name + " has connected."});
   });
 
-  /* 
+  /*
   When someone connects to a table we need to do a few things:
   These include:
     - check if there's space at the table where they want to connect
@@ -86,7 +86,7 @@ io.sockets.on('connection', function (socket) {
       console.log("for whatever reason player can't be added to table."); //needs looking at
     }
   });
-  
+
   /*
   Once the counter has finished both clients will emit a "readyToPlay" message
   Upon the receival of this message, we check against a local variable (never trust data from the client) and
@@ -116,20 +116,20 @@ io.sockets.on('connection', function (socket) {
         if (table.players[i].id === startingPlayerID) { //this player will start the turn
           table.players[i].turnFinished = false;
           console.log(table.players[i].name + " starts the game.");
-          io.sockets.socket(table.players[i].id).emit("play", { hand: table.players[i].hand }); //send the cards in hands to player
-          io.sockets.socket(table.players[i].id).emit("turn", { myturn: true }); //send the turn-signal to player
-          io.sockets.socket(table.players[i].id).emit("ready", { ready: true }); //send the 'ready' signal
+          io.sockets.connected[table.players[i].id].emit("play", { hand: table.players[i].hand }); //send the cards in hands to player
+          io.sockets.connected[table.players[i].id].emit("turn", { myturn: true }); //send the turn-signal to player
+          io.sockets.connected[table.players[i].id].emit("ready", { ready: true }); //send the 'ready' signal
           if (table.gameObj.isActionCard(firstCardOnTable)) { //Is the first card on the table an action card?
             table.actionCard = true; //we are setting the action card flag to true -- this is required as the preliminary check is going to use this
           }
-          io.sockets.socket(table.players[i].id).emit("cardInHandCount", {cardsInHand: table.players[i].hand.length});
+          io.sockets.connected[table.players[i].id].emit("cardInHandCount", {cardsInHand: table.players[i].hand.length});
         } else {
           table.players[i].turnFinished = true;
           console.log(table.players[i].name + " will not start the game.");
-          io.sockets.connected(table.players[i].id).emit("play", { hand: table.players[i].hand }); //send the card in hands to player
-          io.sockets.connected(table.players[i].id).emit("turn", { myturn: false }); //send the turn-signal to player
-          io.sockets.connected(table.players[i].id).emit("ready", { ready: true }); //send the 'ready' signal
-          io.sockets.connected(table.players[i].id).emit("cardInHandCount", {cardsInHand: table.players[i].hand.length});
+          io.sockets.connected[table.players[i].id].emit("play", { hand: table.players[i].hand }); //send the card in hands to player
+          io.sockets.connected[table.players[i].id].emit("turn", { myturn: false }); //send the turn-signal to player
+          io.sockets.connected[table.players[i].id].emit("ready", { ready: true }); //send the 'ready' signal
+          io.sockets.connected[table.players[i].id].emit("cardInHandCount", {cardsInHand: table.players[i].hand.length});
         }
       }
       //sends the cards to the table.
@@ -221,7 +221,7 @@ socket.on("preliminaryRoundCheck", function(data) {
   firstRound--;
 });
 
-  /* 
+  /*
   A player can decide to the penalty as a result of a penalising card (2*), if he does
   then we need to reset the right variables and also end this player's turn.
   */
@@ -260,7 +260,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       table.status = "available";
       player.status = "available";
       io.sockets.emit("logging", {message: player.name + " has left the table."});
-    } 
+    }
   });
 
   socket.on("drawCard", function(data) {
@@ -333,7 +333,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           if (table.actionCard) { //if the action card varialbe is already set ...
             if (table.penalisingActionCard) {
               if (!table.gameObj.isPenalisingActionCardPlayable(playedCard, last)) {
-                messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player); 
+                messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
               } else {
                   console.log("Penalising action card is playable");
                   if (parseInt(playedCard) === 2) { //if there's a penalising action card, the player can only play another penalising action card.
@@ -374,7 +374,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           else { //no action card variable is set at the moment
             var requestMade = false;
             if (!table.gameObj.isCardPlayable(playedCard, last)) {
-              messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player); 
+              messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
             } else {
               if (parseInt(playedCard) === 2) { //if player plays a 2 we add the right flags
                 console.log("if player plays a 2 we append the forced card limit");
@@ -415,7 +415,7 @@ socket.on("preliminaryRoundCheck", function(data) {
               io.sockets.emit("logging", {message: player.name + " is the WINNER!"});
               }
             }
-          } 
+          }
         } else {
             io.sockets.emit("logging", {message: "Error flag is TRUE, something went wrong"});
         }

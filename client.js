@@ -1,6 +1,5 @@
 var socket = io.connect("http://localhost:8080");
 
-
 //var socket = io.connect("http://ec2-54-229-63-210.eu-west-1.compute.amazonaws.com:8080");
 socket.on("logging", function(data) {
   $("#updates").append("<li>"+ data.message + "</li>");
@@ -9,12 +8,17 @@ socket.on("logging", function(data) {
 });
 
 socket.on("timer", function (data) {
-  $('#counter').html(data.countdown);
+  $('#counter').html("<span class='label label-info'>" + data.countdown + "</span>");
   if (data.countdown === 0) {
-    socket.emit("readyToPlay", {tableID: 1});
+    socket.emit("readyToPlay", {});
     $("#counter").hide();
   }
 });
+
+socket.on("areYouReady", function (data) {
+  socket.emit("readyToPlay", {});
+});
+
 
 socket.on("playOption", function(data){
   $("#playOption").html(data.message);
@@ -31,8 +35,6 @@ socket.on("showRequestCardDialog", function(data) {
     $("#suiteRequest").show();
   }
 });
-
-
 
 function playCard(key, value) {
   index = key;
@@ -74,6 +76,8 @@ socket.on("updatePackCount", function(data) {
 });
 
 socket.on("updateCardsOnTable", function(data){
+  console.log(data);
+  $("#playArea").show();
   $("#table").text("");
   if (data.lastCardOnTable == "") {
     $("#table").text("");
@@ -121,7 +125,7 @@ $(document).ready(function() {
   $("#playArea").hide();
   $("#waiting").hide();
   $("#error").hide();
-  $("#name").focus();
+  $("#joinPlayerName").focus();
   $("#progressUpdate").hide();
   $("#penalising").hide();
   $("#numberRequest").hide();
@@ -130,7 +134,7 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
-  $("#suiteRequestBtn").click(function() {
+$("#suiteRequestBtn").click(function() {
   var request = $("#suiteRequestTxt").val();
   socket.emit("suiteRequest", {tableID: 1, request: request});
   console.log("called with request ==> " + request);
@@ -138,12 +142,24 @@ $(document).ready(function() {
   //socket.emit("playCard", {tableID:1, playedCard: playedCard, index: index});
 });
 
-  $("#join").click(function() {
-    var name = $("#name").val();
-    if (name.length>0) {
-      socket.emit("connectToServer", {name: name});
-      socket.emit('connectToTable', {tableID: 1});
-      $("#loginForm").hide();
+$("#create").click(function() {
+  //var privateTable = false;
+  //if ($("#key").is(':checked')) privateTable = true;
+  var name = $("#createTableName").val();
+  var count = $("#count").val();
+  socket.emit("createTable", {name:name, playerLimit:count});
+  $("#joinForm").hide();
+  $("#createForm").hide();
+});
+
+$("#join").click(function() {
+    var name = $("#joinPlayerName").val();
+    var key = $("#joinTableKey").val();
+    if (name.length > 0 && key.length == 4) {
+      socket.emit("connectToServer", {name:name});
+      socket.emit('connectToTable', {key:key});
+      $("#joinForm").hide();
+      $("#createForm").hide();
       $("#tableFull").hide();
       $("#waiting").show();
       socket.on("ready", function(data){
@@ -153,14 +169,14 @@ $(document).ready(function() {
       });
     } else {
       $("#error").show();
-      $("#error").append('<p class="text-error">Please enter a name.</p>');
+      $("#error").html('<p class="text-error">Please enter a name.</p>');
     }
   });
 
   $("#drawCard").click(function() {
     socket.emit("drawCard", {tableID: 1});
   });
-  /*penalising card taken button*/ 
+  /*penalising card taken button*/
   $("#penalising").click(function() {
     socket.emit("penalisingTaken", {tableID: 1});
     $("#penalising").hide();

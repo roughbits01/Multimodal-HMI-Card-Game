@@ -1,18 +1,19 @@
 Game = require('./game.js');
 
-
 Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);
   this.length = from < 0 ? this.length + from : from;
   return this.push.apply(this, rest);
 };
 
-function Table(tableID){
+function Table(tableID) {
 	this.id = tableID;
 	this.name = "";
+  this.key = "";
 	this.status = "available";
 	this.players = [];
 	this.playersID = [];
+  this.board = null;
 	this.readyToPlayCounter = 0;
 	this.playerLimit = 2;
 	this.pack = [];
@@ -34,7 +35,7 @@ Table.prototype.progressRound = function(player) {
   	this.players[i].turnFinished = false;
 	  	if(this.players[i].id == player.id) { //when player is the same that plays, end their turn
 			player.turnFinished = true;
-		} 
+		}
 	}
 }
 
@@ -46,8 +47,20 @@ Table.prototype.getName = function(){
 	return this.name;
 };
 
+Table.prototype.setKey = function(key){
+	this.key = key;
+};
+
+Table.prototype.getKey = function(){
+	return this.key;
+};
+
 Table.prototype.setStatus = function(status){
 	this.status = status;
+};
+
+Table.prototype.isPrivate = function(){
+	return this.key !== "";
 };
 
 Table.prototype.isAvailable = function(){
@@ -60,6 +73,10 @@ Table.prototype.isFull = function(){
 
 Table.prototype.isPlaying = function(){
 	return this.status === "playing";
+};
+
+Table.prototype.getRemainingSpots = function(){
+	return this.playerLimit - this.players.length;
 };
 
 Table.prototype.addPlayer = function(player) {
@@ -98,13 +115,25 @@ Table.prototype.removePlayer = function(player){
 	}
 };
 
-Table.prototype.isTableAvailable = function() {
-	if( (this.playerLimit >= this.players.length) && (this.status === "available")) {
+Table.prototype.assignBoard = function(board) {
+	if (this.board === null) {
+    this.board = board;
+		return true;
+	}
+	return false;
+};
+
+Table.prototype.isAvailable = function() {
+	if((this.playerLimit >= this.players.length) && (this.status === "available")) {
 		return true;
 	} else {
 		return false;
 	}
 	//return (this.playerLimit > this.players.length);
+};
+
+Table.prototype.hasBoard = function() {
+	return this.board !== null;
 };
 
 Table.prototype.createMessageObject = function() {
@@ -115,6 +144,7 @@ Table.prototype.createMessageObject = function() {
 		this.status = table.status;
 		this.players = table.players;
 		this.playerLimit = table.playerLimit;
+    this.board = table.board;
 	};
 
 	return new TableMessage();

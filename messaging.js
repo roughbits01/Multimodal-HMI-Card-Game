@@ -4,9 +4,12 @@ var uuid = require('node-uuid');
 
 function Messaging() {};
 
-Messaging.prototype.sendEventToAllPlayers = function(event, message, io, player) {
-	for(var i = 0; i < player.length; i++){
-		io.sockets.connected[player[i].id].emit(event, message);
+Messaging.prototype.sendEventToAllPlayers = function(event, message, io, players) {
+	for(var i = 0; i < players.length; i++){
+		console.log(players[i].id);
+		console.log(event);
+		console.log(message);
+		io.sockets.connected[players[i].id].emit(event, message);
 	}
 };
 
@@ -24,6 +27,10 @@ Messaging.prototype.sendEventToAPlayer = function(event,message,io,players,playe
 			io.sockets.connected[players[i].id].emit(event, message);
 		}
 	}
+};
+
+Messaging.prototype.sendEventToABoard = function(event,message,io,board) {
+	io.sockets.connected[board.id].emit(event, message);
 };
 
 Messaging.prototype.createSampleTables = function(amount) {

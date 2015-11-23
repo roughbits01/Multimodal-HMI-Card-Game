@@ -69,11 +69,24 @@
         <div class="alert" id="tableFull">
           <strong>Table is full.</strong> Please check back later.
         </div>
-        <div id="loginForm">
+        <div id="joinForm">
           <form class="form-inline">
-            <input type="text" class="input" id="name" placeholder="Your name">
-            <button type="submit" class="btn btn-success" id="join">Join table</button>
+            <label for="joinPlayerName">Your name:</label>
+            <input type="text" class="input" id="joinPlayerName" placeholder="Name">
+            <label for="joinTableKey">Key for the game:</label>
+            <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
+            <button type="submit" class="btn btn-success" id="join">Join Table</button>
             <label id="error"></label>
+          </form>
+        </div>
+        <div id="createForm">
+          <form class="form-inline">
+            <label for="createTableName">Name:</label>
+            <input type="text" class="input" id="createTableName" placeholder="Table name">
+            <label for="count">Player limit:</label>
+            <input type="number" class="input" id="count" value="2" min="2" max="4">
+            <button type="submit" class="btn btn-success" id="create">Create table</button>
+            <label id="createError"></label>
           </form>
         </div>
         <div id="waiting"><p>Waiting for other player to join</p></div>

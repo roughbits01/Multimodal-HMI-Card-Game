@@ -1,0 +1,126 @@
+body {
+    overflow : hidden;
+
+    background-image : url('../resources/bois_table.jpg');
+    font-family: Arial, Helvetica, sans-serif;
+}
+#tapis {
+    height: 100vh;
+    background-image : url('../resources/tapis-de-belote.jpg');
+    background-attachment:fixed;
+    background-repeat:no-repeat;
+    background-position:center center;
+}
+#haut {
+    margin: auto;
+    position : absolute;
+    top : 0;
+    left : 40%;
+}
+#droite {
+    position : absolute;
+    right : 0;
+    top : 30%;
+}
+#gauche {
+    position : absolute;
+    left : 0;
+    top : 30%;
+}
+#bas {
+    position : absolute;
+    bottom : 0;
+    left : 40%;
+}
+#centre {
+    position : absolute;
+    bottom : 50vh;
+    left : 40%;
+}
+.jeu-joueur{
+    text-align : center;
+}
+.vertical {
+    text-align: center;
+    width:100%;
+}
+.horizontal {
+    heigth:35%;
+    width:60px;
+}
+.carte {
+    width: 50px;
+    position: relative;
+}
+.rotate {
+    transform: rotate(90deg);
+    display : block;
+    margin-top: -20px;
+}
+.pseudo {
+    text-align: center;
+    font-weight: bold;
+    color: lightblue;
+}
+
+.bleu {
+    color : cyan;
+}
+.vert {
+    color : green;
+}
+.rouge {
+    color : red;
+}
+.jaune {
+    color : yellow;
+}
+
+.gris {
+    color: darkgrey;
+    background-color: darkgreen;
+}
+
+.blanc {
+    color: white;
+}
+
+.bleu-fonce {
+    color: blue;
+    background-color: grey;
+}
+
+.pseudo-actuel::before {
+    content : "=> ";
+}
+
+.pseudo-actuel::after {
+    content : " <=";
+}
+
+#pastille {
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    border-radius : 100%;
+    position : fixed;
+    bottom : 10px;
+    left:10px;
+}
+#message {
+    height: 60px;
+    background-color: rgb(200,200,200);
+    color: black;
+    font-weight : bold;
+    position : fixed;
+    bottom : 5px;
+    left:5px;
+    padding-left : 60px;
+    padding-right : 20px;
+    border-radius : 50px;
+}
+#quitter_partie {
+  position : fixed;
+  top : 10px;
+  right:10px;
+}

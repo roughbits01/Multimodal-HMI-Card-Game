@@ -1,5 +1,5 @@
 #npm install dependencies
-./node_modules/
+node_modules/
 
 #bower install dependencies
-./bower_components/
+bower_components/

@@ -1,6 +1,7 @@
 var cartes = document.getElementById('cartes');
 
-  function carte(url, pos){
+  function carte(url, key, val) {
+    console.log("key : "+key+" | val :"+ val);
     var reqAnimationFrame = (function () {
         return window[Hammer.prefixed(window, 'requestAnimationFrame')] || function (callback) {
             window.setTimeout(callback, 1000 / 60);
@@ -8,6 +9,8 @@ var cartes = document.getElementById('cartes');
     })();
     //var log = document.createElement('div');
     var el = document.createElement('div');
+    el.setAttribute("key", key);
+    el.setAttribute("val", val);
 
     /* Mock : Make an img element but hide it to initialize 'el'(div) size */
     var img = document.createElement('img');
@@ -149,6 +152,9 @@ var cartes = document.getElementById('cartes');
         }, 300);
         requestElementUpdate();
         logEvent(ev.type);
+
+        playCard(el.getAttribute("key"), el.getAttribute("val"));
+
     }
     function onTap(ev) {
         console.log("onTap");

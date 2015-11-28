@@ -2,21 +2,21 @@ html, body {
   height: 100%;
 }
 
-.footer {
+.footerTable {
   position: absolute;
   width: 100%;
   height: 25%;
   bottom: 0;
 }
 
-.footerBottom {
+.footerBottomTable {
   position: absolute;
   bottom: 0;
   height: 80%;
   width: 100%; 
 }
 
-.header {
+.headerTable {
   position: absolute;
   width: 100%;
   height: 25%;

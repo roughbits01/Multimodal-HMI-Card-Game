@@ -36,6 +36,13 @@ socket.on("showRequestCardDialog", function(data) {
   }
 });
 
+function cleanHand() {
+  var myNode = document.getElementById("cartes");
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
+  }
+}
+
 function playCard(key, value) {
   index = key;
   playedCard = value;
@@ -54,19 +61,21 @@ function playCard(key, value) {
 }
 
 socket.on("play", function(data) {
+  cleanHand();
   $("#hand").text("");
   $('#cards').find('option').remove().end();
   pixel = 0;
   $.each(data.hand, function(k, v) {
     index = k + 1;
-    $("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
+    carte("resources/"+v+".png",k ,v);
+    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
     $(".card"+k).click(function() { playCard(k, v); return false; });
     if (pixel >= 0) {
       pixel = (pixel + 40) * -1;
     } else {
       if (pixel <= -40)
         pixel = pixel -1;
-      }
+      }*/
   });
 });
 
@@ -155,6 +164,7 @@ $("#create").click(function() {
 $("#join").click(function() {
     var name = $("#joinPlayerName").val();
     var key = $("#joinTableKey").val();
+
     if (name.length > 0 && key.length == 4) {
       socket.emit("connectToServer", {name:name});
       socket.emit('connectToTable', {key:key});

@@ -5,10 +5,7 @@ var uuid = require('node-uuid');
 function Messaging() {};
 
 Messaging.prototype.sendEventToAllPlayers = function(event, message, io, players) {
-	for(var i = 0; i < players.length; i++){
-		console.log(players[i].id);
-		console.log(event);
-		console.log(message);
+	for(var i = 0; i < players.length; i++) {
 		io.sockets.connected[players[i].id].emit(event, message);
 	}
 };

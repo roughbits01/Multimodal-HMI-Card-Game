@@ -37,7 +37,7 @@ Game.prototype._shufflePack = function(pack) {
     cards = pack.slice(0, amount);
     pack.splice(0, amount);
     if (!initial) {
-      hand.push.apply(hand, cards); 
+      hand.push.apply(hand, cards);
     }
     return cards;
   }
@@ -85,7 +85,7 @@ Game.prototype.isPenalisingActionCardPlayable = function(card, lastCardOnTable) 
         return true;
     } else {
       return false;
-    } 
+    }
   }
 }
 
@@ -145,9 +145,9 @@ Game.prototype.isSuiteInHand = function(suite, hand) {
   if (suite) {
     var suitesInHand = [];
     for (var i = 0; i < hand.length; i++) {
-      console.log(hand[i]);
       suitesInHand.push(hand[i][hand[i].length-1]);
     }
+    console.log("MARWEN" + suitesInHand[i]);
     if (utils.indexOf(suitesInHand, suite) > -1) {
       return true;
     } else {

@@ -19,7 +19,6 @@ socket.on("areYouReady", function (data) {
   socket.emit("readyToPlay", {});
 });
 
-
 socket.on("playOption", function(data){
   $("#playOption").html(data.message);
   if (data.value) {
@@ -30,11 +29,11 @@ socket.on("playOption", function(data){
   }
 });
 
-socket.on("showRequestCardDialog", function(data) {
+/*socket.on("showRequestCardDialog", function(data) {
   if (data.option == "suite") {
     $("#suiteRequest").show();
   }
-});
+});*/
 
 function cleanHand() {
   var myNode = document.getElementById("cartes");
@@ -46,18 +45,7 @@ function cleanHand() {
 function playCard(key, value) {
   index = key;
   playedCard = value;
-  /*if (parseInt(value) === 1) {
-    console.log("request card");
-    $("#suiteRequest").show();
-    $("#suiteRequestBtn").click(function() {
-      var request = $("#suiteRequestTxt").val();
-      socket.emit("suiteRequest", {tableID: 1, request: request});
-      socket.emit("playCard", {tableID:1, playedCard: playedCard, index: index});
-      console.log("called with request ==> " + request);
-    });
-  } else {*/
-    socket.emit("playCard", {tableID:1, playedCard: playedCard, index: index});
-  //}
+  socket.emit("playCard", {playedCard: playedCard, index: index});
 }
 
 socket.on("play", function(data) {
@@ -105,10 +93,10 @@ socket.on("turn", function(data) {
     }
   } else {
     if(data.myturn) {
-      $("#progressUpdate").html("<span class='label label-important'>It's your turn.</span>");
-      socket.emit("preliminaryRoundCheck", {tableID: 1}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
+      $("#progressUpdate").html("<span class='label label-info'>It's your turn.</span>");
+      socket.emit("preliminaryRoundCheck", {}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
     } else {
-      $("#progressUpdate").html("<span class='label label-info'>It's your opponent's turn.</span>");
+      $("#progressUpdate").html("<span class='label label-default'>It's not your turn.</span>");
     }
   }
 });
@@ -143,17 +131,13 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
-$("#suiteRequestBtn").click(function() {
+/*$("#suiteRequestBtn").click(function() {
   var request = $("#suiteRequestTxt").val();
-  socket.emit("suiteRequest", {tableID: 1, request: request});
+  socket.emit("suiteRequest", {request: request});
   console.log("called with request ==> " + request);
-  //socket.emit("suiteRequest", {request: request, tableID: 1});
-  //socket.emit("playCard", {tableID:1, playedCard: playedCard, index: index});
-});
+});*/
 
 $("#create").click(function() {
-  //var privateTable = false;
-  //if ($("#key").is(':checked')) privateTable = true;
   var name = $("#createTableName").val();
   var count = $("#count").val();
   socket.emit("createTable", {name:name, playerLimit:count});
@@ -184,11 +168,12 @@ $("#join").click(function() {
   });
 
   $("#drawCard").click(function() {
-    socket.emit("drawCard", {tableID: 1});
+    socket.emit("drawCard", {});
   });
+
   /*penalising card taken button*/
   $("#penalising").click(function() {
-    socket.emit("penalisingTaken", {tableID: 1});
+    socket.emit("penalisingTaken", {});
     $("#penalising").hide();
   });
 

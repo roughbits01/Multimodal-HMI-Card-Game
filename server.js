@@ -49,7 +49,7 @@ io.sockets.on('connection', function (socket) {
     console.log(name + " has connected.");
   });
 
-  socket.on('createTable',function(data) {
+  socket.on('createTable', function(data) {
 
     var game = new Game();
     var table = new Table(socket.id);
@@ -68,8 +68,8 @@ io.sockets.on('connection', function (socket) {
 
     room.addTable(table);
 
-    io.sockets.emit("logging", {message: "Waiting for " + table.playerLimit + " players to join. Key: " + table.key});
-    console.log("Table " + table.key + " has been successfully created!");
+    io.sockets.emit("logging", {message: "Waiting for " + table.playerLimit + " players to join. <strong>" + table.key + "</strong>"});
+    console.log("Table " + Table.name + " has been successfully created with " + table.key + " as key!");
   });
 
   /*
@@ -79,7 +79,6 @@ io.sockets.on('connection', function (socket) {
     - assign the player to a table (if available)
     - change the player's status from 'available' to 'in table'
     - save the player's name, and ID (socket client ID) in the appropriate arrays at the table.
-
   If a table has 2 players, we need to do more:
     - set the table's status from 'available' to 'unavailable'
     - create a pack (instantiate the game object)
@@ -90,12 +89,12 @@ io.sockets.on('connection', function (socket) {
     var table = room.getTableByKey(data.key);
 
     if (table == null) {
-      io.sockets.emit("logging", {message: "There exists no table with this key!" });
+      socket.emit("logging", {message: "There exists no table with this key!" });
       return;
     }
 
     if (!table.isAvailable()) {
-      io.sockets.emit("logging", {message: "Too late, the table is full!" });
+      socket.emit("logging", {message: "Too late, the table is full!"});
       return;
     }
 
@@ -104,19 +103,19 @@ io.sockets.on('connection', function (socket) {
     if (table.addPlayer(player)) {
       player.tableID = table.id;
       player.status = "intable";
-      table.playersID.push(socket.id); //probably not needed
+
       io.sockets.emit("logging", {message: player.name + " has connected to table: " + table.name + "."});
       if (table.players.length < table.playerLimit) {
-        io.sockets.emit("logging", {message: "There is " + table.players.length + " player at this table. The table requires " + table.playerLimit + " players to join." });
-        io.sockets.emit("waiting", {message: "Waiting for "+ table.getRemainingSpots() +" other player(s) to join."});
+        messaging.sendEventToAllPlayers("logging", {message: "There are " + table.players.length + " players at this table. The table requires " + table.playerLimit + " players to join." }, io, table.players);
+        //io.sockets.emit("waiting", {message: "Waiting for "+ table.getRemainingSpots() +" other player(s) to join."});
       } else {
-        io.sockets.emit("logging", {message: "There are " + table.players.length + " players at this table. Play will commence shortly." });
+        messaging.sendEventToAllPlayers("logging", {message: "There are " + table.players.length + " players at this table. Play will commence shortly."}, io, table.players);
         //emit counter
-        var countdown = 5; //3 seconds in reality...
+        //var countdown = 5; //3 seconds in reality...
         //setInterval(function() {
           //countdown--;
           //messaging.sendEventToAllPlayers('timer', { countdown: countdown }, io, table.players);
-          messaging.sendEventToAllPlayers('areYouReady', { countdown: countdown }, io, table.players);
+          messaging.sendEventToAllPlayers('areYouReady', {}, io, table.players);
         //io.sockets.emit('timer', { countdown: countdown });
         //}, 1000);
       }
@@ -150,7 +149,7 @@ io.sockets.on('connection', function (socket) {
       var firstCardOnTable = table.cardsOnTable = table.gameObj.playFirstCardToTable(table.pack); //assign first card on table
       for (var i = 0; i < table.players.length; i++) { //go through the players array (contains all players sitting at a table)
         table.players[i].hand = table.gameObj.drawCard(table.pack, 5, "", 1); //assign initial 5 cards to players
-        var startingPlayerID = table.playersID[randomNumber]; //get the ID of the randomly selected player who will start
+        var startingPlayerID = table.players[randomNumber].id; //get the ID of the randomly selected player who will start
         if (table.players[i].id === startingPlayerID) { //this player will start the turn
           table.players[i].turnFinished = false;
           console.log(table.players[i].name + " starts the game.");
@@ -183,7 +182,6 @@ i.e. draw or play a card, we are going to do preliminary checks
 These checks will determine whether there are (active) requests  or
 (active) penalising cards on the table
 */
-
 socket.on("preliminaryRoundCheck", function(data) {
   console.log("preliminary round check called.");
   var player = room.getPlayer(socket.id);
@@ -216,7 +214,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
           messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
         }
-      } else { //Is the first card on the table a request card (1*, 13*)
+      }/* else { //Is the first card on the table a request card (1*, 13*)
         console.log("it is a request card, player to make a request"); //SHOW REQUEST WINDOW
         var option = "number";
         if(parseInt(last) === 1) {
@@ -225,8 +223,7 @@ socket.on("preliminaryRoundCheck", function(data) {
         if (firstRound === 1) {
           socket.emit("showRequestCardDialog", { option: option });
         }
-        //table.requestActionCard = true; //set the flag at the table
-        if (table.request && table.requestActionCard) {//request has already been made
+        if (table.suiteRequest && table.requestActionCard) {//request has already been made
           console.log("asked for a suite ==> " + table.suiteRequest);
           messaging.sendEventToAllPlayersButPlayer("logging", {message: "Your opponent has asked for a suite ==>" + table.suiteRequest}, io, table.players, player);
           if (table.gameObj.isSuiteInHand(table.suiteRequest, player.hand)) {
@@ -244,7 +241,7 @@ socket.on("preliminaryRoundCheck", function(data) {
               io.sockets.emit('updatePackCount', {packCount: table.pack.length});
               table.requestActionCard = null; //reset request
               table.actionCard = false; //set the action card to false
-              /*PROGRESS ROUND*/
+              //PROGRESS ROUND
               table.progressRound(player); //end of turn
               socket.emit("turn", {myturn: false}); //????
               messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
@@ -252,11 +249,11 @@ socket.on("preliminaryRoundCheck", function(data) {
             }
           }
         }
-      }
+      }*/
     } else { //The first card on the table is not an action card at all
       console.log(last + " is not an action card or we don't care about it anymore");
     }
-  console.log("Table ==> " + JSON.stringify(table));
+  //console.log("Table ==> " + JSON.stringify(table));
   firstRound--;
 });
 
@@ -264,7 +261,6 @@ socket.on("preliminaryRoundCheck", function(data) {
   A player can decide to the penalty as a result of a penalising card (2*), if he does
   then we need to reset the right variables and also end this player's turn.
   */
-
   socket.on("penalisingTaken", function(data) {
     var player = room.getPlayer(socket.id);
     var table = room.getTableById(player.tableID);
@@ -283,12 +279,12 @@ socket.on("preliminaryRoundCheck", function(data) {
     }
   });
 
-  socket.on("suiteRequest", function(data) {
+  /*socket.on("suiteRequest", function(data) {
     var player = room.getPlayer(socket.id);
     var table = room.getTableById(player.tableID);
     table.suiteRequest = data.request;
     console.log("request: " + data.request);
-  });
+  });*/
 
   socket.on("disconnect", function() {
     var player = room.getPlayer(socket.id);
@@ -340,7 +336,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       */
       var errorFlag = false;
       var player = room.getPlayer(socket.id);
-      var table = room.getTableById(player.tableID);;
+      var table = room.getTableById(player.tableID);
       var last = table.gameObj.lastCardOnTable(table.cardsOnTable); //last card on Table
 
       if (!player.turnFinished) {
@@ -405,10 +401,10 @@ socket.on("preliminaryRoundCheck", function(data) {
               }
             } //end of penalising action card
             if (table.gameObj.isActionCard(playedCard)) {
-                    socket.emit("playOption", { value: false }); //OPTION - FALSE
-                    table.actionCard = true;
-                    table.penalisingActionCard = true;
-          }
+              socket.emit("playOption", { value: false }); //OPTION - FALSE
+              table.actionCard = true;
+              table.penalisingActionCard = true;
+            }
 
           }
           else { //no action card variable is set at the moment
@@ -421,15 +417,13 @@ socket.on("preliminaryRoundCheck", function(data) {
                 table.actionCard = true;
                 table.penalisingActionCard = true;
               }
-              if (parseInt(playedCard) === 1) {
+              /*if (parseInt(playedCard) === 1) {
                 var option = "suite"
                 table.actionCard = true;
                 table.requestActionCard = true;
-                console.log("in here");
                 messaging.sendEventToAPlayer("logging", {message: "YESSSSSSS"}, io, table.players, player);
                 messaging.sendEventToAPlayer("showRequestCardDialog", {option: option}, io, table.players, player);
-
-              }
+              }*/
 
               /*if (parseInt(playedCard) === 13) {
                 table.actionCard = true;
@@ -448,31 +442,31 @@ socket.on("preliminaryRoundCheck", function(data) {
               if (!winner) {
                 socket.emit("play", {hand: player.hand});
               } else {
-              //game is finished
-              socket.emit("play", {hand: player.hand});
-              messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
-              messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
-              socket.emit("gameover", {gameover: true});
-              io.sockets.emit("logging", {message: player.name + " is the WINNER!"});
+                //game is finished
+                socket.emit("play", {hand: player.hand});
+                messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
+                messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
+                socket.emit("gameover", {gameover: true});
+                io.sockets.emit("logging", {message: player.name + " is the WINNER!"});
               }
             }
           }
         } else {
-            io.sockets.emit("logging", {message: "Error flag is TRUE, something went wrong"});
+          io.sockets.emit("logging", {message: "Error flag is TRUE, something went wrong"});
         }
       } else { //end of turn
         messaging.sendEventToAPlayer("logging", {message: "It's your opponent's turn."}, io, table.players, player);
     }
   });
 
-  socket.on("suiteRequest", function(data) {
+  /*socket.on("suiteRequest", function(data) {
     if (data) {
       var player = room.getPlayer(socket.id);
       var table = room.getTableById(player.tableID);
-      messaging.sendEventToAllPlayersButPlayer("logging", {message: "Request for Suite: " + data.suite}, io, table.players, player);
+      messaging.sendEventToAllPlayersButPlayer("logging", {message: "Request for Suite: " + data.request}, io, table.players, player);
       table.actionCard = true;
       table.requestActionCard = true;
-      console.log(table);
+      table.suiteRequest = data.request;
     }
-  });
+  });*/
 });//end of socket.on

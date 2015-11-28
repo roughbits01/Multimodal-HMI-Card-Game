@@ -12,7 +12,6 @@ function Table(tableID) {
   this.key = "";
 	this.status = "available";
 	this.players = [];
-	this.playersID = [];
   this.board = null;
 	this.readyToPlayCounter = 0;
 	this.playerLimit = 2;

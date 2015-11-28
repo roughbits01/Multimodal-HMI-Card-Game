@@ -1,0 +1,116 @@
+html, body {
+  height: 100%;
+}
+
+.footerTable {
+  position: absolute;
+  width: 100%;
+  height: 25%;
+  bottom: 0;
+}
+
+.footerBottomTable {
+  position: absolute;
+  bottom: 0;
+  height: 80%;
+  width: 100%; 
+}
+
+.headerTable {
+  position: absolute;
+  width: 100%;
+  height: 25%;
+  top: 0;
+}
+
+.outerDiv {
+  position: relative;
+  height: 100%;
+}
+
+.innerDivMiddle {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 50%;
+  transform: translateY(-50%);
+}
+
+.innerDivMiddlePlayer {
+  position: absolute;
+  top: 30%;
+  width: 100%;
+  height: 60%;
+}
+
+.fullHeight {
+  height: 100%;
+}
+
+.playerBoxHorizontal {
+    border-radius: 25px;
+    border: 2px solid #fff;
+    height: 80%; 
+}
+
+.bottomPlayerBoxHorizontal {
+    border-radius: 25px;
+    border: 2px solid #fff;
+    height: 100%; 
+}
+
+.playerBoxVertical {
+    border-radius: 25px;
+    border: 2px solid #fff;
+    width: 80%; 
+}
+
+.tablePlayArea {
+    border-radius: 25px;
+    border: 2px solid #fff;
+}
+
+.toRight {
+    float:right;
+}
+
+.tablePlayerHandHorizontal{    
+    position: absolute;
+    top: 20%;
+    height: 80%;
+    width: 100%;
+    left: 60%;
+    transform: translate(-50%,-10%);
+}
+
+.cardDivHorizontal{
+  position: relative;
+  height: 100%;
+  float: left;
+  z-index: 0;
+}
+
+.cardDivHorizontal img{
+  height: 100%;
+}
+
+.cardDivFirstHorizontal{ /* Not used any more */
+  position: relative;
+  height: 100%;
+  float: left;
+}
+
+.cardDivFirstHorizontal img{ /* Not used any more */
+  height: 100%;
+}
+
+.playerHandArea{    
+    position: relative;
+    top: 5%;
+    height: 90%;
+    width: 100%;
+}
+
+.showOnTop{
+  z-index: 1;
+}

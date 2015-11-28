@@ -1,0 +1,22 @@
+
+        html, body {
+            overflow: hidden;
+            margin: 0;
+        }
+        body {
+            -webkit-perspective: 500;
+            -moz-perspective: 500;
+            perspective: 500;
+        }
+        .animate {
+            -webkit-transition: all .3s;
+            -moz-transition: all .3s;
+            transition: all .3s;
+        }
+        #hit {
+            padding: 10px;
+        }
+        #log {
+            position: absolute;
+            padding: 10px;
+        }

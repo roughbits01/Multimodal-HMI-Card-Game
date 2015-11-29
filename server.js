@@ -250,7 +250,6 @@ socket.on("preliminaryRoundCheck", function(data) {
           }
         }
       }*/
-
       /*PROGRESS ROUND*/
       table.progressRound(player); //end of turn
       socket.emit("turn", {myturn: false}); //????

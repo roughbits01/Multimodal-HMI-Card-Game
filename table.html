@@ -35,36 +35,118 @@
 
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="clientMain.js"></script>
+    <script src="client.js"></script>
 
   </head>
 
   
   <body background="resources/tableBackground.jpg">
 
-    <div class="outerDiv" id="playArea">
+      <div  id="playArea">
 
-      <div id="table">
-      </div>
-
-      <button type="button"  id="drawCard">Carte</button>
-      
-      <div class="innerDivMiddlePlayer">
-        <div class="row fullHeight">
-          <div class="col-xs-1 col-md-1 fullHeight">
+        <div class="headerTable">
+          <div class="row fullHeight">
+            <div class="col-xs-3 col-md-3 fullHeight">
+            </div>
+            <div class="col-xs-6 col-md-6 fullHeight">
+              <div class="playerBoxHorizontal">
+              </div>
+            </div>
+            <div class="col-xs-3 col-md-3 fullHeight">
+            </div>
           </div>
-          <div class="col-xs-10 col-md-10 fullHeight">
-            <div class="tablePlayArea fullHeight">
-                <!-- Mock of player cards-->
-              <div class="playerHandArea" id="cartes">
+        </div>
+
+        <div class="outerDiv">
+          <div class="innerDivMiddle">
+            <div class="row fullHeight">
+              <div class="col-xs-3 col-md-3 fullHeight">
+                <div class="playerBoxVertical fullHeight">
+                </div>
+              </div>
+              <div class="col-xs-6 col-md-6 fullHeight">
+                <div class="tablePlayArea fullHeight">
+                  <!-- Mock of player cards-->
+                  <!--div class="playerHandArea" id="cartes">
+                  </div-->
+                  <div class="quarterHeight fullWidth">
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- North West square-->
+                      <!-- Empty square-->
+                    </div>
+                    <div class="col-xs-6 col-md-6 fullHeight">
+                      <!-- North square-->
+                      <!-- North player square-->
+                    </div>
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- North East square-->
+                      <!-- Empty square-->
+                    </div>
+                  </div>
+                  <div class="halfHeight fullWidth">
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- West square-->
+                      <!-- West player square-->
+                    </div>
+                    <div class="col-xs-6 col-md-6 fullHeight">
+                      <!-- Center square-->
+                      <!-- Table play area square-->
+                      <div class="fullHeight halfWidth floatLeft">
+                        <!-- Cards deck area-->
+                        <div id="tableDeck">
+                          <img width="100%" src="resources/redBack.png">
+                        </div>
+                      </div>
+                      <div class="fullHeight halfWidth floatLeft">
+                        <!-- Unfolded card area-->
+                        <div id="table">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- East square-->
+                      <!-- East player square-->
+                    </div>
+                  </div>
+                  <div class="quarterHeight fullWidth">
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- South West square-->
+                      <!-- Empty square-->
+                    </div>
+                    <div class="col-xs-6 col-md-6 fullHeight">
+                      <!-- South square-->
+                      <!-- South player square-->
+                    </div>
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- South East square-->
+                      <!-- Empty square-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-3 fullHeight">
+                <div class="playerBoxVertical fullHeight toRight">
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-xs-1 col-md-1 fullHeight">
+        </div>
+
+
+        <div class="footerTable">
+          <div class="row fullHeight">
+            <div class="col-xs-3 col-md-3 fullHeight">
+            </div>
+            <div class="col-xs-6 col-md-6 fullHeight">
+              <div class="bottomPlayerBoxHorizontal">
+              </div>
+            </div>
+            <div class="col-xs-3 col-md-3 fullHeight">
+            </div>
           </div>
         </div>
+
       </div>
-    </div>
 
     <!--div id="joinForm">
       <form class="form-inline">

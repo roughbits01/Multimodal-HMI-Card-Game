@@ -209,10 +209,10 @@ socket.on("preliminaryRoundCheck", function(data) {
           table.actionCard = false; //set the action card to false
           table.penalisingActionCard = false; //reset the penalising action card variable
           /*PROGRESS ROUND*/
-          table.progressRound(player); //end of turn
+          /*table.progressRound(player); //end of turn
           socket.emit("turn", {myturn: false}); //????
           messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
-          messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+          messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);*/
         }
       }/* else { //Is the first card on the table a request card (1*, 13*)
         console.log("it is a request card, player to make a request"); //SHOW REQUEST WINDOW
@@ -250,6 +250,13 @@ socket.on("preliminaryRoundCheck", function(data) {
           }
         }
       }*/
+
+      /*PROGRESS ROUND*/
+      table.progressRound(player); //end of turn
+      socket.emit("turn", {myturn: false}); //????
+      messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+      messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+      
     } else { //The first card on the table is not an action card at all
       console.log(last + " is not an action card or we don't care about it anymore");
     }

@@ -2,7 +2,7 @@
   function marginCards() {
 
     var element = $('.cardDivHorizontal');
-    var elementParent = $('#cartes');
+    var elementParent = element.parent();
     var parentChildNumber = element.size()+1;
     var parentWidth = element.parent().width();
     var childWidth = element.width();

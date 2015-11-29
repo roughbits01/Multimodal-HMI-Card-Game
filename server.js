@@ -105,6 +105,7 @@ io.sockets.on('connection', function (socket) {
       player.status = "intable";
 
       io.sockets.emit("logging", {message: player.name + " has connected to table: " + table.name + "."});
+      messaging.sendEventToABoard("playerConnected", {name: player.name, id: player.id, }, io, table.board);
       if (table.players.length < table.playerLimit) {
         messaging.sendEventToAllPlayers("logging", {message: "There are " + table.players.length + " players at this table. The table requires " + table.playerLimit + " players to join." }, io, table.players);
         //io.sockets.emit("waiting", {message: "Waiting for "+ table.getRemainingSpots() +" other player(s) to join."});
@@ -301,6 +302,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       table.status = "available";
       player.status = "available";
       io.sockets.emit("logging", {message: player.name + " has left the table."});
+      messaging.sendEventToABoard("playerDisconnected", {name: player.name, id: player.id, }, io, table.board);
     }
   });
 

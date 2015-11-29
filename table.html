@@ -24,8 +24,8 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- jQuery script for cards in hand view -->
-    <script type="text/javascript" src="js/handCardsView.js"></script>
+    <!-- jQuery script for cards and avatars in table view -->
+    <script type="text/javascript" src="js/tableView.js"></script>
 
 
     <!-- Scripts for hammer -->
@@ -50,6 +50,8 @@
             </div>
             <div class="col-xs-6 col-md-6 fullHeight">
               <div class="playerBoxHorizontal">
+                <div id="boxPlayer1">
+                </div>
               </div>
             </div>
             <div class="col-xs-3 col-md-3 fullHeight">
@@ -62,6 +64,8 @@
             <div class="row fullHeight">
               <div class="col-xs-3 col-md-3 fullHeight">
                 <div class="playerBoxVertical fullHeight">
+                  <div id="boxPlayer3">
+                  </div>
                 </div>
               </div>
               <div class="col-xs-6 col-md-6 fullHeight">
@@ -96,6 +100,7 @@
                         <div id="tableDeck">
                           <img width="100%" src="resources/redBack.png">
                         </div>
+                        <div id="pack" class="fullHeight textAlignCenter"></div>
                       </div>
                       <div class="fullHeight halfWidth floatLeft">
                         <!-- Unfolded card area-->
@@ -126,25 +131,61 @@
               </div>
               <div class="col-xs-3 col-md-3 fullHeight">
                 <div class="playerBoxVertical fullHeight toRight">
+                  <div id="boxPlayer4">
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-
+        
         <div class="footerTable">
+          <!-- mock button -->
+          <!-- button onclick="marginCardsAvatar()">margin</button-->
           <div class="row fullHeight">
             <div class="col-xs-3 col-md-3 fullHeight">
             </div>
             <div class="col-xs-6 col-md-6 fullHeight">
               <div class="bottomPlayerBoxHorizontal">
+                <div id="boxPlayer2" class="fullHeight">
+                  <div class="row fullHeight">
+                    <div class="col-xs-1 col-md-1 fullHeight">
+                    </div>
+                    <div class="col-xs-10 col-md-10 fullHeight">
+                      <div class="outerDiv">
+                        <div class="innerDivMiddleTableAvatar">
+                          <div class="row fullHeight">
+                            <div class="col-xs-3 col-md-3 fullHeight label label-info">
+                              <img height="80%" width="100%" src="resources/avatar.jpg">
+                              </br>
+                              SMILE
+                            </div>
+                            <div class="col-xs-9 col-md-9 fullHeight">
+                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
+                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
+                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
+                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
+                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
+                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
+                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
+                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-1 col-md-1 fullHeight">
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-xs-3 col-md-3 fullHeight">
             </div>
           </div>
         </div>
+
 
       </div>
 
@@ -184,8 +225,8 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- jQuery script for cards in hand view -->
-    <script type="text/javascript" src="js/handCardsView.js"></script>
+    <!-- jQuery script for cards and avatars in table view -->
+    <script type="text/javascript" src="js/tableView.js"></script>
 
 
    <!-- Scripts for hammer -->

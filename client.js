@@ -69,7 +69,7 @@ socket.on("play", function(data) {
 
 socket.on("updatePackCount", function(data) {
   $("#pack").text("");
-  $("#pack").html("Size of pack is: <span class='label label-info'>" + data.packCount + "</span>");
+  $("#pack").html("<span class='label label-info'>" + data.packCount + " card(s)</span>");
 });
 
 socket.on("updateCardsOnTable", function(data){
@@ -113,6 +113,22 @@ socket.on("cardInHandCount", function(data) {
   }
   $("#opponentCardCount").html("Your opponent has <span class='badge " + spanClass + "''>"+ data.cardsInHand + "</span> card"+plural+" in hand.");
 });
+
+
+socket.on("playerConnected", function(player) {
+  console.log(player.id+" : "+player.name);
+  addAvatar(player);
+});
+
+socket.on("playerDisconnected", function(data) {
+  console.log(data.playerId+" : "+data.playerName);
+
+});
+
+socket.on("updateTableAvatars", function(data) {
+
+});
+
 
 socket.on("tableFull", function(){
   $("#tableFull").fadeIn("slow");

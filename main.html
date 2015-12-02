@@ -29,12 +29,13 @@
 
 
     <!-- Scripts for hammer -->
-    <script src="bower_components/hammerjs/hammer.js-2.0.4/hammer.min.js"></script>
+    <script src="bower_components/hammerjs/hammer.min.js"></script>
     <script src="hammer/hammerFunctionsHand.js"></script>
 
     <!-- jHammer script for cards of table view in player's hands-->
     <script src="hammer/hammerFunctionsTable.js"></script>
 
+    <script src="bower_components/jquery.vibrate.js/build/jquery/jquery.vibrate.min.js"></script>
 
 
     <script src="/socket.io/socket.io.js"></script>
@@ -42,7 +43,7 @@
 
   </head>
 
-
+  
   <body background="resources/tableBackground.jpg">
 
     <div class="outerDiv" id="playArea">
@@ -51,8 +52,7 @@
       </div>
 
       <button type="button"  id="drawCard">Carte</button>
-      <button type="button"  id="sortHand">Trier</button>
-
+      
       <div class="innerDivMiddlePlayer">
 
         <div class="row fullHeight">
@@ -66,7 +66,7 @@
               <div class="playerHandArea" id="cartes">
               </div>
             </div>
-
+            
           </div>
           <div class="col-xs-1 col-md-1 fullHeight">
           </div>

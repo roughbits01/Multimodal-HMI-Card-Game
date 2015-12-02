@@ -1,4 +1,4 @@
-var socket = io.connect("http://10.42.0.1:8080");
+var socket = io.connect("http://localhost:8080");
 
 //var socket = io.connect("http://ec2-54-229-63-210.eu-west-1.compute.amazonaws.com:8080");
 socket.on("logging", function(data) {
@@ -87,6 +87,26 @@ socket.on("updatePackCount", function(data) {
   if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte 
     carteDeck();
 
+});
+
+socket.on("updateCardsOnHand", function(data) {
+  console.log("updateCardsOnHand ========> data.hand");
+  cleanHand();
+  $("#hand").text("");
+  $('#cards').find('option').remove().end();
+  pixel = 0;
+  $.each(data.hand, function(k, v) {
+    index = k + 1;
+    carteHand("resources/"+v+".png",k ,v);
+    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
+    $(".card"+k).click(function() { playCard(k, v); return false; });
+    if (pixel >= 0) {
+      pixel = (pixel + 40) * -1;
+    } else {
+      if (pixel <= -40)
+        pixel = pixel -1;
+      }*/
+  });
 });
 
 socket.on("updateCardsOnTable", function(data){

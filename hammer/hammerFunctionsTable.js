@@ -18,7 +18,7 @@
     el.style.backgroundImage= "url(resources/redBack.png)";
     el.style.backgroundSize= "contain";
     el.style.backgroundRepeat= "no-repeat";
-    el.style.maxHeight= "100%";
+    el.style.maxWidth= "100%";
     el.START_X = 0;
     el.START_Y = 0;
     el.START_Z = 0;

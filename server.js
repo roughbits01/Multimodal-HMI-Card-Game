@@ -257,11 +257,16 @@ socket.on("preliminaryRoundCheck", function(data) {
       socket.emit("turn", {myturn: false}); //????
       messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
       messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
-      messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
-      
     } else { //The first card on the table is not an action card at all
       console.log(last + " is not an action card or we don't care about it anymore");
     }
+
+    // Every one (players and table) have to update cards they show : player show it own card, and table show every player cards (count)
+    messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
+    for(var i=0; i<table.players.length; i++){
+      messaging.sendEventToAPlayer('updateCardsOnHand', {hand: table.players[i].hand}, io, table.players, table.players[i]);// update player's cards (count) on hand
+    }
+
   //console.log("Table ==> " + JSON.stringify(table));
   firstRound--;
 });

@@ -1,6 +1,6 @@
 
-  function carteHand(url, key, val) {
-    console.log("key : "+key+" | val :"+ val);
+  function carteHand(url, val) {
+    console.log("val :"+ val);
     var reqAnimationFrame = (function () {
         return window[Hammer.prefixed(window, 'requestAnimationFrame')] || function (callback) {
             window.setTimeout(callback, 1000 / 60);
@@ -9,8 +9,7 @@
     //var log = document.createElement('div');
     var el = document.createElement('div');
     document.getElementById('cartes').appendChild(el);
-    
-    el.setAttribute("key", key);
+
     el.setAttribute("val", val);
 
     /* Mock : Make an img element but hide it to initialize 'el'(div) size */
@@ -34,7 +33,7 @@
     //el.START_X = Math.round((window.innerWidth - el.offsetWidth) / pos);
     //el.START_Y = Math.round((window.innerHeight - el.offsetHeight) / pos);
     el.classList.add("cardDivHorizontal");
-  
+
     var mc = new Hammer.Manager(el);
     mc.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));
     mc.add(new Hammer.Swipe()).recognizeWith(mc.get('pan'));
@@ -68,10 +67,10 @@
         requestElementUpdate();
         /*if (log.textContent.length > 2000) {
             log.textContent = log.textContent.substring(0, 2000) + "...";
-         
+
         }
         */
-        
+
 
     }
     function updateElementTransform() {
@@ -153,7 +152,7 @@
         requestElementUpdate();
         logEvent(ev.type);
 
-        playCard(el.getAttribute("key"), el.getAttribute("val"));
+        playCard(el.getAttribute("val"));
 
     }
     function onTap(ev) {
@@ -178,5 +177,5 @@
         requestElementUpdate();
         logEvent(ev.type);
     }
-    el.resetElement();    
+    el.resetElement();
   }

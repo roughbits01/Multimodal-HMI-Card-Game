@@ -1,5 +1,7 @@
 var socket = io.connect("http://localhost:8080");
 
+hand = [];
+
 //var socket = io.connect("http://ec2-54-229-63-210.eu-west-1.compute.amazonaws.com:8080");
 socket.on("logging", function(data) {
   $("#updates").append("<li>"+ data.message + "</li>");
@@ -49,29 +51,34 @@ function cleanPlayerHandOnTable(player) {
   }
 }
 
-function playCard(key, value) {
-  index = key;
-  playedCard = value;
-  socket.emit("playCard", {playedCard: playedCard, index: index});
+function playCard(value) {
+  socket.emit("playCard", {playedCard: value});
 }
 
 socket.on("play", function(data) {
   cleanHand();
   $("#hand").text("");
   $('#cards').find('option').remove().end();
-  pixel = 0;
-  $.each(data.hand, function(k, v) {
-    index = k + 1;
-    carteHand("resources/"+v+".png",k ,v);
-    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
-    $(".card"+k).click(function() { playCard(k, v); return false; });
-    if (pixel >= 0) {
-      pixel = (pixel + 40) * -1;
-    } else {
-      if (pixel <= -40)
-        pixel = pixel -1;
-      }*/
+
+  hand = hand.concat(data.hand);
+  console.log(hand);
+  $.each(hand, function(k, v) {
+    carteHand("resources/" + v + ".png", v);
   });
+});
+
+socket.on("cardAccepted", function(data) {
+  var index = hand.indexOf(data.playedCard);
+  if (index !== -1)
+  {
+    hand.splice(index, 1);
+    console.log(hand);
+    cleanHand();
+    $.each(hand, function(k, v) {
+      carteHand("resources/" + v + ".png", v);
+    });
+  }
+
 });
 
 socket.on("updatePackCount", function(data) {
@@ -84,29 +91,9 @@ socket.on("updatePackCount", function(data) {
     $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left'>");
   /*else
     $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left; visibility:hidden'>");*/
-  if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte 
+  if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte
     carteDeck();
 
-});
-
-socket.on("updateCardsOnHand", function(data) {
-  console.log("updateCardsOnHand ========> data.hand");
-  cleanHand();
-  $("#hand").text("");
-  $('#cards').find('option').remove().end();
-  pixel = 0;
-  $.each(data.hand, function(k, v) {
-    index = k + 1;
-    carteHand("resources/"+v+".png",k ,v);
-    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
-    $(".card"+k).click(function() { playCard(k, v); return false; });
-    if (pixel >= 0) {
-      pixel = (pixel + 40) * -1;
-    } else {
-      if (pixel <= -40)
-        pixel = pixel -1;
-      }*/
-  });
 });
 
 socket.on("updateCardsOnTable", function(data){
@@ -171,14 +158,12 @@ socket.on("playerConnected", function(player) {
 });
 
 socket.on("playerDisconnected", function(data) {
-  console.log(data.playerId+" : "+data.playerName);
-
+  console.log(data.playerId + " : " + data.playerName);
 });
 
 socket.on("updateTableAvatars", function(data) {
 
 });
-
 
 socket.on("tableFull", function(){
   $("#tableFull").fadeIn("slow");
@@ -236,6 +221,16 @@ $("#join").click(function() {
 
   $("#drawCard").click(function() {
     socket.emit("drawCard", {});
+  });
+
+  $("#sortHand").click(function() {
+    cleanHand();
+    hand.sort(function(a, b) {
+      return parseInt(a) - parseInt(b);
+    });
+    $.each(hand, function(k, v) {
+      carteHand("resources/" + v + ".png", v);
+    });
   });
 
   /*penalising card taken button*/

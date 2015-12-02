@@ -150,6 +150,7 @@ io.sockets.on('connection', function (socket) {
       var firstCardOnTable = table.cardsOnTable = table.gameObj.playFirstCardToTable(table.pack); //assign first card on table
       for (var i = 0; i < table.players.length; i++) { //go through the players array (contains all players sitting at a table)
         table.players[i].hand = table.gameObj.drawCard(table.pack, 5, "", 1); //assign initial 5 cards to players
+        messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: table.players[i], nbCards: table.players[i].hand.length}, io, table.board);// update all players cards (count) on table
         var startingPlayerID = table.players[randomNumber].id; //get the ID of the randomly selected player who will start
         if (table.players[i].id === startingPlayerID) { //this player will start the turn
           table.players[i].turnFinished = false;
@@ -256,6 +257,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       socket.emit("turn", {myturn: false}); //????
       messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
       messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+      messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
       
     } else { //The first card on the table is not an action card at all
       console.log(last + " is not an action card or we don't care about it anymore");
@@ -283,6 +285,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       socket.emit("turn", {myturn: false}); //????
       messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
       messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+      messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
     }
   });
 
@@ -307,8 +310,25 @@ socket.on("preliminaryRoundCheck", function(data) {
   });
 
   socket.on("drawCard", function(data) {
-    var player = room.getPlayer(socket.id);
-    var table = room.getTableById(player.tableID);
+
+    /*var player = room.getPlayer(socket.id);
+    var table = room.getTableById(player.tableID);*/
+
+    var player;
+    var table;
+
+    if(data.playerId){ // si data contient un champs playerId, alors "drawCard" est emis par la table avec une demande de carte pour le joueur identifié par son Id
+      console.log("drawcard: "+data.playerId);
+      table = room.getTableById(socket.id);
+      for(var i=0; i<table.players.length; i++){
+        if(table.players[i].id == data.playerId) player = table.players[i];
+      }
+    }else{ // sinon, "drawCard" est emis par un joueur directement sur sa tablette et donc on l'identifie par la socket Id
+      console.log("drawcard: no playerId in data");
+      player = room.getPlayer(socket.id);
+      table = room.getTableById(player.tableID);
+    }
+
       if (!table.actionCard) { //action card start (listener), if there's an action card, we disable drawing
         if (!player.turnFinished) {
           var card = table.gameObj.drawCard(table.pack, 1, player.hand, 0);
@@ -328,10 +348,12 @@ socket.on("preliminaryRoundCheck", function(data) {
           messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
           messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
           messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+          messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
         } else {
           messaging.sendEventToAPlayer("logging", {message: "It's your opponent's turn."}, io, table.players, player);
         }
       }//end of actioncard
+    
   });
 
   socket.on("playCard", function(data) {
@@ -389,6 +411,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                 table.gameObj.playCard(index, player.hand, table.cardsOnTable);
                 //messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
                 messaging.sendEventToABoard('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.board);
+                messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
                 io.sockets.emit("logging", {message: player.name + " plays a card: " + playedCard});
                 table.progressRound(player); //end of turn
                 //notify frontend
@@ -440,6 +463,7 @@ socket.on("preliminaryRoundCheck", function(data) {
               table.gameObj.playCard(index, player.hand, table.cardsOnTable);
               //messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
               messaging.sendEventToABoard('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.board);
+              messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
               io.sockets.emit("logging", {message: player.name + " plays a card: " + playedCard});
               table.progressRound(player); //end of turn
               //notify frontend
@@ -477,4 +501,6 @@ socket.on("preliminaryRoundCheck", function(data) {
       table.suiteRequest = data.request;
     }
   });*/
+
+
 });//end of socket.on

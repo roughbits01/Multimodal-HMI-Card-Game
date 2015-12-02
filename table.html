@@ -30,12 +30,13 @@
 
     <!-- Scripts for hammer -->
     <script src="bower_components/hammerjs/hammer.min.js"></script>
-    <script src="hammer/hammerFunctions.js"></script>
+    <script src="hammer/hammerFunctionsTable.js"></script>
 
 
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
+    <script src="tableAvatar.js"></script>
 
   </head>
 
@@ -50,7 +51,7 @@
             </div>
             <div class="col-xs-6 col-md-6 fullHeight">
               <div class="playerBoxHorizontal">
-                <div id="boxPlayer1">
+                <div id="boxPlayer1"  class="fullHeight">
                 </div>
               </div>
             </div>
@@ -64,7 +65,7 @@
             <div class="row fullHeight">
               <div class="col-xs-3 col-md-3 fullHeight">
                 <div class="playerBoxVertical fullHeight">
-                  <div id="boxPlayer3">
+                  <div id="boxPlayer3" class="fullHeight">
                   </div>
                 </div>
               </div>
@@ -97,10 +98,9 @@
                       <!-- Table play area square-->
                       <div class="fullHeight halfWidth floatLeft">
                         <!-- Cards deck area-->
-                        <div id="tableDeck">
-                          <img width="100%" src="resources/redBack.png">
+                        <div id="pack" class="textAlignCenter"></div>
+                        <div id="tableDeck" class="fullHeight fullWidth" style="display: inline-block;">
                         </div>
-                        <div id="pack" class="fullHeight textAlignCenter"></div>
                       </div>
                       <div class="fullHeight halfWidth floatLeft">
                         <!-- Unfolded card area-->
@@ -131,7 +131,7 @@
               </div>
               <div class="col-xs-3 col-md-3 fullHeight">
                 <div class="playerBoxVertical fullHeight toRight">
-                  <div id="boxPlayer4">
+                  <div id="boxPlayer4" class="fullHeight">
                   </div>
                 </div>
               </div>
@@ -141,43 +141,14 @@
 
         
         <div class="footerTable">
-          <!-- mock button -->
-          <!-- button onclick="marginCardsAvatar()">margin</button-->
+          <!-- Mock button -->
+          <!--button onclick="marginCardsAvatar()">margin</button-->
           <div class="row fullHeight">
             <div class="col-xs-3 col-md-3 fullHeight">
             </div>
             <div class="col-xs-6 col-md-6 fullHeight">
               <div class="bottomPlayerBoxHorizontal">
                 <div id="boxPlayer2" class="fullHeight">
-                  <div class="row fullHeight">
-                    <div class="col-xs-1 col-md-1 fullHeight">
-                    </div>
-                    <div class="col-xs-10 col-md-10 fullHeight">
-                      <div class="outerDiv">
-                        <div class="innerDivMiddleTableAvatar">
-                          <div class="row fullHeight">
-                            <div class="col-xs-3 col-md-3 fullHeight label label-info">
-                              <img height="80%" width="100%" src="resources/avatar.jpg">
-                              </br>
-                              SMILE
-                            </div>
-                            <div class="col-xs-9 col-md-9 fullHeight">
-                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
-                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
-                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
-                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
-                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
-                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
-                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
-                              <img height="100%" src="resources/redBack.png" class="cardImgHorizontalAvatar">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xs-1 col-md-1 fullHeight">
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -231,7 +202,7 @@
 
    <!-- Scripts for hammer -->
     <script src="bower_components/hammerjs/hammer.min.js"></script>
-    <script src="hammer/hammerFunctions.js"></script>
+    <script src="hammer/hammerFunctionsTable.js"></script>
 
 
   </body>

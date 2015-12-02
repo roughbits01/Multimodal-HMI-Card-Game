@@ -112,6 +112,12 @@ html, body {
   height: 100%;
 }
 
+.cardImgHorizontalAvatar{
+  position: relative;
+  float: left;
+  z-index: 0;
+}
+
 .playerHandArea{    
     position: relative;
     top: 5%;

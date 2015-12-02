@@ -1,4 +1,4 @@
-var socket = io.connect("http://localhost:8080");
+var socket = io.connect("http://10.42.0.1:8080");
 
 //var socket = io.connect("http://ec2-54-229-63-210.eu-west-1.compute.amazonaws.com:8080");
 socket.on("logging", function(data) {
@@ -42,6 +42,13 @@ function cleanHand() {
   }
 }
 
+function cleanPlayerHandOnTable(player) {
+  var myNode = document.getElementById("cardsOfPlayer"+player.id);
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
+  }
+}
+
 function playCard(key, value) {
   index = key;
   playedCard = value;
@@ -55,7 +62,7 @@ socket.on("play", function(data) {
   pixel = 0;
   $.each(data.hand, function(k, v) {
     index = k + 1;
-    carte("resources/"+v+".png",k ,v);
+    carteHand("resources/"+v+".png",k ,v);
     /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
     $(".card"+k).click(function() { playCard(k, v); return false; });
     if (pixel >= 0) {
@@ -70,6 +77,16 @@ socket.on("play", function(data) {
 socket.on("updatePackCount", function(data) {
   $("#pack").text("");
   $("#pack").html("<span class='label label-info'>" + data.packCount + " card(s)</span>");
+
+  // Update deck view
+  $("#tableDeck").text("");
+  if(data.packCount > 1) // si au moins 2 cartes, afficher une image en background représentant la 2ème carte (et les autres derrière)
+    $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left'>");
+  /*else
+    $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left; visibility:hidden'>");*/
+  if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte 
+    carteDeck();
+
 });
 
 socket.on("updateCardsOnTable", function(data){
@@ -81,6 +98,19 @@ socket.on("updateCardsOnTable", function(data){
   } else {
     $("#table").append("<img width=100% src=resources/" + data.lastCardOnTable + ".png>");
   }
+});
+
+socket.on("updatePlayerCardsOnTable", function(data){
+  console.log("updatePlayerCardsOnTable : hey")
+  console.log(data)
+  console.log(data.player.id)
+  console.log(data.player.name)
+  console.log(data.nbCards)
+  cleanPlayerHandOnTable(data.player);
+  for(var i=0; i<data.nbCards; i++){
+    $("#cardsOfPlayer"+data.player.id).append("<img height='100%' src='resources/redBack.png' class='cardImgHorizontalAvatar'>");
+  }
+  marginCardsAvatar();
 });
 
 

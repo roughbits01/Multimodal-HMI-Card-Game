@@ -24,47 +24,141 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- jQuery script for cards in hand view -->
-    <script type="text/javascript" src="js/handCardsView.js"></script>
+    <!-- jQuery script for cards and avatars in table view -->
+    <script type="text/javascript" src="js/tableView.js"></script>
 
 
     <!-- Scripts for hammer -->
     <script src="bower_components/hammerjs/hammer.min.js"></script>
-    <script src="hammer/hammerFunctions.js"></script>
+    <script src="hammer/hammerFunctionsTable.js"></script>
 
 
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
+    <script src="tableAvatar.js"></script>
 
   </head>
 
   
   <body background="resources/tableBackground.jpg">
 
-    <div class="outerDiv" id="playArea">
+      <div  id="playArea">
 
-      <div id="table">
-      </div>
-
-      <button type="button"  id="drawCard">Carte</button>
-      
-      <div class="innerDivMiddlePlayer">
-        <div class="row fullHeight">
-          <div class="col-xs-1 col-md-1 fullHeight">
+        <div class="headerTable">
+          <div class="row fullHeight">
+            <div class="col-xs-3 col-md-3 fullHeight">
+            </div>
+            <div class="col-xs-6 col-md-6 fullHeight">
+              <div class="playerBoxHorizontal">
+                <div id="boxPlayer1"  class="fullHeight">
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-3 col-md-3 fullHeight">
+            </div>
           </div>
-          <div class="col-xs-10 col-md-10 fullHeight">
-            <div class="tablePlayArea fullHeight">
-                <!-- Mock of player cards-->
-              <div class="playerHandArea" id="cartes">
+        </div>
+
+        <div class="outerDiv">
+          <div class="innerDivMiddle">
+            <div class="row fullHeight">
+              <div class="col-xs-3 col-md-3 fullHeight">
+                <div class="playerBoxVertical fullHeight">
+                  <div id="boxPlayer3" class="fullHeight">
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-6 col-md-6 fullHeight">
+                <div class="tablePlayArea fullHeight">
+                  <!-- Mock of player cards-->
+                  <!--div class="playerHandArea" id="cartes">
+                  </div-->
+                  <div class="quarterHeight fullWidth">
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- North West square-->
+                      <!-- Empty square-->
+                    </div>
+                    <div class="col-xs-6 col-md-6 fullHeight">
+                      <!-- North square-->
+                      <!-- North player square-->
+                    </div>
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- North East square-->
+                      <!-- Empty square-->
+                    </div>
+                  </div>
+                  <div class="halfHeight fullWidth">
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- West square-->
+                      <!-- West player square-->
+                    </div>
+                    <div class="col-xs-6 col-md-6 fullHeight">
+                      <!-- Center square-->
+                      <!-- Table play area square-->
+                      <div class="fullHeight halfWidth floatLeft">
+                        <!-- Cards deck area-->
+                        <div id="pack" class="textAlignCenter"></div>
+                        <div id="tableDeck" class="fullHeight fullWidth" style="display: inline-block;">
+                        </div>
+                      </div>
+                      <div class="fullHeight halfWidth floatLeft">
+                        <!-- Unfolded card area-->
+                        <div id="table">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- East square-->
+                      <!-- East player square-->
+                    </div>
+                  </div>
+                  <div class="quarterHeight fullWidth">
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- South West square-->
+                      <!-- Empty square-->
+                    </div>
+                    <div class="col-xs-6 col-md-6 fullHeight">
+                      <!-- South square-->
+                      <!-- South player square-->
+                    </div>
+                    <div class="col-xs-3 col-md-3 fullHeight">
+                      <!-- South East square-->
+                      <!-- Empty square-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-3 fullHeight">
+                <div class="playerBoxVertical fullHeight toRight">
+                  <div id="boxPlayer4" class="fullHeight">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-xs-1 col-md-1 fullHeight">
+        </div>
+
+        
+        <div class="footerTable">
+          <!-- Mock button -->
+          <!--button onclick="marginCardsAvatar()">margin</button-->
+          <div class="row fullHeight">
+            <div class="col-xs-3 col-md-3 fullHeight">
+            </div>
+            <div class="col-xs-6 col-md-6 fullHeight">
+              <div class="bottomPlayerBoxHorizontal">
+                <div id="boxPlayer2" class="fullHeight">
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-3 col-md-3 fullHeight">
+            </div>
           </div>
         </div>
+
+
       </div>
-    </div>
 
     <!--div id="joinForm">
       <form class="form-inline">
@@ -102,13 +196,13 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- jQuery script for cards in hand view -->
-    <script type="text/javascript" src="js/handCardsView.js"></script>
+    <!-- jQuery script for cards and avatars in table view -->
+    <script type="text/javascript" src="js/tableView.js"></script>
 
 
    <!-- Scripts for hammer -->
     <script src="bower_components/hammerjs/hammer.min.js"></script>
-    <script src="hammer/hammerFunctions.js"></script>
+    <script src="hammer/hammerFunctionsTable.js"></script>
 
 
   </body>

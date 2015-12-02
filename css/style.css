@@ -1,4 +1,5 @@
 html, body {
+  background-size: cover;
   height: 100%;
 }
 
@@ -7,13 +8,6 @@ html, body {
   width: 100%;
   height: 25%;
   bottom: 0;
-}
-
-.footerBottomTable {
-  position: absolute;
-  bottom: 0;
-  height: 80%;
-  width: 100%; 
 }
 
 .headerTable {
@@ -43,8 +37,39 @@ html, body {
   height: 60%;
 }
 
+.innerDivMiddleTableAvatar {
+  position: absolute;
+  top: 10%;
+  width: 100%;
+  height: 80%;
+}
+
+.quarterHeight {
+  height: 25%;
+}
+
+.thirdHeight {
+  height: 33.33%;
+}
+
+.halfHeight {
+  height: 50%;
+}
+
 .fullHeight {
   height: 100%;
+}
+
+.halfWidth {
+  width: 50%;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.floatLeft {
+  float: left;
 }
 
 .playerBoxHorizontal {
@@ -53,10 +78,12 @@ html, body {
     height: 80%; 
 }
 
-.bottomPlayerBoxHorizontal {
-    border-radius: 25px;
+.bottomPlayerBoxHorizontal {    
+  border-radius: 25px;
     border: 2px solid #fff;
-    height: 100%; 
+    height: 80%;
+    top: 20%;
+    position: relative;
 }
 
 .playerBoxVertical {
@@ -74,15 +101,6 @@ html, body {
     float:right;
 }
 
-.tablePlayerHandHorizontal{    
-    position: absolute;
-    top: 20%;
-    height: 80%;
-    width: 100%;
-    left: 60%;
-    transform: translate(-50%,-10%);
-}
-
 .cardDivHorizontal{
   position: relative;
   height: 100%;
@@ -94,14 +112,10 @@ html, body {
   height: 100%;
 }
 
-.cardDivFirstHorizontal{ /* Not used any more */
+.cardImgHorizontalAvatar{
   position: relative;
-  height: 100%;
   float: left;
-}
-
-.cardDivFirstHorizontal img{ /* Not used any more */
-  height: 100%;
+  z-index: 0;
 }
 
 .playerHandArea{    
@@ -113,4 +127,51 @@ html, body {
 
 .showOnTop{
   z-index: 1;
+}
+
+.textAlignCenter{
+  text-align: center;
+}
+
+#progressUpdate{
+  text-align: center;
+}
+
+#playArea{
+    height: 100%;
+    width: 100%;
+}
+
+
+/***************************************** NOT USED ANY MORE ***************************************************/
+
+
+/* Not used anymore */
+.footerBottomTable { /* Not used any more */
+  /*position: absolute;*/
+  bottom: 0;
+  height: 80%;
+  width: 100%; 
+}
+
+/* Not used any more */
+.cardDivFirstHorizontal img{ /* Not used any more */
+  height: 100%;
+}
+
+/* Not used any more */
+.tablePlayerHandHorizontal{ /* Not used any more */
+    position: absolute;
+    top: 20%;
+    height: 80%;
+    width: 100%;
+    left: 60%;
+    transform: translate(-50%,-10%);
+}
+
+/* Not used any more */
+.cardDivFirstHorizontal{ /* Not used any more */
+  position: relative;
+  height: 100%;
+  float: left;
 }

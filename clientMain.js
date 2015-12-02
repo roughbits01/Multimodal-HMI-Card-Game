@@ -42,13 +42,6 @@ function cleanHand() {
   }
 }
 
-function cleanPlayerHandOnTable(player) {
-  var myNode = document.getElementById("cardsOfPlayer"+player.id);
-  while (myNode.firstChild) {
-      myNode.removeChild(myNode.firstChild);
-  }
-}
-
 function playCard(key, value) {
   index = key;
   playedCard = value;
@@ -62,7 +55,7 @@ socket.on("play", function(data) {
   pixel = 0;
   $.each(data.hand, function(k, v) {
     index = k + 1;
-    carteHand("resources/"+v+".png",k ,v);
+    carte("resources/"+v+".png",k ,v);
     /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
     $(".card"+k).click(function() { playCard(k, v); return false; });
     if (pixel >= 0) {
@@ -76,37 +69,7 @@ socket.on("play", function(data) {
 
 socket.on("updatePackCount", function(data) {
   $("#pack").text("");
-  $("#pack").html("<span class='label label-info'>" + data.packCount + " card(s)</span>");
-
-  // Update deck view
-  $("#tableDeck").text("");
-  if(data.packCount > 1) // si au moins 2 cartes, afficher une image en background représentant la 2ème carte (et les autres derrière)
-    $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left'>");
-  /*else
-    $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left; visibility:hidden'>");*/
-  if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte 
-    carteDeck();
-
-});
-
-socket.on("updateCardsOnHand", function(data) {
-  console.log("updateCardsOnHand ========> data.hand");
-  cleanHand();
-  $("#hand").text("");
-  $('#cards').find('option').remove().end();
-  pixel = 0;
-  $.each(data.hand, function(k, v) {
-    index = k + 1;
-    carteHand("resources/"+v+".png",k ,v);
-    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
-    $(".card"+k).click(function() { playCard(k, v); return false; });
-    if (pixel >= 0) {
-      pixel = (pixel + 40) * -1;
-    } else {
-      if (pixel <= -40)
-        pixel = pixel -1;
-      }*/
-  });
+  $("#pack").html("Size of pack is: <span class='label label-info'>" + data.packCount + "</span>");
 });
 
 socket.on("updateCardsOnTable", function(data){
@@ -116,23 +79,9 @@ socket.on("updateCardsOnTable", function(data){
   if (data.lastCardOnTable == "") {
     $("#table").text("");
   } else {
-    $("#table").append("<img width=100% src=resources/" + data.lastCardOnTable + ".png>");
+    $("#table").append("<img width=100 src=resources/" + data.lastCardOnTable + ".png>");
   }
 });
-
-socket.on("updatePlayerCardsOnTable", function(data){
-  console.log("updatePlayerCardsOnTable : hey")
-  console.log(data)
-  console.log(data.player.id)
-  console.log(data.player.name)
-  console.log(data.nbCards)
-  cleanPlayerHandOnTable(data.player);
-  for(var i=0; i<data.nbCards; i++){
-    $("#cardsOfPlayer"+data.player.id).append("<img height='100%' src='resources/redBack.png' class='cardImgHorizontalAvatar'>");
-  }
-  marginCardsAvatar();
-});
-
 
 socket.on("turn", function(data) {
   if(data.won) {
@@ -163,22 +112,6 @@ socket.on("cardInHandCount", function(data) {
   }
   $("#opponentCardCount").html("Your opponent has <span class='badge " + spanClass + "''>"+ data.cardsInHand + "</span> card"+plural+" in hand.");
 });
-
-
-socket.on("playerConnected", function(player) {
-  console.log(player.id+" : "+player.name);
-  addAvatar(player);
-});
-
-socket.on("playerDisconnected", function(data) {
-  console.log(data.playerId+" : "+data.playerName);
-
-});
-
-socket.on("updateTableAvatars", function(data) {
-
-});
-
 
 socket.on("tableFull", function(){
   $("#tableFull").fadeIn("slow");

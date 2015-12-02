@@ -2,7 +2,7 @@ function Player(playerID) {
 	this.id = playerID;
 	this.name = "";
 	this.tableID = "";
-	this.hand = ["1H","1C","1D","1S"];
+	this.hand = [];
 	this.status = "";
 	this.turnFinished = "";
 };

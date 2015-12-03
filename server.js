@@ -346,7 +346,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             table.pack = table.gameObj._shufflePack(table.cardsOnTable); //shuffle the new pack
             table.cardsOnTable = last; //add the last card back on the table
           }
-          socket.emit("play", {hand: [card]});
+          socket.emit("play", {hand: card});
           messaging.sendEventToAPlayer("logging", {message: "You took " + card + " from the pack."}, io, table.players, player);
           io.sockets.emit('updatePackCount', { packCount: table.pack.length });
           table.progressRound(player); //end of turn
@@ -390,6 +390,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             if (table.penalisingActionCard) {
               if (!table.gameObj.isPenalisingActionCardPlayable(playedCard, last)) {
                 messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
+                messaging.sendEventToAPlayer("badCard", {}, io, table.players, player);
               } else {
                   console.log("Penalising action card is playable");
                   if (parseInt(playedCard) === 2) { //if there's a penalising action card, the player can only play another penalising action card.
@@ -432,6 +433,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             var requestMade = false;
             if (!table.gameObj.isCardPlayable(playedCard, last)) {
               messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
+              messaging.sendEventToAPlayer("badCard", {}, io, table.players, player);
             } else {
               if (parseInt(playedCard) === 2) { //if player plays a 2 we add the right flags
                 console.log("if player plays a 2 we append the forced card limit");

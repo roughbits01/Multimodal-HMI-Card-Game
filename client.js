@@ -1,6 +1,8 @@
-var socket = io.connect("http://10.42.0.1:8080");
+var socket = io.connect("http://localhost:8080");
 
 hand = [];
+
+var timer;
 
 var myShakeEvent = new Shake({
     threshold: 15, // optional shake strength threshold
@@ -26,12 +28,15 @@ function shuffle() {
   var i = hand.length, j, tempi, tempj;
   if (i === 0) return;
   while (--i) {
-     j = Math.floor(Math.random() * (i + 1));
-     tempi = hand[i]; tempj = hand[j]; hand[i] = tempj; hand[j] = tempi;
-   }
+    j = Math.floor(Math.random() * (i + 1));
+    tempi = hand[i]; tempj = hand[j]; hand[i] = tempj; hand[j] = tempi;
+  }
+  var audio = new Audio('resources/cardFan1.wav');
+  audio.play();
   $.each(hand, function(k, v) {
     carteHand("resources/" + v + ".png", v);
   });
+
 }
 
 //var socket = io.connect("http://ec2-54-229-63-210.eu-west-1.compute.amazonaws.com:8080");
@@ -51,6 +56,10 @@ socket.on("timer", function (data) {
 
 socket.on("areYouReady", function (data) {
   socket.emit("readyToPlay", {});
+});
+
+socket.on("badCard", function (data) {
+  navigator.vibrate(200);
 });
 
 socket.on("playOption", function(data){
@@ -101,12 +110,16 @@ socket.on("play", function(data) {
 
   hand = hand.concat(data.hand);
   console.log(hand);
+  var audio = new Audio('resources/cardSlide7.wav');
+  audio.play();
+
   $.each(hand, function(k, v) {
     carteHand("resources/" + v + ".png", v);
   });
 });
 
 socket.on("cardAccepted", function(data) {
+  clearTimeout(timer);
   var index = hand.indexOf(data.playedCard);
   if (index !== -1)
   {
@@ -165,12 +178,20 @@ socket.on("turn", function(data) {
     $("#playArea").hide();
     if (data.won == "yes") {
       $("#progressUpdate").html("<span class='label label-success'>You won - well done! Game over.</span>");
+      navigator.vibrate([30,100,30,100]);
+      var audio = new Audio('resources/win.ogg');
+      audio.play();
     } else {
+      navigator.vibrate(500);
       $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
     }
   } else {
     if(data.myturn) {
       $("#progressUpdate").html("<span class='label label-info'>It's your turn.</span>");
+      timer = setTimeout(function() {
+       navigator.vibrate([50,200,50]);
+      }, 15000);
+      navigator.vibrate([30,150,30]);
       socket.emit("preliminaryRoundCheck", {}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
     } else {
       $("#progressUpdate").html("<span class='label label-default'>It's not your turn.</span>");
@@ -259,6 +280,8 @@ $("#join").click(function() {
   });
 
   $("#drawCard").click(function() {
+    navigator.vibrate(30);
+    clearTimeout(timer);
     socket.emit("drawCard", {});
   });
 
@@ -268,6 +291,7 @@ $("#join").click(function() {
 
   /*penalising card taken button*/
   $("#penalising").click(function() {
+    navigator.vibrate(100);
     socket.emit("penalisingTaken", {});
     $("#penalising").hide();
   });

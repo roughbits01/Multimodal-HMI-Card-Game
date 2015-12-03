@@ -5,6 +5,8 @@ var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
 if (canVibrate && !("vibrate" in navigator))
     navigator.vibrate = navigator.mozVibrate;
 
+var timer;
+
 var myShakeEvent = new Shake({
     threshold: 15, // optional shake strength threshold
     timeout: 1000 // optional, determines the frequency of event generation
@@ -94,6 +96,7 @@ function playCard(key, value) {
   index = key;
   playedCard = value;
   socket.emit("playCard", {playedCard: playedCard, index: index});
+  clearTimeout(timer);
 }
 
 function refreshHand() {
@@ -194,19 +197,7 @@ socket.on("turn", function(data) {
     }
   } else {
     if(data.myturn) {
-
-
-
-
-
-
-
-
-
-
-
-
-      
+      timer = setTimeout(function() { navigator.vibrate([50,200,50]) }, 15000);
       $("#progressUpdate").html("<span class='label label-info'>It's your turn.</span>");
       //
       navigator.vibrate([30,150,30]);

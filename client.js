@@ -6,6 +6,7 @@ if (canVibrate && !("vibrate" in navigator))
     navigator.vibrate = navigator.mozVibrate;
 
 var timer;
+hand = [];
 
 var myShakeEvent = new Shake({
     threshold: 15, // optional shake strength threshold
@@ -92,11 +93,8 @@ function cleanPlayerHandOnTable(player) {
   }
 }
 
-function playCard(key, value) {
-  index = key;
-  playedCard = value;
-  socket.emit("playCard", {playedCard: playedCard, index: index});
-  clearTimeout(timer);
+function playCard(value) {
+  socket.emit("playCard", {playedCard: value});
 }
 
 function refreshHand() {
@@ -110,19 +108,28 @@ socket.on("play", function(data) {
   cleanHand();
   $("#hand").text("");
   $('#cards').find('option').remove().end();
-  pixel = 0;
-  $.each(data.hand, function(k, v) {
-    index = k + 1;
-    carteHand("resources/"+v+".png",k ,v);
-    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
-    $(".card"+k).click(function() { playCard(k, v); return false; });
-    if (pixel >= 0) {
-      pixel = (pixel + 40) * -1;
-    } else {
-      if (pixel <= -40)
-        pixel = pixel -1;
-      }*/
+
+  hand = hand.concat(data.hand);
+  console.log(hand);
+  $.each(hand, function(k, v) {
+    carteHand("resources/" + v + ".png", v);
   });
+});
+
+socket.on("cardAccepted", function(data) {
+  clearTimeout(timer);
+
+  var index = hand.indexOf(data.playedCard);
+  if (index !== -1)
+  {
+    hand.splice(index, 1);
+    console.log(hand);
+    cleanHand();
+    $.each(hand, function(k, v) {
+      carteHand("resources/" + v + ".png", v);
+    });
+  }
+
 });
 
 socket.on("updatePackCount", function(data) {
@@ -135,29 +142,9 @@ socket.on("updatePackCount", function(data) {
     $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left'>");
   /*else
     $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left; visibility:hidden'>");*/
-  if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte 
+  if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte
     carteDeck();
 
-});
-
-socket.on("updateCardsOnHand", function(data) {
-  console.log("updateCardsOnHand ========> data.hand");
-  cleanHand();
-  $("#hand").text("");
-  $('#cards').find('option').remove().end();
-  pixel = 0;
-  $.each(data.hand, function(k, v) {
-    index = k + 1;
-    carteHand("resources/"+v+".png",k ,v);
-    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
-    $(".card"+k).click(function() { playCard(k, v); return false; });
-    if (pixel >= 0) {
-      pixel = (pixel + 40) * -1;
-    } else {
-      if (pixel <= -40)
-        pixel = pixel -1;
-      }*/
-  });
 });
 
 socket.on("updateCardsOnTable", function(data){
@@ -189,18 +176,22 @@ socket.on("turn", function(data) {
   if(data.won) {
     $("#playArea").hide();
     if (data.won == "yes") {
-      navigator.vibrate([30,100,30,100]);
+            navigator.vibrate([30,100,30,100]);
       $("#progressUpdate").html("<span class='label label-success'>You won - well done! Game over.</span>");
     } else {
-      navigator.vibrate(500);
+            navigator.vibrate(500);
+
       $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
     }
   } else {
     if(data.myturn) {
-      timer = setTimeout(function() { navigator.vibrate([50,200,50]) }, 15000);
+      timer = setTimeout(function() { 
+        navigator.vibrate([50,200,50]); 
+        alert(); 
+      }, 15000);
+       navigator.vibrate([30,150,30]);
+
       $("#progressUpdate").html("<span class='label label-info'>It's your turn.</span>");
-      //
-      navigator.vibrate([30,150,30]);
       socket.emit("preliminaryRoundCheck", {}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
     } else {
       $("#progressUpdate").html("<span class='label label-default'>It's not your turn.</span>");
@@ -227,14 +218,12 @@ socket.on("playerConnected", function(player) {
 });
 
 socket.on("playerDisconnected", function(data) {
-  console.log(data.playerId+" : "+data.playerName);
-
+  console.log(data.playerId + " : " + data.playerName);
 });
 
 socket.on("updateTableAvatars", function(data) {
 
 });
-
 
 socket.on("tableFull", function(){
   $("#tableFull").fadeIn("slow");
@@ -292,6 +281,7 @@ $("#join").click(function() {
 
   $("#drawCard").click(function() {
     navigator.vibrate(30);
+    clearTimeout(timer);
     socket.emit("drawCard", {});
   });
 
@@ -301,10 +291,10 @@ $("#join").click(function() {
 
   /*penalising card taken button*/
   $("#penalising").click(function() {
-    socket.emit("penalisingTaken", {});
     navigator.vibrate(100);
-    $("#penalising").hide();
 
+    socket.emit("penalisingTaken", {});
+    $("#penalising").hide();
   });
 
 });

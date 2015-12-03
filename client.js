@@ -1,8 +1,41 @@
 var socket = io.connect("http://localhost:8080");
 var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
 
+
 if (canVibrate && !("vibrate" in navigator))
     navigator.vibrate = navigator.mozVibrate;
+
+var myShakeEvent = new Shake({
+    threshold: 15, // optional shake strength threshold
+    timeout: 1000 // optional, determines the frequency of event generation
+});
+
+myShakeEvent.start();
+
+window.addEventListener('shake', shakeEventDidOccur, false);
+
+//function to call when shake occurs
+function shakeEventDidOccur () {
+  shuffle();
+  //put your own code here etc.
+  alert('shake!');
+}
+
+function shuffle() {
+  cleanHand();
+  /*hand.sort(function(a, b) {
+    return parseInt(a) - parseInt(b);
+  });*/
+  var i = hand.length, j, tempi, tempj;
+  if (i === 0) return;
+  while (--i) {
+     j = Math.floor(Math.random() * (i + 1));
+     tempi = hand[i]; tempj = hand[j]; hand[i] = tempj; hand[j] = tempi;
+   }
+  $.each(hand, function(k, v) {
+    carteHand("resources/" + v + ".png", v);
+  });
+}
 
 //var socket = io.connect("http://ec2-54-229-63-210.eu-west-1.compute.amazonaws.com:8080");
 socket.on("logging", function(data) {
@@ -61,6 +94,13 @@ function playCard(key, value) {
   index = key;
   playedCard = value;
   socket.emit("playCard", {playedCard: playedCard, index: index});
+}
+
+function refreshHand() {
+  cleanHand();
+  $.each(hand, function(k, v) {
+    carteHand("resources/" + v + ".png", v);
+  });
 }
 
 socket.on("play", function(data) {
@@ -262,6 +302,10 @@ $("#join").click(function() {
   $("#drawCard").click(function() {
     navigator.vibrate(30);
     socket.emit("drawCard", {});
+  });
+
+  $("#sortHand").click(function() {
+    shuffle();
   });
 
   /*penalising card taken button*/

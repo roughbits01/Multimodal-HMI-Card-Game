@@ -29,11 +29,13 @@
 
 
     <!-- Scripts for hammer -->
-    <script src="bower_components/hammerjs/hammer.min.js"></script>
+    <script src="bower_components/hammerjs/hammer.js-2.0.4/hammer.min.js"></script>
     <script src="hammer/hammerFunctionsHand.js"></script>
 
     <!-- jHammer script for cards of table view in player's hands-->
     <script src="hammer/hammerFunctionsTable.js"></script>
+
+    <script src="bower_components/shake.js/shake.js"></script>
 
 
 
@@ -42,7 +44,7 @@
 
   </head>
 
-  
+
   <body background="resources/tableBackground.jpg">
 
     <div class="outerDiv" id="playArea">
@@ -53,9 +55,10 @@
       <p id="playOption"></p>
       <button id="drawCard" class="btn btn-success">Draw a card</button>
       <button id="penalising" class="btn btn-warning">Penalising cards</button>
+      <button type="button"  id="sortHand">Trier</button>
 
       <li><p id="suiteRequest"><input type="text" id="suiteRequestTxt" placeholder="suite request"><button class="btn btn-success" id="suiteRequestBtn">OK</button></p></li>
-      
+
       <div class="innerDivMiddlePlayer">
 
         <div class="row fullHeight">
@@ -69,7 +72,7 @@
               <div class="playerHandArea" id="cartes">
               </div>
             </div>
-            
+
           </div>
           <div class="col-xs-1 col-md-1 fullHeight">
           </div>
@@ -120,7 +123,7 @@
 
 
    <!-- Scripts for hammer -->
-    <script src="bower_components/hammerjs/hammer.min.js"></script>
+    <script src="bower_components/hammerjs/hammer.js-2.0.4/hammer.min.js"></script>
     <script src="hammer/hammerFunctionsHand.js"></script>
 
     <!-- jHammer script for cards of table view in player's hands-->

@@ -1,4 +1,38 @@
-var socket = io.connect("http://localhost:8080");
+var socket = io.connect("http://10.42.0.1:8080");
+
+hand = [];
+
+var myShakeEvent = new Shake({
+    threshold: 15, // optional shake strength threshold
+    timeout: 1000 // optional, determines the frequency of event generation
+});
+
+myShakeEvent.start();
+
+window.addEventListener('shake', shakeEventDidOccur, false);
+
+//function to call when shake occurs
+function shakeEventDidOccur () {
+  shuffle();
+  //put your own code here etc.
+  alert('shake!');
+}
+
+function shuffle() {
+  cleanHand();
+  /*hand.sort(function(a, b) {
+    return parseInt(a) - parseInt(b);
+  });*/
+  var i = hand.length, j, tempi, tempj;
+  if (i === 0) return;
+  while (--i) {
+     j = Math.floor(Math.random() * (i + 1));
+     tempi = hand[i]; tempj = hand[j]; hand[i] = tempj; hand[j] = tempi;
+   }
+  $.each(hand, function(k, v) {
+    carteHand("resources/" + v + ".png", v);
+  });
+}
 
 var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
 
@@ -55,29 +89,41 @@ function cleanPlayerHandOnTable(player) {
   }
 }
 
-function playCard(key, value) {
-  index = key;
-  playedCard = value;
-  socket.emit("playCard", {playedCard: playedCard, index: index});
+function playCard(value) {
+  socket.emit("playCard", {playedCard: value});
+}
+
+function refreshHand() {
+  cleanHand();
+  $.each(hand, function(k, v) {
+    carteHand("resources/" + v + ".png", v);
+  });
 }
 
 socket.on("play", function(data) {
   cleanHand();
   $("#hand").text("");
   $('#cards').find('option').remove().end();
-  pixel = 0;
-  $.each(data.hand, function(k, v) {
-    index = k + 1;
-    carteHand("resources/"+v+".png",k ,v);
-    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
-    $(".card"+k).click(function() { playCard(k, v); return false; });
-    if (pixel >= 0) {
-      pixel = (pixel + 40) * -1;
-    } else {
-      if (pixel <= -40)
-        pixel = pixel -1;
-      }*/
+
+  hand = hand.concat(data.hand);
+  console.log(hand);
+  $.each(hand, function(k, v) {
+    carteHand("resources/" + v + ".png", v);
   });
+});
+
+socket.on("cardAccepted", function(data) {
+  var index = hand.indexOf(data.playedCard);
+  if (index !== -1)
+  {
+    hand.splice(index, 1);
+    console.log(hand);
+    cleanHand();
+    $.each(hand, function(k, v) {
+      carteHand("resources/" + v + ".png", v);
+    });
+  }
+
 });
 
 socket.on("updatePackCount", function(data) {
@@ -90,29 +136,9 @@ socket.on("updatePackCount", function(data) {
     $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left'>");
   /*else
     $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left; visibility:hidden'>");*/
-  if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte 
+  if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte
     carteDeck();
 
-});
-
-socket.on("updateCardsOnHand", function(data) {
-  console.log("updateCardsOnHand ========> data.hand");
-  cleanHand();
-  $("#hand").text("");
-  $('#cards').find('option').remove().end();
-  pixel = 0;
-  $.each(data.hand, function(k, v) {
-    index = k + 1;
-    carteHand("resources/"+v+".png",k ,v);
-    /*$("#hand").append("<div style='margin-top:2px; margin-left:" + pixel + "px; float: left; z-index:" + index + "''><img class='card"+k+"' width=100 src=resources/"+v+".png /></div>");
-    $(".card"+k).click(function() { playCard(k, v); return false; });
-    if (pixel >= 0) {
-      pixel = (pixel + 40) * -1;
-    } else {
-      if (pixel <= -40)
-        pixel = pixel -1;
-      }*/
-  });
 });
 
 socket.on("updateCardsOnTable", function(data){
@@ -178,14 +204,12 @@ socket.on("playerConnected", function(player) {
 });
 
 socket.on("playerDisconnected", function(data) {
-  console.log(data.playerId+" : "+data.playerName);
-
+  console.log(data.playerId + " : " + data.playerName);
 });
 
 socket.on("updateTableAvatars", function(data) {
 
 });
-
 
 socket.on("tableFull", function(){
   $("#tableFull").fadeIn("slow");
@@ -244,6 +268,10 @@ $("#join").click(function() {
 
   $("#drawCard").click(function() {
     socket.emit("drawCard", {});
+  });
+
+  $("#sortHand").click(function() {
+    shuffle();
   });
 
   /*penalising card taken button*/

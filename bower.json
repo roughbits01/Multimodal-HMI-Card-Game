@@ -6,5 +6,6 @@
         "jquery": "latest",
         "hammerjs": "latest",
         "jquery.vibrate.js": "latest"
+        "shake.js": "latest"
     }
 }

@@ -4,6 +4,7 @@
     "dependencies": {
         "bootstrap": "latest",
         "jquery": "latest",
-        "hammerjs": "latest"
+        "hammerjs": "latest",
+        "shake.js": "latest"
     }
 }

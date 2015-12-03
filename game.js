@@ -63,16 +63,31 @@ Game.prototype.lastCardOnTable = function(table) {
   return utils.last(table);
 }
 
-Game.prototype.isCardPlayable = function(card, lastCardOnTable) {
+Game.prototype.isCardPlayable = function(card, lastCardOnTable, table) {
   if (card) {
-    var cardNumber = parseInt(card);
-    var cardSuite = card[card.length-1];
-    var lastCardNumber = parseInt(lastCardOnTable);
-    var lastCardSuite = lastCardOnTable[lastCardOnTable.length-1];
-    if (cardNumber === lastCardNumber || cardSuite === lastCardSuite) {
-      return true;
-    } else {
-      return false;
+    if(table.suiteRequest){
+      console.log("game.isCardPlayable : OK ! suite request => "+table.suiteRequest);
+      var cardSuite = card[card.length-1];
+      var lastCardNumber = parseInt(lastCardOnTable);
+      var cardSuiteRequest = table.suiteRequest;
+      if (cardNumber === lastCardNumber || cardSuite === cardSuiteRequest) {
+        table.suiteRequest = "";
+        table.actionCard=false
+        return true;
+      } else {
+        return false;
+      }
+    }else{
+      console.log("game.isCardPlayable : NOT OK ! no suite request");
+      var cardNumber = parseInt(card);
+      var cardSuite = card[card.length-1];
+      var lastCardNumber = parseInt(lastCardOnTable);
+      var lastCardSuite = lastCardOnTable[lastCardOnTable.length-1];
+      if (cardNumber === lastCardNumber || cardSuite === lastCardSuite) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }
@@ -146,11 +161,13 @@ Game.prototype.isSuiteInHand = function(suite, hand) {
     var suitesInHand = [];
     for (var i = 0; i < hand.length; i++) {
       suitesInHand.push(hand[i][hand[i].length-1]);
+      console.log("game is suite in hand push : " + hand[i][hand[i].length-1] );
     }
-    console.log("MARWEN" + suitesInHand[i]);
     if (utils.indexOf(suitesInHand, suite) > -1) {
+      console.log("game is suite in hand- response : true");
       return true;
     } else {
+      console.log("game is suite in hand- response : false");
       return false;
     }
   }

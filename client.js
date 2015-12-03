@@ -1,5 +1,10 @@
 var socket = io.connect("http://localhost:8080");
 
+var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
+
+//if (canVibrate && !("vibrate" in navigator))
+//    navigator.vibrate = navigator.mozVibrate;
+
 //var socket = io.connect("http://ec2-54-229-63-210.eu-west-1.compute.amazonaws.com:8080");
 socket.on("logging", function(data) {
   $("#updates").append("<li>"+ data.message + "</li>");
@@ -29,11 +34,12 @@ socket.on("playOption", function(data){
   }
 });
 
-/*socket.on("showRequestCardDialog", function(data) {
+socket.on("showRequestCardDialog", function(data) {
+  console.log("showRequestCardDialog");
   if (data.option == "suite") {
     $("#suiteRequest").show();
   }
-});*/
+});
 
 function cleanHand() {
   var myNode = document.getElementById("cartes");
@@ -144,6 +150,7 @@ socket.on("turn", function(data) {
     }
   } else {
     if(data.myturn) {
+      navigator.vibrate(100);
       $("#progressUpdate").html("<span class='label label-info'>It's your turn.</span>");
       socket.emit("preliminaryRoundCheck", {}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
     } else {
@@ -198,11 +205,12 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
-/*$("#suiteRequestBtn").click(function() {
+$("#suiteRequestBtn").click(function() {
   var request = $("#suiteRequestTxt").val();
+  $("#suiteRequestTxt").val("")
   socket.emit("suiteRequest", {request: request});
   console.log("called with request ==> " + request);
-});*/
+});
 
 $("#create").click(function() {
   var name = $("#createTableName").val();

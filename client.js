@@ -114,6 +114,7 @@ socket.on("play", function(data) {
 
 socket.on("cardAccepted", function(data) {
   var index = hand.indexOf(data.playedCard);
+  console.log(data.playedCard+" : "+index)
   if (index !== -1)
   {
     hand.splice(index, 1);
@@ -234,6 +235,7 @@ $("#suiteRequestBtn").click(function() {
   $("#suiteRequestTxt").val("")
   socket.emit("suiteRequest", {request: request});
   console.log("called with request ==> " + request);
+  $("#suiteRequest").hide();
 });
 
 $("#create").click(function() {

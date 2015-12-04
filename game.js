@@ -67,6 +67,7 @@ Game.prototype.isCardPlayable = function(card, lastCardOnTable, table) {
   if (card) {
     if(table.suiteRequest){
       console.log("game.isCardPlayable : OK ! suite request => "+table.suiteRequest);
+      var cardNumber = parseInt(card);
       var cardSuite = card[card.length-1];
       var lastCardNumber = parseInt(lastCardOnTable);
       var cardSuiteRequest = table.suiteRequest;
@@ -96,7 +97,7 @@ Game.prototype.isPenalisingActionCardPlayable = function(card, lastCardOnTable) 
   if (card) {
     var cardNumber = parseInt(card);
     var lastCardNumber = parseInt(lastCardOnTable);
-    if (cardNumber === 2 && lastCardNumber === 2) {
+    if (cardNumber === lastCardNumber && (lastCardNumber === 2 || lastCardNumber === 1 || lastCardNumber === 13 ) ) {
         return true;
     } else {
       return false;
@@ -123,7 +124,6 @@ Game.prototype.isActionCard = function(card, penalising) {
   penalising = (typeof penalising === "undefined") ? false : penalising;
   if (card && !penalising) {
     var cardNumber = parseInt(card);
-    console.log(cardNumber);
     if (cardNumber in utils.has(["1", "2", "13"])) {
       return true;
     } else {

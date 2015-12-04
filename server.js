@@ -405,10 +405,12 @@ socket.on("preliminaryRoundCheck", function(data) {
           if (table.actionCard) { //if the action card varialbe is already set ...
             if (table.penalisingActionCard) {// penalisingActionCard is true
               if (!table.gameObj.isPenalisingActionCardPlayable(playedCard, last)) {
-                messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
+                //messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
+
                 if(table.suiteRequest){
                   if (!table.gameObj.isCardPlayable(playedCard, last, table)) {
                     console.log("Error1 : can't play that card : "+playedCard);
+                    messaging.sendEventToAPlayer("badCard", {}, io, table.players, player);
                   }else{
                     var option = false;
                     if (parseInt(playedCard) === 2) { //if player plays a 2 we add the right flags
@@ -458,6 +460,8 @@ socket.on("preliminaryRoundCheck", function(data) {
                 }else{
                   console.log("Error : unknown case !");
                 }
+
+
               } else {
                   console.log("Penalising action card is playable");
                   if (parseInt(playedCard) === 2) { //if there's a penalising action card, the player can only play another penalising action card.
@@ -552,6 +556,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             //var requestMade = false;
             if (!table.gameObj.isCardPlayable(playedCard, last, table)) {
               messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
+              messaging.sendEventToAPlayer("badCard", {}, io, table.players, player);
             } else {
               var option = false;
               if (parseInt(playedCard) === 2) { //if player plays a 2 we add the right flags

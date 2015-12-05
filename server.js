@@ -456,6 +456,17 @@ socket.on("preliminaryRoundCheck", function(data) {
                       messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
                       messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
                       messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+
+                    }else{ // si pas option activée(suite request), alors bloquer le jeu en attendant la request
+
+                      //BLOCK ROUND
+                      console.log("==========================> BLOCK ROUND");
+                      table.progressRound(); //end of turn
+                      //notify frontend
+                      messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
+                      //messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+                      messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+
                     }
                     if (!winner) {
                       socket.emit("cardAccepted", {playedCard: playedCard});
@@ -470,6 +481,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                   }
                 }else{
                   console.log("Error : unknown case !");
+                  messaging.sendEventToAPlayer("badCard", {}, io, table.players, player);
                 }
 
 
@@ -602,6 +614,17 @@ socket.on("preliminaryRoundCheck", function(data) {
                 messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
                 messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
                 messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+
+              }else{ // si pas option activée(suite request), alors bloquer le jeu en attendant la request
+
+                //BLOCK ROUND
+                console.log("==========================> BLOCK ROUND");
+                table.progressRound(); //end of turn
+                //notify frontend
+                messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
+                //messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+                messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+
               }
 
 
@@ -641,6 +664,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       console.log("==========================> PR6");
       table.progressRound(player); //end of turn
       socket.emit("turn", {myturn: false}); //????
+      messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
       messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
       messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
     }

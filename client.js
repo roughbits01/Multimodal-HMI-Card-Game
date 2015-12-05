@@ -47,30 +47,94 @@ myShakeEvent.start();
 
 window.addEventListener('shake', shakeEventDidOccur, false);
 
+touched = false;
+
+window.addEventListener('touchstart', function(e){
+  touched = true;
+  console.log("touchstart");
+  e.preventDefault()
+}, false)
+
+window.addEventListener('touchmove', function(e){
+  e.preventDefault()
+}, false)
+
+window.addEventListener('touchend', function(e){
+  console.log("touchend");
+  touched = false;
+  e.preventDefault()
+}, false)
+
 //function to call when shake occurs
 function shakeEventDidOccur () {
-  shuffle();
-  //put your own code here etc.
-  alert('shake!');
+  if (touched) sortHandByValue();
+  else sortHandBySuit();
 }
 
-function shuffle() {
-  cleanHand();
-  /*hand.sort(function(a, b) {
-    return parseInt(a) - parseInt(b);
-  });*/
+function shuffleHand() {
   var i = hand.length, j, tempi, tempj;
   if (i === 0) return;
   while (--i) {
     j = Math.floor(Math.random() * (i + 1));
     tempi = hand[i]; tempj = hand[j]; hand[i] = tempj; hand[j] = tempi;
   }
-  var audio = new Audio('resources/cardFan1.wav');
-  audio.play();
+  refreshHand();
+}
+
+function sortHandBySuit() {
+  hand.sort(function(a, b) {
+    var x = parseInt(a);
+    var y = parseInt(b);
+
+    if (x < y) {
+      return -1;
+    } else if (x > y) {
+      return 1;
+    } else {
+      var aSuit = a.substr(a.length - 1);
+      var bSuit = b.substr(b.length - 1);
+      if (aSuit < bSuit) {
+        return -1;
+      } else if (aSuit > bSuit) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  });
+  refreshHand();
+}
+
+function sortHandByValue() {
+  hand.sort(function(a, b) {
+    var aSuit = a.substr(a.length - 1);
+    var bSuit = b.substr(b.length - 1);
+    if (aSuit < bSuit) {
+      return -1;
+    } else if (aSuit > bSuit) {
+      return 1;
+    } else {
+      var x = parseInt(a);
+      var y = parseInt(b);
+      if (x < y) {
+        return -1;
+      } else if (x > y) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  });
+  refreshHand();
+}
+
+function refreshHand() {
+  cleanHand();
   $.each(hand, function(k, v) {
     carteHand("resources/" + v + ".png", v);
   });
-
+  var audio = new Audio('resources/cardFan1.wav');
+  audio.play();
 }
 
 var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
@@ -87,12 +151,12 @@ socket.on("logging", function(data) {
 
 socket.on("s_pause", function (data) {
 
-  alert("joueur en  pause");
+   $("#updates").append("<li>joueur en pause </li>");
     
     
 });
 socket.on("s_reprise", function (data) {
-// alert("joueur en  reprise");
+ $("#updates").append("<li>joueur reprise </li>");
     
     
 });
@@ -147,13 +211,6 @@ function cleanPlayerHandOnTable(player) {
 
 function playCard(value) {
   socket.emit("playCard", {playedCard: value});
-}
-
-function refreshHand() {
-  cleanHand();
-  $.each(hand, function(k, v) {
-    carteHand("resources/" + v + ".png", v);
-  });
 }
 
 socket.on("play", function(data) {
@@ -343,7 +400,8 @@ $("#join").click(function() {
   });
 
   $("#sortHand").click(function() {
-    shuffle();
+    //sortHandBySuit();
+    sortHandByValue();
   });
 
   /*penalising card taken button*/

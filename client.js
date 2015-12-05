@@ -18,17 +18,17 @@ touched = false;
 window.addEventListener('touchstart', function(e){
   touched = true;
   console.log("touchstart");
-  e.preventDefault()
+  //e.preventDefault()
 }, false)
 
 window.addEventListener('touchmove', function(e){
-  e.preventDefault()
+  //e.preventDefault()
 }, false)
 
 window.addEventListener('touchend', function(e){
   console.log("touchend");
   touched = false;
-  e.preventDefault()
+  //e.preventDefault()
 }, false)
 
 //function to call when shake occurs

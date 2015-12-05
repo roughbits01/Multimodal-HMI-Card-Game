@@ -52,6 +52,17 @@
     <div class="row fullHeight">
       <div class="col-xs-9 col-md-9 fullHeight">
 
+        <div id="joinForm">
+          <form class="form-inline">
+            <label for="joinPlayerName">Your name:</label>
+            <input type="text" class="input" id="joinPlayerName" placeholder="Name">
+            <label for="joinTableKey">Key for the game:</label>
+            <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
+            <button type="submit" class="btn btn-success" id="join">Join Table</button>
+            <label id="error"></label>
+          </form>
+        </div>
+
         <div class="outerDiv" id="playArea">
 
           <div id="table">
@@ -85,17 +96,6 @@
 
           </div>
 
-        </div>
-
-        <div id="joinForm">
-          <form class="form-inline">
-            <label for="joinPlayerName">Your name:</label>
-            <input type="text" class="input" id="joinPlayerName" placeholder="Name">
-            <label for="joinTableKey">Key for the game:</label>
-            <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
-            <button type="submit" class="btn btn-success" id="join">Join Table</button>
-            <label id="error"></label>
-          </form>
         </div>
 
       </div>

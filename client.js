@@ -166,6 +166,12 @@ function playCard(value) {
   socket.emit("playCard", {playedCard: value});
 }
 
+function sendSuiteRequest(suite) {
+  socket.emit("suiteRequest", {request: suite});
+  console.log("called with request ==> " + suite);
+  $("#suiteRequest").hide();
+};
+
 socket.on("play", function(data) {
   cleanHand();
   $("#hand").text("");
@@ -307,14 +313,6 @@ $(document).ready(function() {
   $("form").submit(function(event){
     event.preventDefault();
   });
-
-$("#suiteRequestBtn").click(function() {
-  var request = $("#suiteRequestTxt").val();
-  $("#suiteRequestTxt").val("")
-  socket.emit("suiteRequest", {request: request});
-  console.log("called with request ==> " + request);
-  $("#suiteRequest").hide();
-});
 
 $("#create").click(function() {
   var name = $("#createTableName").val();

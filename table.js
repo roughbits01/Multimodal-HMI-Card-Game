@@ -27,6 +27,8 @@ function Table(tableID) {
 	this.numberRequest = "";
 
 	this.gameObj = null;
+
+	this.firstRound = true;
 };
 
 Table.prototype.progressRound = function(player) {
@@ -39,7 +41,7 @@ Table.prototype.progressRound = function(player) {
     }
   }else{ // if not; we are in suite request case, we need to block the round until a suite request is made
   	for(var i = 0; i < this.players.length; i++) {
-  	  this.players[i].turnFinished = false;
+  	  this.players[i].turnFinished = true;
   	}
   }
 }

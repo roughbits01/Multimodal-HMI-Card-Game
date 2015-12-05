@@ -49,6 +49,17 @@ io.sockets.on('connection', function (socket) {
     console.log(name + " has connected.");
   });
 
+socket.on('pause',function(data) {
+ 
+    io.sockets.emit("s_pause", {});
+     });
+
+socket.on('reprise',function(data) {
+ 
+    io.sockets.emit("s_reprise", {});
+     });
+
+
   socket.on('createTable', function(data) {
 
     var game = new Game();

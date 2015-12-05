@@ -1,5 +1,39 @@
 var socket = io.connect("http://localhost:8080");
 
+window.addEventListener('deviceorientation', function(evenement) {
+    
+    if (Math.abs(evenement.beta) > 165 ){
+        
+       setTimeout(socket.emit("pause", {}), 5000); 
+       // 
+        //alert(Math.round( evenement.gamma ));
+        
+        
+        
+        }else if (Math.abs(evenement.beta) < 65 ) {
+           
+
+           	//alert('reprise');
+            socket.emit("reprise", {});
+        }
+    
+    /*document.getElementById("alpha").innerHTML = Math.round( evenement.alpha );
+
+    alert(Math.round( evenement.alpha ));*/
+    },false);
+
+
+function fonctionAExecuter()
+{
+
+	//alert('pause');
+	socket.emit("pause", {});
+
+}
+
+
+
+
 hand = [];
 
 var timer;
@@ -114,6 +148,19 @@ socket.on("logging", function(data) {
   var log = document.getElementById('footer');
   log.scrollTop = log.scrollHeight;
 });
+
+socket.on("s_pause", function (data) {
+
+   $("#updates").append("<li>joueur en pause </li>");
+    
+    
+});
+socket.on("s_reprise", function (data) {
+ $("#updates").append("<li>joueur reprise </li>");
+    
+    
+});
+
 
 socket.on("timer", function (data) {
   $('#counter').html("<span class='label label-info'>" + data.countdown + "</span>");

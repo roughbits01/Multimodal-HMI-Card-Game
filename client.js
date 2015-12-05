@@ -1,5 +1,45 @@
 var socket = io.connect("http://localhost:8080");
 
+
+// Put event listeners into place
+window.addEventListener("DOMContentLoaded", function() {
+	// Grab elements, create settings, etc.
+	var canvas = document.getElementById("canvas"),
+		context = canvas.getContext("2d"),
+		video = document.getElementById("video"),
+		videoObj = { "video": true },
+		errBack = function(error) {
+			console.log("Video capture error: ", error.code);
+		};
+
+	// Put video listeners into place
+	if(navigator.getUserMedia) { // Standard
+		navigator.getUserMedia(videoObj, function(stream) {
+			video.src = stream;
+			video.play();
+		}, errBack);
+	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+		navigator.webkitGetUserMedia(videoObj, function(stream){
+			video.src = window.webkitURL.createObjectURL(stream);
+			video.play();
+		}, errBack);
+	}
+	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
+		navigator.mozGetUserMedia(videoObj, function(stream){
+			video.src = window.URL.createObjectURL(stream);
+			video.play();
+		}, errBack);
+	}
+
+  // Trigger photo take
+  document.getElementById("snap").addEventListener("click", function() {
+	  context.drawImage(video, 0, 0, 160, 120);
+    document.getElementById('joinTablePhoto').value = canvas.toDataURL();
+  });
+
+}, false);
+
+
 hand = [];
 
 var timer;
@@ -18,17 +58,17 @@ touched = false;
 window.addEventListener('touchstart', function(e){
   touched = true;
   console.log("touchstart");
-  e.preventDefault()
+  //e.preventDefault()
 }, false)
 
 window.addEventListener('touchmove', function(e){
-  e.preventDefault()
+  //e.preventDefault()
 }, false)
 
 window.addEventListener('touchend', function(e){
   console.log("touchend");
   touched = false;
-  e.preventDefault()
+  //e.preventDefault()
 }, false)
 
 //function to call when shake occurs
@@ -99,8 +139,11 @@ function refreshHand() {
   $.each(hand, function(k, v) {
     carteHand("resources/" + v + ".png", v);
   });
-  var audio = new Audio('resources/cardFan1.wav');
-  audio.play();
+
+  if (hand.length > 3) {
+    var audio = new Audio('resources/cardFan1.wav');
+    audio.play();
+  }
 }
 
 var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
@@ -247,6 +290,8 @@ socket.on("turn", function(data) {
       audio.play();
     } else {
       navigator.vibrate(500);
+      var audio = new Audio('resources/boo.wav');
+      audio.play();
       $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
     }
   } else {
@@ -275,7 +320,6 @@ socket.on("cardInHandCount", function(data) {
   }
   $("#opponentCardCount").html("Your opponent has <span class='badge " + spanClass + "''>"+ data.cardsInHand + "</span> card"+plural+" in hand.");
 });
-
 
 socket.on("playerConnected", function(player) {
   console.log(player.id+" : "+player.name);
@@ -329,7 +373,7 @@ $("#join").click(function() {
     var key = $("#joinTableKey").val();
 
     if (name.length > 0 && key.length == 4) {
-      socket.emit("connectToServer", {name:name});
+      socket.emit("connectToServer", {name:name, avatar : document.getElementById('joinTablePhoto').value });
       socket.emit('connectToTable', {key:key});
       $("#joinForm").hide();
       $("#createForm").hide();

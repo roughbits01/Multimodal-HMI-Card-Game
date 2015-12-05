@@ -42,11 +42,11 @@ io.sockets.on('connection', function (socket) {
   */
   socket.on('connectToServer',function(data) {
     var player = new Player(socket.id);
-    var name = data.name; //get the player's name
-    player.setName(name);
+    player.setName(data.name);
+    player.setAvatar(data.avatar);
     room.addPlayer(player); //add to room -- all players go to a room first
-    io.sockets.emit("logging", {message: name + " has connected."});
-    console.log(name + " has connected.");
+    io.sockets.emit("logging", {message: data.name + " has connected."});
+    console.log(data.name + " has connected.");
   });
 
   socket.on('createTable', function(data) {
@@ -105,7 +105,7 @@ io.sockets.on('connection', function (socket) {
       player.status = "intable";
 
       io.sockets.emit("logging", {message: player.name + " has connected to table: " + table.name + "."});
-      messaging.sendEventToABoard("playerConnected", {name: player.name, id: player.id, }, io, table.board);
+      messaging.sendEventToABoard("playerConnected", {name: player.name, id: player.id, avatar: player.avatar }, io, table.board);
       if (table.players.length < table.playerLimit) {
         messaging.sendEventToAllPlayers("logging", {message: "There are " + table.players.length + " players at this table. The table requires " + table.playerLimit + " players to join." }, io, table.players);
         //io.sockets.emit("waiting", {message: "Waiting for "+ table.getRemainingSpots() +" other player(s) to join."});
@@ -212,7 +212,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           table.forcedDraw = 0; //reset forced Draw variable
           table.actionCard = false; //set the action card to false
           table.penalisingActionCard = false; //reset the penalising action card variable
-          
+
           /*PROGRESS ROUND*/
           console.log("==========================> PR7");
           table.progressRound(player); //end of turn
@@ -257,12 +257,12 @@ socket.on("preliminaryRoundCheck", function(data) {
               socket.emit("turn", {myturn: false}); //????
               messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
               messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
-              
+
             }
           }
         }
       }
-        
+
       /*PROGRESS ROUND*/
       /*table.progressRound(player); //end of turn
       socket.emit("turn", {myturn: false}); //????
@@ -625,7 +625,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       table.requestActionCard = true;
       table.suiteRequest = data.request;
 
-      
+
       //PROGRESS ROUND
       console.log("==========================> PR6");
       table.progressRound(player); //end of turn

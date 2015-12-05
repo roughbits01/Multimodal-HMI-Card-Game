@@ -73,7 +73,12 @@
           <button id="penalising" class="btn btn-warning">Penalising cards</button>
           <button type="button"  id="sortHand">Trier</button>
 
-          <li><p id="suiteRequest"><input type="text" id="suiteRequestTxt" placeholder="suite request"><button class="btn btn-success" id="suiteRequestBtn">OK</button></p></li>
+          <div id="suiteRequest">
+              <img width='24%' onclick="sendSuiteRequest('H')" src='resources/H.png'>
+              <img width='24%' onclick="sendSuiteRequest('C')" src='resources/C.png'>
+              <img width='24%' onclick="sendSuiteRequest('D')" src='resources/D.png'>
+              <img width='24%' onclick="sendSuiteRequest('S')" src='resources/S.png'>
+          </div>
 
           <div class="innerDivMiddlePlayer">
 

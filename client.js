@@ -13,10 +13,28 @@ myShakeEvent.start();
 
 window.addEventListener('shake', shakeEventDidOccur, false);
 
+touched = false;
+
+window.addEventListener('touchstart', function(e){
+  touched = true;
+  console.log("touchstart");
+  e.preventDefault()
+}, false)
+
+window.addEventListener('touchmove', function(e){
+  e.preventDefault()
+}, false)
+
+window.addEventListener('touchend', function(e){
+  console.log("touchend");
+  touched = false;
+  e.preventDefault()
+}, false)
+
 //function to call when shake occurs
 function shakeEventDidOccur () {
-  shuffle();
-  //put your own code here etc.
+  if (touched) sortHandByValue();
+  else sortHandBySuit();
 }
 
 function shuffleHand() {
@@ -41,9 +59,9 @@ function sortHandBySuit() {
     } else {
       var aSuit = a.substr(a.length - 1);
       var bSuit = b.substr(b.length - 1);
-      if (aSuit < aSuit) {
+      if (aSuit < bSuit) {
         return -1;
-      } else if (aSuit > aSuit) {
+      } else if (aSuit > bSuit) {
         return 1;
       } else {
         return 0;
@@ -57,9 +75,9 @@ function sortHandByValue() {
   hand.sort(function(a, b) {
     var aSuit = a.substr(a.length - 1);
     var bSuit = b.substr(b.length - 1);
-    if (aSuit < aSuit) {
+    if (aSuit < bSuit) {
       return -1;
-    } else if (aSuit > aSuit) {
+    } else if (aSuit > bSuit) {
       return 1;
     } else {
       var x = parseInt(a);

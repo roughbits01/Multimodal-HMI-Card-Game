@@ -1,6 +1,6 @@
 var socket = io.connect("http://localhost:8080");
 
-var localStream;
+var localStream = null;
 
 // Put event listeners into place
 window.addEventListener("DOMContentLoaded", function() {
@@ -370,8 +370,10 @@ $("#join").click(function() {
     var key = $("#joinTableKey").val();
 
     if (key.length == 4) {
-			localStream.stop();
-			localStream = null;
+			if (localhost != null) {
+				localStream.stop();
+				localStream = null;
+			}
       socket.emit("connectToServer", {name:name, avatar : document.getElementById('joinTablePhoto').value });
       socket.emit('connectToTable', {key:key});
       $("#joinForm").hide();

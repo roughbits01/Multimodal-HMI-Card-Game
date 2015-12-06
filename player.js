@@ -1,6 +1,7 @@
 function Player(playerID) {
 	this.id = playerID;
 	this.name = "";
+	this.avatar = "";
 	this.tableID = "";
 	this.hand = [];
 	this.status = "";
@@ -13,6 +14,14 @@ Player.prototype.setName = function(name) {
 
 Player.prototype.getName = function() {
 	return this.name;
+};
+
+Player.prototype.setAvatar = function(avatar) {
+	this.avatar = avatar;
+};
+
+Player.prototype.getAvatar = function() {
+	return this.avatar;
 };
 
 Player.prototype.setTableID = function(tableID) {

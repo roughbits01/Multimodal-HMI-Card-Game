@@ -1,5 +1,44 @@
 var socket = io.connect("http://localhost:8080");
+var Pause_sent = false ;
 
+window.addEventListener('deviceorientation', function(evenement) {
+    
+    
+    var x ;
+    var y ;
+    
+    
+    
+    if ((evenement.beta > 165 ) || (evenement.beta < -165 &&  evenement.gamma < 40 )){
+        
+        if ( Pause_sent==false) {
+            
+             clearTimeout(y); 
+            
+           x = setTimeout(socket.emit("pause", {}), 5000); 
+       
+            Pause_sent = true ; 
+                   
+          
+        }
+      
+        
+        
+        }else if ((evenement.beta < 95 ) || (evenement.beta > -115 &&  evenement.gamma > 80 )) {
+           
+            if ( Pause_sent==true) {
+                
+                clearTimeout(x);
+            //alert('reprise');
+            y = setTimeout(socket.emit("reprise", {}), 5000);
+            Pause_sent = false ;
+                
+                        
+            }
+        }
+    
+  
+    },false);
 hand = [];
 
 var timer;
@@ -30,6 +69,28 @@ window.addEventListener('touchend', function(e){
   touched = false;
   //e.preventDefault()
 }, false)
+
+/*window.addEventListener('deviceorientation', function(e) {
+  if (Math.abs(e.beta) > 165 ){// The smartphone is facedown (180)
+      setTimeout(socket.emit("pause", {}), 5000);
+      pauseSent = true;
+    }
+  } else if (Math.abs(e.beta) < 65 ) {
+    pauseSent = false;
+
+    //alert('reprise');
+    setTimeout(socket.emit("reprise", {}), 5000);
+  }
+},false);*/
+
+socket.on("pause", function (data) {
+  $("#updates").append("<li>joueur en pause </li>");
+});
+
+socket.on("reprise", function (data) {
+  $("#updates").append("<li>joueur reprise </li>");
+});
+
 
 //function to call when shake occurs
 function shakeEventDidOccur () {
@@ -99,8 +160,11 @@ function refreshHand() {
   $.each(hand, function(k, v) {
     carteHand("resources/" + v + ".png", v);
   });
-  var audio = new Audio('resources/cardFan1.wav');
-  audio.play();
+
+  if (hand.length > 3) {
+    var audio = new Audio('resources/cardFan1.wav');
+    audio.play();
+  }
 }
 
 var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
@@ -128,6 +192,10 @@ socket.on("areYouReady", function (data) {
 });
 
 socket.on("badCard", function (data) {
+  navigator.vibrate(200);
+});
+
+socket.on("notYouTurn", function (data) {
   navigator.vibrate(200);
 });
 
@@ -179,12 +247,7 @@ socket.on("play", function(data) {
 
   hand = hand.concat(data.hand);
   console.log(hand);
-  var audio = new Audio('resources/cardSlide7.wav');
-  audio.play();
-
-  $.each(hand, function(k, v) {
-    carteHand("resources/" + v + ".png", v);
-  });
+	refreshHand();
 });
 
 socket.on("cardAccepted", function(data) {
@@ -253,6 +316,8 @@ socket.on("turn", function(data) {
       audio.play();
     } else {
       navigator.vibrate(500);
+      var audio = new Audio('resources/boo.wav');
+      audio.play();
       $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
     }
   } else {
@@ -281,7 +346,6 @@ socket.on("cardInHandCount", function(data) {
   }
   $("#opponentCardCount").html("Your opponent has <span class='badge " + spanClass + "''>"+ data.cardsInHand + "</span> card"+plural+" in hand.");
 });
-
 
 socket.on("playerConnected", function(player) {
   console.log(player.id+" : "+player.name);
@@ -326,21 +390,44 @@ $("#join").click(function() {
     var name = $("#joinPlayerName").val();
     var key = $("#joinTableKey").val();
 
-    if (name.length > 0 && key.length == 4) {
-      socket.emit("connectToServer", {name:name});
-      socket.emit('connectToTable', {key:key});
-      $("#joinForm").hide();
-      $("#createForm").hide();
-      $("#tableFull").hide();
-      $("#waiting").show();
-      socket.on("ready", function(data){
-        $("#waiting").hide();
-        $("#playArea").show();
-        $("#progressUpdate").show();
-      });
+    if (key.length == 4) {
+			var file = document.querySelector('input[type=file]').files[0];
+			console.log(file);
+			if (file) {
+				var reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onloadend = function () {
+					console.log("PHOTO:"  + reader.result);
+					socket.emit("connectToServer", {name:name, avatar : reader.result });
+					socket.emit('connectToTable', {key:key});
+					$("#joinForm").hide();
+					$("#takePhoto").hide();
+					$("#createForm").hide();
+					$("#tableFull").hide();
+					$("#waiting").show();
+					socket.on("ready", function(data){
+						$("#waiting").hide();
+						$("#playArea").show();
+						$("#progressUpdate").show();
+					});
+				}
+			} else {
+				socket.emit("connectToServer", {name:name, avatar : "" });
+				socket.emit('connectToTable', {key:key});
+				$("#joinForm").hide();
+				$("#takePhoto").hide();
+				$("#createForm").hide();
+				$("#tableFull").hide();
+				$("#waiting").show();
+				socket.on("ready", function(data){
+					$("#waiting").hide();
+					$("#playArea").show();
+					$("#progressUpdate").show();
+				});
+			}
     } else {
       $("#error").show();
-      $("#error").html('<p class="text-error">Please enter a name.</p>');
+      $("#error").html('<p class="text-error">Please enter a valid key.</p>');
     }
   });
 
@@ -351,7 +438,6 @@ $("#join").click(function() {
   });
 
   $("#sortHand").click(function() {
-    //sortHandBySuit();
     sortHandByValue();
   });
 

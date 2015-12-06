@@ -13,8 +13,8 @@ function addAvatar(player) {
                                 "<div class='innerDivMiddleTableAvatar'>"+
                                   "<div class='row fullHeight'>"+
                                     "<div class='col-xs-3 col-md-3 fullHeight label label-info'>"+
-                                      "<img height='80%' width='100%' src='resources/avatar.jpg'>"+
-                                      "</br>"+player.name+
+                                      "<img id='avatar"+player.id+"' height='80%' width='100%' src=''>"+
+                                      "</br><h5>"+player.name+"</h5>" +
                                     "</div>"+
                                     "<div class='col-xs-9 col-md-9 fullHeight'>"+
                                       "<div class='fullHeight' id='cardsOfPlayer"+player.id+"'>"+
@@ -35,6 +35,10 @@ function addAvatar(player) {
                             "<div class='col-xs-1 col-md-1 fullHeight'>"+
                             "</div>"+
                           "</div>");
-
-
+    if(player.avatar == "") {
+      $('#avatar'+player.id).attr("src", "resources/avatar.png");
+    }
+    else {
+      $('#avatar'+player.id).attr("src", player.avatar);
+    }
 }

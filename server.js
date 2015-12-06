@@ -175,6 +175,8 @@ io.sockets.on('connection', function (socket) {
       //sends the cards to the table.
       //messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: table.cardsOnTable}, io, table.players);
       messaging.sendEventToABoard('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: table.cardsOnTable}, io, table.board);
+      messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: table.cardsOnTable}, io, table.players);
+
       io.sockets.emit('updatePackCount', {packCount: table.pack.length});
     }
   });
@@ -208,7 +210,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           console.log("HAND ==> " + player.hand);
           socket.emit("playOption", { value: false }); //OPTION - TRUE
           var cards = table.gameObj.drawCard(table.pack, table.forcedDraw, player.hand, 0);
-          messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+          messaging.sendEventToAPlayer("play", {hand: cards}, io, table.players, player); //send the card in hands to player
           //socket.emit("play", { hand: cards }); //send the card in hands to player
           io.sockets.emit('updatePackCount', {packCount: table.pack.length});
           table.forcedDraw = 0; //reset forced Draw variable
@@ -250,7 +252,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             } else { //no requested suite nor contra-action card in hand, force draw
               console.log("Forced draw");
               var cards = table.gameObj.drawCard(table.pack, 1, player.hand, 0);
-              messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+              messaging.sendEventToAPlayer("play", {hand: cards}, io, table.players, player); //send the card in hands to player
               //socket.emit("play", { hand: cards }); //send the card in hands to player
               //table.gameObj.drawCard(table.pack, 1, player.hand, 0);
               //socket.emit("play", { hand: player.hand }); //send the card in hands to player
@@ -311,7 +313,7 @@ socket.on("preliminaryRoundCheck", function(data) {
     var table = room.getTableById(player.tableID);
     if (table.actionCard) {
       var cards = table.gameObj.drawCard(table.pack, table.forcedDraw, player.hand, 0);
-      messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+      messaging.sendEventToAPlayer("play", {hand: cards}, io, table.players, player); //send the card in hands to player
       //socket.emit("play", { hand: cards }); //send the card in hands to player
       io.sockets.emit('updatePackCount', {packCount: table.pack.length});
       table.forcedDraw = 0; //reset forced Draw variable
@@ -357,10 +359,10 @@ socket.on("preliminaryRoundCheck", function(data) {
     }else{ // sinon, "drawCard" est emis par un joueur directement sur sa tablette et donc on l'identifie par la socket Id
       console.log("drawcard: no playerId in data");
       player = room.getPlayer(socket.id);
-      table = room.getTableById(player.tableID);
+      if(player)table = room.getTableById(player.tableID);
     }
 
-
+    if(player){ // si c'est bien un player qui envoie la demande, alors on lui donne une carte sinon, c'est une table !!!
       if (!player.turnFinished) {
         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>"+table.suiteRequest);
         if(!table.suiteRequest){ // pas de suite request sur la table
@@ -419,6 +421,8 @@ socket.on("preliminaryRoundCheck", function(data) {
       } else { // player.turnFinished
         messaging.sendEventToAPlayer("logging", {message: "It's your opponent's turn."}, io, table.players, player);
       }
+
+    }
 
   });
 
@@ -487,6 +491,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                     table.gameObj.playCard(index, player.hand, table.cardsOnTable);
                     //messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
                     messaging.sendEventToABoard('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.board);
+                    messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
                     messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
                     io.sockets.emit("logging", {message: player.name + " plays a card: " + playedCard});
 
@@ -540,6 +545,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                 table.gameObj.playCard(index, player.hand, table.cardsOnTable);
                 //messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
                 messaging.sendEventToABoard('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.board);
+                messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
                 messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
                 io.sockets.emit("logging", {message: player.name + " plays a card: " + playedCard});
 
@@ -585,6 +591,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                   table.gameObj.playCard(index, player.hand, table.cardsOnTable);
                   //messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
                   messaging.sendEventToABoard('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.board);
+                  messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
                   messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
                   io.sockets.emit("logging", {message: player.name + " plays a card: " + playedCard});
 
@@ -646,6 +653,7 @@ socket.on("preliminaryRoundCheck", function(data) {
               table.gameObj.playCard(index, player.hand, table.cardsOnTable);
               //messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
               messaging.sendEventToABoard('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.board);
+              messaging.sendEventToAllPlayers('updateCardsOnTable', {cardsOnTable: table.cardsOnTable, lastCardOnTable: playedCard}, io, table.players);
               messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
               io.sockets.emit("logging", {message: player.name + " plays a card: " + playedCard});
 

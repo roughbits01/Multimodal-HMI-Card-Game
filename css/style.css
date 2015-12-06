@@ -239,7 +239,85 @@ border:1px solid #444444;
 display: block;
 }
 
-a.active.triggerLoggs {
+a.active.triggerLoggs{
+background:#222222;
+}
+
+
+
+/***************************************** Styles for collapsables lateral divs ***************************************************/
+
+
+.tableInHand {
+position: absolute;
+top: 0;
+left: 0;
+display: none;
+background: #000000;
+border:1px solid #111111;
+-moz-border-radius-topright: 20px;
+-webkit-border-top-right-radius: 20px;
+-moz-border-radius-bottomright: 20px;
+-webkit-border-bottom-right-radius: 20px;
+width: 330px;
+height: 100%;
+padding: 30px 130px 30px 30px;
+filter: alpha(opacity=85);
+opacity: .85;
+z-index:1;
+}
+
+.tableInHand p{
+margin: 0 0 15px 0;
+padding: 0;
+color: #cccccc;
+}
+
+
+a.triggerTableInHand{
+position: absolute;
+text-decoration: none;
+top: 80px; left: 0;
+font-size: 16px;
+letter-spacing:-1px;
+font-family: verdana, helvetica, arial, sans-serif;
+color:#fff;
+padding: 20px 15px 20px 40px;
+font-weight: 700;
+background:#333333;
+border:1px solid #444444;
+-moz-border-radius-topleft: 20px;
+-webkit-border-top-right-radius: 20px;
+-moz-border-radius-bottomright: 20px;
+-webkit-border-bottom-right-radius: 20px;
+-moz-border-radius-bottomleft: 0px;
+-webkit-border-bottom-left-radius: 0px;
+display: block;
+z-index:1;
+}
+
+a.triggerTableInHand:hover{
+position: absolute;
+text-decoration: none;
+top: 80px; left: 0;
+font-size: 16px;
+letter-spacing:-1px;
+font-family: verdana, helvetica, arial, sans-serif;
+color:#fff;
+padding: 20px 20px 20px 40px;
+font-weight: 700;
+background:#222222;
+border:1px solid #444444;
+-moz-border-radius-topright: 20px;
+-webkit-border-top-right-radius: 20px;
+-moz-border-radius-bottomright: 20px;
+-webkit-border-bottom-right-radius: 20px;
+-moz-border-radius-bottomleft: 0px;
+-webkit-border-bottom-left-radius: 0px;
+display: block;
+}
+
+a.active.triggerTableInHand {
 background:#222222;
 }
 

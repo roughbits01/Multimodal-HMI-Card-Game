@@ -373,3 +373,14 @@ $(document).ready(function(){
     return false;
   });
 });
+
+
+// Fonction d'activation des divs laterales masquées
+$(document).ready(function(){
+  $(".triggerTableInHand").on('touchstart touchend click', function(){
+    console.log("heyyyy");
+    $(".tableInHand").toggle("fast");
+    $(this).toggleClass("active");
+    return false;
+  });
+});

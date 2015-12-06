@@ -161,6 +161,11 @@
             // Demander au server de donner une carte au joueur visé identifié par son Id
             socket.emit("drawCard", {playerId: $('#boxPlayer'+playerBoxIndex).attr("playerId")});
             
+        }else if(playerBoxIndex==4){ // swipe pour un joueur depuis sa main !!!
+            
+            // Demander au server de donner une carte au joueur visé identifié par son Id
+            socket.emit("drawCard", {});
+            
         }
 
         var angle = 50;

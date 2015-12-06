@@ -143,7 +143,7 @@ html, body {
 }
 
 #footer {
-  background-color: #f5f5f5;
+  /*background-color: #f5f5f5;*/
   overflow:scroll;
 }
 
@@ -156,6 +156,91 @@ html, body {
 }
 .breakWord {
   word-wrap: break-word;
+}
+
+
+
+
+
+
+/***************************************** Styles for collapsables lateral divs ***************************************************/
+
+
+
+
+a:focus {
+outline: none;
+}
+
+.loggs {
+position: absolute;
+top: 0;
+right: 0;
+display: none;
+background: #000000;
+border:1px solid #111111;
+-moz-border-radius-topleft: 20px;
+-webkit-border-top-left-radius: 20px;
+-moz-border-radius-bottomleft: 20px;
+-webkit-border-bottom-left-radius: 20px;
+width: 330px;
+height: 100%;
+padding: 30px 130px 30px 30px;
+filter: alpha(opacity=85);
+opacity: .85;
+}
+
+.loggs p{
+margin: 0 0 15px 0;
+padding: 0;
+color: #cccccc;
+}
+
+
+a.triggerLoggs{
+position: absolute;
+text-decoration: none;
+top: 80px; right: 0;
+font-size: 16px;
+letter-spacing:-1px;
+font-family: verdana, helvetica, arial, sans-serif;
+color:#fff;
+padding: 20px 15px 20px 40px;
+font-weight: 700;
+background:#333333;
+border:1px solid #444444;
+-moz-border-radius-topleft: 20px;
+-webkit-border-top-left-radius: 20px;
+-moz-border-radius-bottomleft: 20px;
+-webkit-border-bottom-left-radius: 20px;
+-moz-border-radius-bottomright: 0px;
+-webkit-border-bottom-right-radius: 0px;
+display: block;
+}
+
+a.triggerLoggs:hover{
+position: absolute;
+text-decoration: none;
+top: 80px; right: 0;
+font-size: 16px;
+letter-spacing:-1px;
+font-family: verdana, helvetica, arial, sans-serif;
+color:#fff;
+padding: 20px 20px 20px 40px;
+font-weight: 700;
+background:#222222;
+border:1px solid #444444;
+-moz-border-radius-topleft: 20px;
+-webkit-border-top-left-radius: 20px;
+-moz-border-radius-bottomleft: 20px;
+-webkit-border-bottom-left-radius: 20px;
+-moz-border-radius-bottomright: 0px;
+-webkit-border-bottom-right-radius: 0px;
+display: block;
+}
+
+a.active.triggerLoggs {
+background:#222222;
 }
 
 
@@ -191,3 +276,8 @@ html, body {
   height: 100%;
   float: left;
 }
+
+
+
+
+

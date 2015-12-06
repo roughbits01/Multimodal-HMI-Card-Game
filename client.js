@@ -31,6 +31,29 @@ window.addEventListener('touchend', function(e){
   //e.preventDefault()
 }, false)
 
+
+window.addEventListener('deviceorientation', function(e) {
+  if (Math.abs(e.beta) > 165 ){// The smartphone is facedown (180)
+      setTimeout(socket.emit("pause", {}), 5000);
+      pauseSent = true;
+    }
+  } else if (Math.abs(e.beta) < 65 ) {
+    pauseSent = false;
+
+    //alert('reprise');
+    setTimeout(socket.emit("reprise", {}), 5000);
+  }
+},false);
+
+socket.on("pause", function (data) {
+  $("#updates").append("<li>joueur en pause </li>");
+});
+
+socket.on("reprise", function (data) {
+  $("#updates").append("<li>joueur reprise </li>");
+});
+
+
 //function to call when shake occurs
 function shakeEventDidOccur () {
   if (touched) sortHandByValue();
@@ -131,6 +154,10 @@ socket.on("areYouReady", function (data) {
 });
 
 socket.on("badCard", function (data) {
+  navigator.vibrate(200);
+});
+
+socket.on("notYouTurn", function (data) {
   navigator.vibrate(200);
 });
 
@@ -373,7 +400,6 @@ $("#join").click(function() {
   });
 
   $("#sortHand").click(function() {
-    //sortHandBySuit();
     sortHandByValue();
   });
 

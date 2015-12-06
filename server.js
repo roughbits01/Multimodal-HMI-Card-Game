@@ -71,6 +71,14 @@ io.sockets.on('connection', function (socket) {
     console.log("Table " + Table.name + " has been successfully created with " + table.key + " as key!");
   });
 
+  socket.on('pause',function(data) {
+    io.sockets.emit("pause", {});
+  });
+
+  socket.on('reprise',function(data) {
+    io.sockets.emit("reprise", {});
+  });
+
   /*
   When someone connects to a table we need to do a few things:
   These include:
@@ -255,7 +263,7 @@ socket.on("preliminaryRoundCheck", function(data) {
               io.sockets.emit('updatePackCount', {packCount: table.pack.length});
               table.requestActionCard = null; //reset request
               table.actionCard = false; //set the action card to false
-              
+
               //PROGRESS ROUND
               console.log("==========================> PrelRound2");
               console.log("==========================> PR8");
@@ -383,7 +391,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
             messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
             messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
-        
+
           }//end of actioncard
         }
         else{ // il y a une suite request (je peut decider de draw une carte quand même)
@@ -685,7 +693,8 @@ socket.on("preliminaryRoundCheck", function(data) {
         }
       } else { //end of turn
         messaging.sendEventToAPlayer("logging", {message: "It's your opponent's turn."}, io, table.players, player);
-    }
+        messaging.sendEventToAPlayer("notYouTurn", {}, io, table.players, player)
+      }
   });
 
   socket.on("suiteRequest", function(data) {

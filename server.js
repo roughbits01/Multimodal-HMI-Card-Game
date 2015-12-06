@@ -54,7 +54,7 @@ io.sockets.on('connection', function (socket) {
     var table = new Table(socket.id);
     table.name = data.name;
     table.key = room.generateKey();
-    table.playerLimit = data.playerLimit;
+    table.playerLimit = 2;//data.playerLimit;
     table.gameObj = game;
     table.pack = game.pack;//adds the shuffled pack from the constructor
     table.setStatus("available");

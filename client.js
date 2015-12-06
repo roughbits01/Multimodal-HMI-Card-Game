@@ -3,7 +3,7 @@ var socket = io.connect("http://localhost:8080");
 var localStream = null;
 
 // Put event listeners into place
-window.addEventListener("DOMContentLoaded", function() {
+/*window.addEventListener("DOMContentLoaded", function() {
 	// Grab elements, create settings, etc.
 	var canvas = document.getElementById("canvas"),
 		context = canvas.getContext("2d"),
@@ -41,7 +41,7 @@ window.addEventListener("DOMContentLoaded", function() {
     document.getElementById('joinTablePhoto').value = canvas.toDataURL();
   });
 
-}, false);
+}, false);*/
 
 
 hand = [];
@@ -370,10 +370,10 @@ $("#join").click(function() {
     var key = $("#joinTableKey").val();
 
     if (key.length == 4) {
-			if (localhost != null) {
+			/*if (localStream != null) {
 				localStream.stop();
 				localStream = null;
-			}
+			}*/
       socket.emit("connectToServer", {name:name, avatar : document.getElementById('joinTablePhoto').value });
       socket.emit('connectToTable', {key:key});
       $("#joinForm").hide();

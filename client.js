@@ -31,8 +31,7 @@ window.addEventListener('touchend', function(e){
   //e.preventDefault()
 }, false)
 
-
-window.addEventListener('deviceorientation', function(e) {
+/*window.addEventListener('deviceorientation', function(e) {
   if (Math.abs(e.beta) > 165 ){// The smartphone is facedown (180)
       setTimeout(socket.emit("pause", {}), 5000);
       pauseSent = true;
@@ -52,7 +51,7 @@ socket.on("pause", function (data) {
 socket.on("reprise", function (data) {
   $("#updates").append("<li>joueur reprise </li>");
 });
-
+*/
 
 //function to call when shake occurs
 function shakeEventDidOccur () {

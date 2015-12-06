@@ -1,135 +1,172 @@
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Macaonline</title>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <title>Macaonline</title>
 
-    <!-- Bootstrap -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Bootstrap -->
+      <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="css/style.css" rel="stylesheet">
-
-
-    <!-- Scripts for Hammer -->
-    <link rel="stylesheet" href="hammer/hammerStyle.css">
-    <link rel="stylesheet" href="hammer/hammerStyle2.css">
+      <link href="css/style.css" rel="stylesheet">
 
 
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- jQuery script for cards in hand view -->
-    <script type="text/javascript" src="js/handCardsView.js"></script>
-
-
-    <!-- Scripts for hammer -->
-    <script src="bower_components/hammerjs/hammer.min.js"></script>
-    <script src="hammer/hammerFunctionsHand.js"></script>
-
-    <!-- jHammer script for cards of table view in player's hands-->
-    <script src="hammer/hammerFunctionsTable.js"></script>
-
-    <script src="bower_components/jquery.vibrate.js/build/jquery/jquery.vibrate.min.js"></script>
-    <script src="bower_components/shake.js/shake.js"></script>
+      <!-- Scripts for Hammer -->
+      <link rel="stylesheet" href="hammer/hammerStyle.css">
+      <link rel="stylesheet" href="hammer/hammerStyle2.css">
 
 
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="client.js"></script>
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="bower_components/jquery/dist/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+      <!-- jQuery script for cards in hand view -->
+      <script type="text/javascript" src="js/handCardsView.js"></script>
+
+
+      <!-- Scripts for hammer -->
+      <script src="bower_components/hammerjs/hammer.min.js"></script>
+      <script src="hammer/hammerFunctionsHand.js"></script>
+
+      <!-- jHammer script for cards of table view in player's hands-->
+      <script src="hammer/hammerFunctionsTable.js"></script>
+
+      <script src="bower_components/jquery.vibrate.js/build/jquery/jquery.vibrate.min.js"></script>
+      <script src="bower_components/shake.js/shake.js"></script>
+
+
+
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="client.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $(".trigger").on('touchstart touchend click', function(){
+      $(".log").toggle("fast");
+      $(this).toggleClass("active");
+      return false;
+    });
+  });
+  </script>
 
   </head>
 
-
   <body background="resources/tableBackground.jpg">
 
-    <div class="outerDiv" id="playArea">
 
-      <div id="table">
-      </div>
 
-      <p id="playOption"></p>
-      <button id="drawCard" class="btn btn-success">Draw a card</button>
-      <button id="penalising" class="btn btn-warning">Penalising cards</button>
-      <button type="button"  id="sortHand">Trier</button>
+        <div class="outerDiv" id="playArea">
 
-      <li><p id="suiteRequest"><input type="text" id="suiteRequestTxt" placeholder="suite request"><button class="btn btn-success" id="suiteRequestBtn">OK</button></p></li>
+            <div id="table">
+            </div>
 
-      <div class="innerDivMiddlePlayer">
+            <p id="playOption"></p>
+            <button id="drawCard" class="btn btn-success">Draw a card</button>
+            <button id="penalising" class="btn btn-warning">Penalising cards</button>
+            <button type="button"  id="sortHand">Trier</button>
 
-        <div class="row fullHeight">
-          <div class="col-xs-1 col-md-1 fullHeight">
-          </div>
-          <div class="col-xs-10 col-md-10 fullHeight">
+            <li><p id="suiteRequest"><input type="text" id="suiteRequestTxt" placeholder="suite request"><button class="btn btn-success" id="suiteRequestBtn">OK</button></p></li>
 
-            <div id="progressUpdate"></div>
+            <div class="innerDivMiddlePlayer">
 
-            <div class="tablePlayArea fullHeight">
-              <div class="playerHandArea" id="cartes">
+              <div class="row fullHeight">
+                <div class="col-xs-1 col-md-1 fullHeight">
+                </div>
+                <div class="col-xs-10 col-md-10 fullHeight">
+
+                  <div id="progressUpdate"></div>
+
+                  <div class="tablePlayArea fullHeight">
+                    <div class="playerHandArea" id="cartes">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-xs-1 col-md-1 fullHeight">
+                </div>
               </div>
+
             </div>
 
           </div>
-          <div class="col-xs-1 col-md-1 fullHeight">
+
+
+          <div class="col-xs-6 col-md-6 fullHeight">
+            <!-- Center square-->
+            <!-- Table play area square-->
+            <div class="fullHeight halfWidth floatLeft">
+              <!-- Cards deck area-->
+              <div id="pack" class="textAlignCenter"></div>
+              <div id="tableDeck" class="fullHeight fullWidth" style="display: inline-block;">
+              </div>
+            </div>
+            <div class="fullHeight halfWidth floatLeft">
+              <!-- Unfolded card area-->
+              <div id="table">
+              </div>
+            </div>
           </div>
-        </div>
 
-      </div>
+          
 
+          <div id="joinForm">
+            <form class="form-inline">
+              <label for="joinPlayerName">Your name:</label>
+              <input type="text" class="input" id="joinPlayerName" placeholder="Name">
+              <label for="joinTableKey">Key for the game:</label>
+              <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
+              <button type="submit" class="btn btn-success" id="join">Join Table</button>
+              <label id="error"></label>
+            </form>
+          </div>
+
+          <!--div id="createForm">
+            <form class="form-inline">
+              <label for="createTableName">Name:</label>
+              <input type="text" class="input" id="createTableName" placeholder="Table name">
+              <label for="count">Player limit:</label>
+              <input type="number" class="input" id="count" value="2" min="2" max="4">
+              <button type="submit" class="btn btn-success" id="create">Create table</button>
+              <label id="createError"></label>
+            </form>
+          </div-->
+
+          <div id="footer">
+            <div class="container" id="log">
+              <ul id="updates" class="unstyled">
+              </ul>
+            </div>
+          </div>
+
+
+    <div class="log">
+      
     </div>
-
-    <div id="joinForm">
-      <form class="form-inline">
-        <label for="joinPlayerName">Your name:</label>
-        <input type="text" class="input" id="joinPlayerName" placeholder="Name">
-        <label for="joinTableKey">Key for the game:</label>
-        <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
-        <button type="submit" class="btn btn-success" id="join">Join Table</button>
-        <label id="error"></label>
-      </form>
-    </div>
-
-    <!--div id="createForm">
-      <form class="form-inline">
-        <label for="createTableName">Name:</label>
-        <input type="text" class="input" id="createTableName" placeholder="Table name">
-        <label for="count">Player limit:</label>
-        <input type="number" class="input" id="count" value="2" min="2" max="4">
-        <button type="submit" class="btn btn-success" id="create">Create table</button>
-        <label id="createError"></label>
-      </form>
-    </div-->
-
-    <div id="footer">
-      <div class="container" id="log">
-        <ul id="updates" class="unstyled">
-        </ul>
-      </div>
-    </div>
+    <a class="trigger" href="#">Log</a>
 
 
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- jQuery script for cards in hand view -->
-    <script type="text/javascript" src="js/handCardsView.js"></script>
 
 
-   <!-- Scripts for hammer -->
-    <script src="bower_components/hammerjs/hammer.min.js"></script>
-    <script src="hammer/hammerFunctionsHand.js"></script>
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="bower_components/jquery/dist/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- jHammer script for cards of table view in player's hands-->
-    <script src="hammer/hammerFunctionsTable.js"></script>
+      <!-- jQuery script for cards in hand view -->
+      <script type="text/javascript" src="js/handCardsView.js"></script>
 
 
+     <!-- Scripts for hammer -->
+      <script src="bower_components/hammerjs/hammer.min.js"></script>
+      <script src="hammer/hammerFunctionsHand.js"></script>
+
+      <!-- jHammer script for cards of table view in player's hands-->
+      <script src="hammer/hammerFunctionsTable.js"></script>
   </body>
-</html>
+  </html>

@@ -50,72 +50,70 @@
 
 
     <div class="row fullHeight">
-      <div class="col-xs-9 col-md-9 fullHeight">
 
-        <div id="joinForm">
-          <form class="form-inline">
-            <label for="joinPlayerName">Your name:</label>
-            <input type="text" class="input" id="joinPlayerName" placeholder="Name">
-            <label for="joinTableKey">Key for the game:</label>
-            <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
-            <button type="submit" class="btn btn-success" id="join">Join Table</button>
-            <label id="error"></label>
-          </form>
+      <div id="joinForm">
+        <form class="form-inline">
+          <label for="joinPlayerName">Your name:</label>
+          <input type="text" class="input" id="joinPlayerName" placeholder="Name">
+          <label for="joinTableKey">Key for the game:</label>
+          <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
+          <button type="submit" class="btn btn-success" id="join">Join Table</button>
+          <label id="error"></label>
+        </form>
+      </div>
+
+      <div class="outerDiv" id="playArea">
+
+        <div id="table">
         </div>
 
-        <div class="outerDiv" id="playArea">
+        <p id="playOption"></p>
+        <button id="drawCard" class="btn btn-success">Draw a card</button>
+        <button id="penalising" class="btn btn-warning">Penalising cards</button>
+        <button type="button"  id="sortHand">Trier</button>
 
-          <div id="table">
-          </div>
+        <div id="suiteRequest">
+            <img width='24%' onclick="sendSuiteRequest('H')" src='resources/H.png'>
+            <img width='24%' onclick="sendSuiteRequest('C')" src='resources/C.png'>
+            <img width='24%' onclick="sendSuiteRequest('D')" src='resources/D.png'>
+            <img width='24%' onclick="sendSuiteRequest('S')" src='resources/S.png'>
+        </div>
 
-          <p id="playOption"></p>
-          <button id="drawCard" class="btn btn-success">Draw a card</button>
-          <button id="penalising" class="btn btn-warning">Penalising cards</button>
-          <button type="button"  id="sortHand">Trier</button>
+        <div class="innerDivMiddlePlayer">
 
-          <div id="suiteRequest">
-              <img width='24%' onclick="sendSuiteRequest('H')" src='resources/H.png'>
-              <img width='24%' onclick="sendSuiteRequest('C')" src='resources/C.png'>
-              <img width='24%' onclick="sendSuiteRequest('D')" src='resources/D.png'>
-              <img width='24%' onclick="sendSuiteRequest('S')" src='resources/S.png'>
-          </div>
-
-          <div class="innerDivMiddlePlayer">
-
-            <div class="row fullHeight">
-              <div class="col-xs-1 col-md-1 fullHeight">
-              </div>
-              <div class="col-xs-10 col-md-10 fullHeight">
-
-                <div id="progressUpdate"></div>
-
-                <div class="tablePlayArea fullHeight">
-                  <div class="playerHandArea" id="cartes">
-                  </div>
-                </div>
-
-              </div>
-              <div class="col-xs-1 col-md-1 fullHeight">
-              </div>
+          <div class="row fullHeight">
+            <div class="col-xs-1 col-md-1 fullHeight">
             </div>
+            <div class="col-xs-10 col-md-10 fullHeight">
 
+              <div id="progressUpdate"></div>
+
+              <div class="tablePlayArea fullHeight">
+                <div class="playerHandArea" id="cartes">
+                </div>
+              </div>
+
+            </div>
+            <div class="col-xs-1 col-md-1 fullHeight">
+            </div>
           </div>
 
         </div>
 
       </div>
 
-     
-      <div class="col-xs-3 col-md-3 fullHeight">
+   
 
+      <div class="loggs">
         <div id="footer" class="fullHeight">
           <div class="fullHeight fullWidth breakWord" id="log">
-            <strong><h3>LOGS</h3></strong>
             <ul id="updates" class="unstyled">
             </ul>
           </div>
         </div>
       </div>
+      <a class="triggerLoggs" href="#">Logs</a>
+
 
     </div>
 

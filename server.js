@@ -208,7 +208,8 @@ socket.on("preliminaryRoundCheck", function(data) {
           console.log("HAND ==> " + player.hand);
           socket.emit("playOption", { value: false }); //OPTION - TRUE
           var cards = table.gameObj.drawCard(table.pack, table.forcedDraw, player.hand, 0);
-          socket.emit("play", { hand: cards }); //send the card in hands to player
+          messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+          //socket.emit("play", { hand: cards }); //send the card in hands to player
           io.sockets.emit('updatePackCount', {packCount: table.pack.length});
           table.forcedDraw = 0; //reset forced Draw variable
           table.actionCard = false; //set the action card to false
@@ -249,7 +250,8 @@ socket.on("preliminaryRoundCheck", function(data) {
             } else { //no requested suite nor contra-action card in hand, force draw
               console.log("Forced draw");
               var cards = table.gameObj.drawCard(table.pack, 1, player.hand, 0);
-              socket.emit("play", { hand: cards }); //send the card in hands to player
+              messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+              //socket.emit("play", { hand: cards }); //send the card in hands to player
               //table.gameObj.drawCard(table.pack, 1, player.hand, 0);
               //socket.emit("play", { hand: player.hand }); //send the card in hands to player
               io.sockets.emit('updatePackCount', {packCount: table.pack.length});
@@ -309,7 +311,8 @@ socket.on("preliminaryRoundCheck", function(data) {
     var table = room.getTableById(player.tableID);
     if (table.actionCard) {
       var cards = table.gameObj.drawCard(table.pack, table.forcedDraw, player.hand, 0);
-      socket.emit("play", { hand: cards }); //send the card in hands to player
+      messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+      //socket.emit("play", { hand: cards }); //send the card in hands to player
       io.sockets.emit('updatePackCount', {packCount: table.pack.length});
       table.forcedDraw = 0; //reset forced Draw variable
       table.actionCard = false; //set the action card to false
@@ -372,7 +375,8 @@ socket.on("preliminaryRoundCheck", function(data) {
               table.pack = table.gameObj._shufflePack(table.cardsOnTable); //shuffle the new pack
               table.cardsOnTable = last; //add the last card back on the table
             }
-            socket.emit("play", {hand: card});
+            messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+            //socket.emit("play", {hand: card});
             messaging.sendEventToAPlayer("logging", {message: "You took " + card + " from the pack."}, io, table.players, player);
             io.sockets.emit('updatePackCount', { packCount: table.pack.length });
 
@@ -397,7 +401,8 @@ socket.on("preliminaryRoundCheck", function(data) {
             table.pack = table.gameObj._shufflePack(table.cardsOnTable); //shuffle the new pack
             table.cardsOnTable = last; //add the last card back on the table
           }
-          socket.emit("play", {hand: card});
+          messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+          //socket.emit("play", {hand: card});
           messaging.sendEventToAPlayer("logging", {message: "You took " + card + " from the pack."}, io, table.players, player);
           io.sockets.emit('updatePackCount', { packCount: table.pack.length });
 

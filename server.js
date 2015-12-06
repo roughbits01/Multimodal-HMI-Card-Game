@@ -255,6 +255,7 @@ socket.on("preliminaryRoundCheck", function(data) {
               io.sockets.emit('updatePackCount', {packCount: table.pack.length});
               table.requestActionCard = null; //reset request
               table.actionCard = false; //set the action card to false
+              
               //PROGRESS ROUND
               console.log("==========================> PrelRound2");
               console.log("==========================> PR8");
@@ -262,9 +263,21 @@ socket.on("preliminaryRoundCheck", function(data) {
               socket.emit("turn", {myturn: false}); //????
               messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
               messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
-              
+
             }
           }
+        }
+        else{ // suite request have not been done yet
+
+                //BLOCK ROUND
+                console.log("==========================> BLOCK ROUND PrelRound2");
+                table.progressRound(); //end of turn
+                //notify frontend
+                //messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
+                messaging.sendEventToAllPlayers("turn", {myturn: false}, io, table.players, player);
+                //messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+                messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
+
         }
       }
         

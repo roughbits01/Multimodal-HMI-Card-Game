@@ -1,49 +1,5 @@
 var socket = io.connect("http://localhost:8080");
 
-var localStream = null;
-
-// Put event listeners into place
-/*window.addEventListener("DOMContentLoaded", function() {
-	// Grab elements, create settings, etc.
-	var canvas = document.getElementById("canvas"),
-		context = canvas.getContext("2d"),
-		video = document.getElementById("video"),
-		videoObj = { "video": true },
-		errBack = function(error) {
-			console.log("Video capture error: ", error.code);
-		};
-
-	// Put video listeners into place
-	if(navigator.getUserMedia) { // Standard
-		navigator.getUserMedia(videoObj, function(stream) {
-			localStream = stream;
-			video.src = stream;
-			video.play();
-		}, errBack);
-	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
-		navigator.webkitGetUserMedia(videoObj, function(stream){
-			localStream = stream;
-			video.src = window.URL.createObjectURL(stream);
-			video.play();
-		}, errBack);
-	}
-	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
-		navigator.mozGetUserMedia(videoObj, function(stream){
-			localStream = stream;
-			video.src = window.URL.createObjectURL(stream);
-			video.play();
-		}, errBack);
-	}
-
-  // Trigger photo take
-  document.getElementById("snap").addEventListener("click", function() {
-	  context.drawImage(video, 0, 0, 160, 120);
-    document.getElementById('joinTablePhoto').value = canvas.toDataURL();
-  });
-
-}, false);*/
-
-
 hand = [];
 
 var timer;
@@ -370,22 +326,40 @@ $("#join").click(function() {
     var key = $("#joinTableKey").val();
 
     if (key.length == 4) {
-			/*if (localStream != null) {
-				localStream.stop();
-				localStream = null;
-			}*/
-      socket.emit("connectToServer", {name:name, avatar : document.getElementById('joinTablePhoto').value });
-      socket.emit('connectToTable', {key:key});
-      $("#joinForm").hide();
-			$("#takePhoto").hide();
-      $("#createForm").hide();
-      $("#tableFull").hide();
-      $("#waiting").show();
-      socket.on("ready", function(data){
-        $("#waiting").hide();
-        $("#playArea").show();
-        $("#progressUpdate").show();
-      });
+			var file = document.querySelector('input[type=file]').files[0];
+			console.log(file);
+			if (file) {
+				var reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onloadend = function () {
+					console.log("PHOTO:"  + reader.result);
+					socket.emit("connectToServer", {name:name, avatar : reader.result });
+					socket.emit('connectToTable', {key:key});
+					$("#joinForm").hide();
+					$("#takePhoto").hide();
+					$("#createForm").hide();
+					$("#tableFull").hide();
+					$("#waiting").show();
+					socket.on("ready", function(data){
+						$("#waiting").hide();
+						$("#playArea").show();
+						$("#progressUpdate").show();
+					});
+				}
+			} else {
+				socket.emit("connectToServer", {name:name, avatar : "" });
+				socket.emit('connectToTable', {key:key});
+				$("#joinForm").hide();
+				$("#takePhoto").hide();
+				$("#createForm").hide();
+				$("#tableFull").hide();
+				$("#waiting").show();
+				socket.on("ready", function(data){
+					$("#waiting").hide();
+					$("#playArea").show();
+					$("#progressUpdate").show();
+				});
+			}
     } else {
       $("#error").show();
       $("#error").html('<p class="text-error">Please enter a valid key.</p>');

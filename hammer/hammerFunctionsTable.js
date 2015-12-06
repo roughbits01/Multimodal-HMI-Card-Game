@@ -154,10 +154,14 @@
                 playerBoxIndex=0;
         }
 
-        console.log($('#boxPlayer'+playerBoxIndex).attr("playerId"));
+        if(playerBoxIndex==1 || playerBoxIndex==2){ // pour le moment on n'a que 2 joueurs, on n'envoie d'event que si on vise ces 2 joueurs (sinon bugg)
+            
+            console.log($('#boxPlayer'+playerBoxIndex).attr("playerId"));
 
-        // Demander au server de donner une carte au joueur visé identifié par son Id
-        socket.emit("drawCard", {playerId: $('#boxPlayer'+playerBoxIndex).attr("playerId")});
+            // Demander au server de donner une carte au joueur visé identifié par son Id
+            socket.emit("drawCard", {playerId: $('#boxPlayer'+playerBoxIndex).attr("playerId")});
+            
+        }
 
         var angle = 50;
         transform.ry = (ev.direction & Hammer.DIRECTION_HORIZONTAL) ? 1 : 0;

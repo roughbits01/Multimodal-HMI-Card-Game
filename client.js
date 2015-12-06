@@ -410,3 +410,13 @@ $("#join").click(function() {
   });
 
 });
+
+
+// Fonction d'activation des divs laterales masquées
+$(document).ready(function(){
+  $(".triggerLoggs").on('touchstart touchend click', function(){
+    $(".loggs").toggle("fast");
+    $(this).toggleClass("active");
+    return false;
+  });
+});

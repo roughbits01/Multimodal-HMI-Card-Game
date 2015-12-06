@@ -27,15 +27,23 @@ function Table(tableID) {
 	this.numberRequest = "";
 
 	this.gameObj = null;
+
+	this.firstRound = true;
 };
 
 Table.prototype.progressRound = function(player) {
-  for(var i = 0; i < this.players.length; i++) {
-  	this.players[i].turnFinished = false;
-	  	if(this.players[i].id == player.id) { //when player is the same that plays, end their turn
-			player.turnFinished = true;
-		}
-	}
+  if(player){ // if a player is defined in parameters, then progress round on table
+    for(var i = 0; i < this.players.length; i++) {
+  	  this.players[i].turnFinished = false;
+  	  if(this.players[i].id == player.id) { //when player is the same that plays, end their turn
+		player.turnFinished = true;
+	  }
+    }
+  }else{ // if not; we are in suite request case, we need to block the round until a suite request is made
+  	for(var i = 0; i < this.players.length; i++) {
+  	  this.players[i].turnFinished = true;
+  	}
+  }
 }
 
 Table.prototype.setName = function(name){

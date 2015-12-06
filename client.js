@@ -1,5 +1,6 @@
 var socket = io.connect("http://localhost:8080");
 
+var localStream;
 
 // Put event listeners into place
 window.addEventListener("DOMContentLoaded", function() {
@@ -15,17 +16,20 @@ window.addEventListener("DOMContentLoaded", function() {
 	// Put video listeners into place
 	if(navigator.getUserMedia) { // Standard
 		navigator.getUserMedia(videoObj, function(stream) {
+			localStream = stream;
 			video.src = stream;
 			video.play();
 		}, errBack);
 	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
 		navigator.webkitGetUserMedia(videoObj, function(stream){
-			video.src = window.webkitURL.createObjectURL(stream);
+			localStream = stream;
+			video.src = window.URL.createObjectURL(stream);
 			video.play();
 		}, errBack);
 	}
 	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
 		navigator.mozGetUserMedia(videoObj, function(stream){
+			localStream = stream;
 			video.src = window.URL.createObjectURL(stream);
 			video.play();
 		}, errBack);
@@ -222,12 +226,7 @@ socket.on("play", function(data) {
 
   hand = hand.concat(data.hand);
   console.log(hand);
-  var audio = new Audio('resources/cardSlide7.wav');
-  audio.play();
-
-  $.each(hand, function(k, v) {
-    carteHand("resources/" + v + ".png", v);
-  });
+	refreshHand();
 });
 
 socket.on("cardAccepted", function(data) {
@@ -370,10 +369,13 @@ $("#join").click(function() {
     var name = $("#joinPlayerName").val();
     var key = $("#joinTableKey").val();
 
-    if (name.length > 0 && key.length == 4) {
+    if (key.length == 4) {
+			localStream.stop();
+			localStream = null;
       socket.emit("connectToServer", {name:name, avatar : document.getElementById('joinTablePhoto').value });
       socket.emit('connectToTable', {key:key});
       $("#joinForm").hide();
+			$("#takePhoto").hide();
       $("#createForm").hide();
       $("#tableFull").hide();
       $("#waiting").show();
@@ -384,7 +386,7 @@ $("#join").click(function() {
       });
     } else {
       $("#error").show();
-      $("#error").html('<p class="text-error">Please enter a name.</p>');
+      $("#error").html('<p class="text-error">Please enter a valid key.</p>');
     }
   });
 

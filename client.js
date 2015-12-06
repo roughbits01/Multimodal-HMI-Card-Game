@@ -1,5 +1,44 @@
 var socket = io.connect("http://localhost:8080");
+var Pause_sent = false ;
 
+window.addEventListener('deviceorientation', function(evenement) {
+    
+    
+    var x ;
+    var y ;
+    
+    
+    
+    if ((evenement.beta > 165 ) || (evenement.beta < -165 &&  evenement.gamma < 40 )){
+        
+        if ( Pause_sent==false) {
+            
+             clearTimeout(y); 
+            
+           x = setTimeout(socket.emit("pause", {}), 5000); 
+       
+            Pause_sent = true ; 
+                   
+          
+        }
+      
+        
+        
+        }else if ((evenement.beta < 95 ) || (evenement.beta > -115 &&  evenement.gamma > 80 )) {
+           
+            if ( Pause_sent==true) {
+                
+                clearTimeout(x);
+            //alert('reprise');
+            y = setTimeout(socket.emit("reprise", {}), 5000);
+            Pause_sent = false ;
+                
+                        
+            }
+        }
+    
+  
+    },false);
 hand = [];
 
 var timer;
@@ -42,7 +81,7 @@ window.addEventListener('touchend', function(e){
     //alert('reprise');
     setTimeout(socket.emit("reprise", {}), 5000);
   }
-},false);
+},false);*/
 
 socket.on("pause", function (data) {
   $("#updates").append("<li>joueur en pause </li>");
@@ -51,7 +90,7 @@ socket.on("pause", function (data) {
 socket.on("reprise", function (data) {
   $("#updates").append("<li>joueur reprise </li>");
 });
-*/
+
 
 //function to call when shake occurs
 function shakeEventDidOccur () {

@@ -70,14 +70,14 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit("logging", {message: "Waiting for " + table.playerLimit + " players to join. <strong>" + table.key + "</strong>"});
     console.log("Table " + Table.name + " has been successfully created with " + table.key + " as key!");
   });
-/*
+
   socket.on('pause',function(data) {
     io.sockets.emit("pause", {});
   });
 
   socket.on('reprise',function(data) {
     io.sockets.emit("reprise", {});
-  });*/
+  });
 
   /*
   When someone connects to a table we need to do a few things:

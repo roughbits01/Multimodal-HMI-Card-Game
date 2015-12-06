@@ -48,7 +48,8 @@ Game.prototype.playCard = function(index, hand, table) {
 }
 //at the start of the game, we put one card to the table from the pack (top card of the deck)
 Game.prototype.playFirstCardToTable = function(pack) {
-  return  pack.splice(0,1);
+  var card = pack.splice(0, 1);
+  return card;
 }
 //not yet tested but - it should return all the cards on the table - so we can reshuffle it and use it as a new pack
 Game.prototype.cardsOnTable = function(table, card) {
@@ -97,7 +98,7 @@ Game.prototype.isPenalisingActionCardPlayable = function(card, lastCardOnTable) 
   if (card) {
     var cardNumber = parseInt(card);
     var lastCardNumber = parseInt(lastCardOnTable);
-    if (cardNumber === lastCardNumber && (lastCardNumber === 2 || lastCardNumber === 1 || lastCardNumber === 13 ) ) {
+    if (cardNumber === lastCardNumber && (lastCardNumber === 2  ) ) {
         return true;
     } else {
       return false;
@@ -121,6 +122,7 @@ Game.prototype.isRequestActionCardPlayable = function(card, lastCardOnTable) {
 
 /* checking if card is an action card */
 Game.prototype.isActionCard = function(card, penalising) {
+  console.log("game.isActionCard : card = "+card);
   penalising = (typeof penalising === "undefined") ? false : penalising;
   if (card && !penalising) {
     var cardNumber = parseInt(card);

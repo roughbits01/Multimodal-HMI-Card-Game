@@ -1,6 +1,6 @@
 function Player(playerID) {
 	this.id = playerID;
-	this.name = "";
+	this.name = "Anonyme";
 	this.avatar = "";
 	this.tableID = "";
 	this.hand = [];

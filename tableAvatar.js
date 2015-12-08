@@ -35,8 +35,10 @@ function addAvatar(player) {
                             "<div class='col-xs-1 col-md-1 fullHeight'>"+
                             "</div>"+
                           "</div>");
+
+    var avatars = ["elephant.png", "giraffe.png", "hippo.png", "monkey.png", "panda.png", "parrot.png", "penguin.png", "pig.png", "rabbit.png", "snake.png"];
     if(player.avatar == "") {
-      $('#avatar'+player.id).attr("src", "resources/avatar.png");
+      $('#avatar'+player.id).attr("src", "resources/avatars/"+avatars[Math.floor(Math.random() * 10)]);
     }
     else {
       $('#avatar'+player.id).attr("src", player.avatar);

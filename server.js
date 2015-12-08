@@ -41,7 +41,7 @@ io.sockets.on('connection', function (socket) {
   */
   socket.on('connectToServer',function(data) {
     var player = new Player(socket.id);
-    player.setName(data.name);
+    if (data.name) player.setName(data.name);
     player.setAvatar(data.avatar);
     room.addPlayer(player); //add to room -- all players go to a room first
     io.sockets.emit("logging", {message: data.name + " has connected."});
@@ -457,6 +457,7 @@ socket.on("preliminaryRoundCheck", function(data) {
 
       if (!player.turnFinished) {
         var playedCard = data.playedCard;
+        var playedCardIndex = data.index;
         var index = utils.indexOf(player.hand, data.playedCard);// L'indice dans la main
         if (index > -1) {
           errorFlag = false;
@@ -532,10 +533,10 @@ socket.on("preliminaryRoundCheck", function(data) {
 
                     }
                     if (!winner) {
-                      socket.emit("cardAccepted", {playedCard: playedCard});
+                      socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                     } else {
                     //game is finished
-                    socket.emit("cardAccepted", {playedCard: playedCard});
+                    socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                     messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                     messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
                     socket.emit("gameover", {gameover: true});
@@ -574,10 +575,10 @@ socket.on("preliminaryRoundCheck", function(data) {
                 messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
                 var winner = table.gameObj.isWinning(player.hand);
                 if (!winner) {
-                  socket.emit("cardAccepted", {playedCard: playedCard});
+                  socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                 } else {
                 //game is finished
-                socket.emit("cardAccepted", {playedCard: playedCard});
+                socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                 messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                 messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
                 socket.emit("gameover", {gameover: true});
@@ -624,10 +625,10 @@ socket.on("preliminaryRoundCheck", function(data) {
 
                   var winner = table.gameObj.isWinning(player.hand);
                   if (!winner) {
-                    socket.emit("cardAccepted", {playedCard: playedCard});
+                    socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                   } else {
                     //game is finished
-                    socket.emit("cardAccepted", {playedCard: playedCard});
+                    socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                     messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                     messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
                     socket.emit("gameover", {gameover: true});
@@ -700,10 +701,10 @@ socket.on("preliminaryRoundCheck", function(data) {
 
               var winner = table.gameObj.isWinning(player.hand);
               if (!winner) {
-                socket.emit("cardAccepted", {playedCard: playedCard});
+                socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
               } else {
                 //game is finished
-                socket.emit("cardAccepted", {playedCard: playedCard});
+                socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                 messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                 messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
                 socket.emit("gameover", {gameover: true});

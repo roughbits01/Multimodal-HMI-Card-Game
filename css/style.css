@@ -186,7 +186,7 @@ border:1px solid #111111;
 -webkit-border-bottom-left-radius: 20px;
 width: 330px;
 height: 100%;
-padding: 30px 130px 30px 30px;
+padding: 70px 20px 20px 20px;
 filter: alpha(opacity=85);
 opacity: .85;
 }
@@ -201,7 +201,7 @@ color: #cccccc;
 a.triggerLoggs{
 position: absolute;
 text-decoration: none;
-top: 80px; right: 0;
+top: 0px; right: 0;
 font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;
@@ -222,7 +222,7 @@ display: block;
 a.triggerLoggs:hover{
 position: absolute;
 text-decoration: none;
-top: 80px; right: 0;
+top: 0px; right: 0;
 font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;
@@ -262,7 +262,7 @@ border:1px solid #111111;
 -webkit-border-bottom-right-radius: 20px;
 width: 330px;
 height: 100%;
-padding: 30px 130px 30px 30px;
+padding: 70px 20px 20px 20px;
 filter: alpha(opacity=85);
 opacity: .85;
 z-index:1;
@@ -278,7 +278,7 @@ color: #cccccc;
 a.triggerTableInHand{
 position: absolute;
 text-decoration: none;
-top: 80px; left: 0;
+top: 0px; left: 0;
 font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;
@@ -300,7 +300,7 @@ z-index:1;
 a.triggerTableInHand:hover{
 position: absolute;
 text-decoration: none;
-top: 80px; left: 0;
+top: 0px; left: 0;
 font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;

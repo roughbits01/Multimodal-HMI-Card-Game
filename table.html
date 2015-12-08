@@ -45,19 +45,19 @@
 
     <div class="row fullHeight">
 
-      <div id="createForm">
-        <form class="form-inline">
-          <label for="createTableName">Name:</label>
-          <input type="text" class="input" id="createTableName" placeholder="Table name">
-          <!--<label for="count">Player limit:</label>
-          <input type="number" class="input" id="count" value="2" min="2" max="4"-->
-          <button type="submit" class="btn btn-success" id="create">Create table</button>
-          <label id="createError"></label>
+      <div class="panel panel-default col-md-4 col-md-offset-4" id="createForm">
+        <div class="panel-heading"><h2 class="panel-title">Créer une partie</h2></div>
+        <div class="panel-body">
+        <form class="form">
+          <h3><label for="createTableName">Nom de la table (opt): </label></h3>
+          <input type="text" class="form-control input-lg" id="createTableName" placeholder="Nom de la table">
+          <br/>
+          <button type="submit" class="btn btn-success btn-lg" id="create">Créer une table</button>
         </form>
       </div>
+    </div>
 
       <div  id="playArea">
-
         <div class="headerTable">
           <div class="row fullHeight">
             <div class="col-xs-3 col-md-3 fullHeight">

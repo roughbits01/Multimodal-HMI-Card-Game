@@ -1,4 +1,4 @@
-var socket = io.connect("http://192.168.1.15:8080");
+var socket = io.connect("http://localhost:8080");
 var Pause_sent = false ;
 
 window.addEventListener('deviceorientation', function(evenement) {
@@ -391,6 +391,24 @@ socket.on("endPlayerTurnView", function(data){
 });
 
 
+socket.on("showRequestedSuite", function(data){
+  $("#requestedSuite").text("");
+
+  if(data.table)
+    $("#requestedSuite").html("<img width='100%' src='resources/requested"+data.suite+".png'>");
+  else
+    $("#requestedSuite").html("<img width='24%'  src='resources/"+data.suite+".png'>");
+
+  $("#requestedSuite").show();
+});
+
+
+socket.on("hideRequestedSuite", function(data){
+  $("#requestedSuite").text("");
+  $("#requestedSuite").hide();
+});
+
+
 $(document).ready(function() {
   $("#tableFull").hide();
   $("#playArea").hide();
@@ -401,6 +419,7 @@ $(document).ready(function() {
   $("#penalising").hide();
   $("#numberRequest").hide();
   $("#suiteRequest").hide();
+  $("#requestedSuite").hide();
   $("form").submit(function(event){
     event.preventDefault();
   });

@@ -484,6 +484,12 @@ socket.on("preliminaryRoundCheck", function(data) {
                     console.log("Error1 : can't play that card : "+playedCard);
                     messaging.sendEventToAPlayer("badCard", {}, io, table.players, player);
                   }else{
+
+                    // send message to all players and table to end the suite request
+                    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>END SUITE REQUEST 1");
+                    messaging.sendEventToAllPlayers("hideRequestedSuite", {}, io, table.players);
+                    messaging.sendEventToABoard('hideRequestedSuite', {}, io, table.board);
+
                     var option = false;
                     if (parseInt(playedCard) === 2) { //if player plays a 2 we add the right flags
                       console.log("if player plays a 2 we append the forced card limit");
@@ -591,7 +597,14 @@ socket.on("preliminaryRoundCheck", function(data) {
                 if (!table.gameObj.isCardPlayable(playedCard, last, table)) {
                   console.log("Error2 : can't play that card : "+playedCard);
                   messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
+                  messaging.sendEventToAPlayer("badCard", {}, io, table.players, player);
                 } else {
+
+                  // send message to all players and table to end the suite request
+                  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>END SUITE REQUEST 2");
+                  messaging.sendEventToAllPlayers("hideRequestedSuite", {}, io, table.players);
+                  messaging.sendEventToABoard('hideRequestedSuite', {}, io, table.board);
+
                   var option = false;
                   if (parseInt(playedCard) === 2) { //if player plays a 2 we add the right flags
                     console.log("if player plays a 2 we append the forced card limit");
@@ -649,6 +662,12 @@ socket.on("preliminaryRoundCheck", function(data) {
               messaging.sendEventToAPlayer("logging", {message: "The selected card cannot be played - please read the rules."}, io, table.players, player);
               messaging.sendEventToAPlayer("badCard", {}, io, table.players, player);
             } else {
+
+              // send message to all players and table to end the suite request
+              console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>END SUITE REQUEST 3");
+              messaging.sendEventToAllPlayers("hideRequestedSuite", {}, io, table.players);
+              messaging.sendEventToABoard('hideRequestedSuite', {}, io, table.board);
+
               var option = false;
               if (parseInt(playedCard) === 2) { //if player plays a 2 we add the right flags
                 console.log("if player plays a 2 we append the forced card limit");
@@ -730,6 +749,10 @@ socket.on("preliminaryRoundCheck", function(data) {
       table.actionCard = true;
       table.requestActionCard = true;
       table.suiteRequest = data.request;
+
+      // send message to all players and table about the suite request
+      messaging.sendEventToAllPlayers("showRequestedSuite", {suite: data.request, table: false}, io, table.players);
+      messaging.sendEventToABoard('showRequestedSuite', {suite: data.request, table: true}, io, table.board);
 
 
       //PROGRESS ROUND

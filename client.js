@@ -428,7 +428,6 @@ $("#join").click(function() {
 					socket.emit("connectToServer", {name:name, avatar : reader.result });
 					socket.emit('connectToTable', {key:key});
 					$("#joinForm").hide();
-					$("#takePhoto").hide();
 					$("#createForm").hide();
 					$("#tableFull").hide();
 					$("#waiting").show();
@@ -442,7 +441,6 @@ $("#join").click(function() {
 				socket.emit("connectToServer", {name:name, avatar : "" });
 				socket.emit('connectToTable', {key:key});
 				$("#joinForm").hide();
-				$("#takePhoto").hide();
 				$("#createForm").hide();
 				$("#tableFull").hide();
 				$("#waiting").show();

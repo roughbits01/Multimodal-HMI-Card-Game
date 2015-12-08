@@ -331,11 +331,11 @@ socket.on("updatePlayerCardsOnTable", function(data){
 socket.on("turn", function(data) {
   if(data.won) {
     $("#playArea").hide();
-    $(".triggerTableInHand").show();
-    $(".triggerLoggs").show();
+    $(".triggerTableInHand").hide();
+    $(".triggerLoggs").hide();
     if (data.won == "yes") {
       $("#progressUpdate").html("<span class='label label-success'>You won - well done! Game over.</span>");
-      $("#youWinLose").html('<img src="resources/Vous-avez-gagne.png"/>');
+      $("#youWinLose").html('<img class="fullWidth" src="resources/Vous-avez-gagne.png"/>');
       $("#youWinLose").show();
       navigator.vibrate([30,100,30,100]);
       audioWin.pause();
@@ -345,7 +345,7 @@ socket.on("turn", function(data) {
       audioLose.pause();
       audioLose.play();
       $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
-      $("#youWinLose").html('<img src="resources/Vous-avez-perdu.png"/>');
+      $("#youWinLose").html('<img class="fullWidth" src="resources/Vous-avez-perdu.png"/>');
       $("#youWinLose").show();
     }
   } else {

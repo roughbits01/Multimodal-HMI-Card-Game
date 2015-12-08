@@ -1,4 +1,4 @@
-var socket = io.connect("http://localhost:8080");
+var socket = io.connect("http://192.168.0.29:8080");
 var Pause_sent = false ;
 
 window.addEventListener('deviceorientation', function(evenement) {
@@ -93,7 +93,7 @@ socket.on("reprise", function (data) {
 
 //function to call when shake occurs
 function shakeEventDidOccur () {
-  if (touched) sortHandByValue();
+  if (!touched) sortHandByValue();
   else sortHandBySuit();
 }
 
@@ -107,7 +107,7 @@ function shuffleHand() {
   refreshHand();
 }
 
-function sortHandBySuit() {
+function sortHandByValue() {
   hand.sort(function(a, b) {
     var x = parseInt(a);
     var y = parseInt(b);
@@ -129,13 +129,13 @@ function sortHandBySuit() {
     }
   });
   refreshHand();
-  if (hand.length > 3) {
+  //if (hand.length > 3) {
     var audio = new Audio('resources/cardFan1.wav');
     audio.play();
-  }
+  //}
 }
 
-function sortHandByValue() {
+function sortHandBySuit() {
   hand.sort(function(a, b) {
     var aSuit = a.substr(a.length - 1);
     var bSuit = b.substr(b.length - 1);
@@ -156,10 +156,10 @@ function sortHandByValue() {
     }
   });
   refreshHand();
-  if (hand.length > 3) {
+  //if (hand.length > 3) {
     var audio = new Audio('resources/cardFan1.wav');
     audio.play();
-  }
+  //}
 }
 
 
@@ -310,6 +310,7 @@ socket.on("updatePackCount", function(data) {
 
 socket.on("updateCardsOnTable", function(data){
   console.log(data);
+  $("#tableInfoForm").hide();
   $("#playArea").show();
   $("#table").text("");
   if (data.lastCardOnTable == "") {
@@ -426,6 +427,10 @@ socket.on("key", function(data){
   console.log(data.key);
 });
 
+socket.on("winner", function(data){
+  $('#avatar'+data.id).attr("src", "resources/flatshadow_medal.png");
+  console.log("winner"+data.id);
+});
 
 $(document).ready(function() {
   $("#tableFull").hide();
@@ -463,7 +468,6 @@ $("#join").click(function() {
 				var reader = new FileReader();
 				reader.readAsDataURL(file);
 				reader.onloadend = function () {
-					console.log("PHOTO:"  + reader.result);
 					socket.emit("connectToServer", {name:name, avatar : reader.result });
 					socket.emit('connectToTable', {key:key});
 					$("#joinForm").hide();

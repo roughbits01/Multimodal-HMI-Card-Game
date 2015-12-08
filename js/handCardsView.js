@@ -17,18 +17,12 @@
 
 
   $( document ).ready(function() {
-
     marginCards();
-    console.log('ready');
-
   });  
 
   
   $('#cartes').on('DOMSubtreeModified', function(e) {
-
     marginCards();
-    console.log('!!!#cartes : marginCards() on DOMSubtreeModified');
-  
   });
 
 

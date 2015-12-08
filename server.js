@@ -158,7 +158,7 @@ io.sockets.on('connection', function (socket) {
       console.log(firstCardOnTable);
       console.log(firstCardOnTable[0]);
       for (var i = 0; i < table.players.length; i++) { //go through the players array (contains all players sitting at a table)
-        var cards = table.players[i].hand = table.gameObj.drawCard(table.pack, 5, "", 1); //assign initial 5 cards to players
+        var cards = table.players[i].hand = table.gameObj.drawCard(table.pack, 25, "", 1); //assign initial 5 cards to players
         messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: table.players[i], nbCards: table.players[i].hand.length}, io, table.board);// update all players cards (count) on table
         var startingPlayerID = table.players[randomNumber].id; //get the ID of the randomly selected player who will start
         if (table.players[i].id === startingPlayerID) { //this player will start the turn

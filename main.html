@@ -87,11 +87,16 @@
       <div id="table">
       </div>
 
-      <p id="playOption"></p>
-      <button id="drawCard" class="btn btn-success">Piocher une carte</button>
-      <button id="penalising" class="btn btn-warning">Penalising cards</button>
-      <button id="sortHandByValue" class="btn btn-success">Trier par valeur</button>
-      <button id="sortHandBySuit" class="btn btn-success">Trier par couleur</button>
+      <div>
+        <button id="sortHandByValue" class="btn btn-success">Trier par valeur</button>
+        <button id="sortHandBySuit" class="btn btn-success">Trier par couleur</button>
+      </div>
+      <br>
+      <!--p id="playOption"></p-->
+      <div id="handActionButtons" style="position: absolute; width: 100%;">
+        <button id="drawCard" class="btn btn-success btn-lg">Piocher une carte</button>
+        <button id="penalising" class="btn btn-warning btn-lg">Penalising cards</button>
+      </div>
 
       <div id="suiteRequest">
         <img width='24%' onclick="sendSuiteRequest('H')" src='resources/H.png'>

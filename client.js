@@ -364,6 +364,16 @@ socket.on("tableFull", function(){
   $("#tableFull").fadeIn("slow");
 });
 
+socket.on("endPlayerTurnView", function(data){
+  for(var i = 0; i < data.allPlayers.length; i++){
+    if(data.allPlayers[i].id == data.playerIdEndTurn)
+      $("#avatar"+data.allPlayers[i].id).parent().removeClass("label-primary").addClass("label-default");
+    else
+      $("#avatar"+data.allPlayers[i].id).parent().removeClass("label-default").addClass("label-primary");
+  }
+});
+
+
 $(document).ready(function() {
   $("#tableFull").hide();
   $("#playArea").hide();

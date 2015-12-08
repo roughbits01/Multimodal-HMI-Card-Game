@@ -176,6 +176,7 @@ io.sockets.on('connection', function (socket) {
           console.log(table.players[i].name + " will not start the game.");
           io.sockets.connected[table.players[i].id].emit("play", { hand: cards }); //send the card in hands to player
           io.sockets.connected[table.players[i].id].emit("turn", { myturn: false }); //send the turn-signal to player
+          messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: table.players[i].id}, io, table.board);
           io.sockets.connected[table.players[i].id].emit("ready", { ready: true }); //send the 'ready' signal
           io.sockets.connected[table.players[i].id].emit("cardInHandCount", {cardsInHand: table.players[i].hand.length});
         }
@@ -231,6 +232,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           table.progressRound(player); //end of turn
           socket.emit("turn", {myturn: false}); //????
           messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+          messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
           messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
 
         }
@@ -274,6 +276,7 @@ socket.on("preliminaryRoundCheck", function(data) {
               table.progressRound(player); //end of turn
               socket.emit("turn", {myturn: false}); //????
               messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+              messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
               messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
 
             }
@@ -332,6 +335,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       table.progressRound(player); //end of turn
       socket.emit("turn", {myturn: false}); //????
       messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+      messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
       messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
       messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
     }
@@ -395,6 +399,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             table.progressRound(player); //end of turn
             messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
             messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+            messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
             messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
             messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
 
@@ -421,6 +426,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           table.progressRound(player); //end of turn
           messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
           messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+          messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
           messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
           messaging.sendEventToABoard('updatePlayerCardsOnTable', {player: player, nbCards: player.hand.length}, io, table.board);// update player cards (count) on table
 
@@ -510,6 +516,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                       //notify frontend
                       messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
                       messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+                      messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
                       messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
 
                     }else{ // si pas option activée(suite request), alors bloquer le jeu en attendant la request
@@ -563,6 +570,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                 //notify frontend
                 messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
                 messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+                messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
                 messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
                 var winner = table.gameObj.isWinning(player.hand);
                 if (!winner) {
@@ -610,6 +618,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                     //notify frontend
                     messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
                     messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+                    messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
                     messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
                   }
 
@@ -672,6 +681,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                 //notify frontend
                 messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
                 messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+                messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
                 messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
 
               }else{ // si pas option activée(suite request), alors bloquer le jeu en attendant la request
@@ -727,6 +737,7 @@ socket.on("preliminaryRoundCheck", function(data) {
       socket.emit("turn", {myturn: false}); //????
       messaging.sendEventToAPlayer("turn", {myturn: false}, io, table.players, player);
       messaging.sendEventToAllPlayersButPlayer("turn", {myturn: true}, io, table.players, player);
+      messaging.sendEventToABoard('endPlayerTurnView', {allPlayers: table.players, playerIdEndTurn: player.id}, io, table.board);
       messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
     }
   });

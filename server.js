@@ -72,11 +72,17 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('pause',function(data) {
-    io.sockets.emit("pause", {});
+      
+     var player = room.getPlayer(socket.id); 
+      
+    io.sockets.emit("pause", {playerId:player.id});
   });
 
   socket.on('reprise',function(data) {
-    io.sockets.emit("reprise", {});
+      
+    var player = room.getPlayer(socket.id); 
+    io.sockets.emit("reprise", {playerId:player.id});
+      
   });
 
   /*
@@ -554,6 +560,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                     socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                     messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                     messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
+                    messaging.sendEventToABoard("winner", {id: player.id}, io, table.board);
                     socket.emit("gameover", {gameover: true});
                     io.sockets.emit("logging", {message: player.name + " is the WINNER!"});
                     }

@@ -93,7 +93,7 @@ socket.on("reprise", function (data) {
 
 //function to call when shake occurs
 function shakeEventDidOccur () {
-  if (!touched) sortHandByValue();
+  if (touched) sortHandByValue();
   else sortHandBySuit();
 }
 
@@ -129,10 +129,10 @@ function sortHandByValue() {
     }
   });
   refreshHand();
-  //if (hand.length > 3) {
+  if (hand.length > 3) {
     var audio = new Audio('resources/cardFan1.wav');
     audio.play();
-  //}
+  }
 }
 
 function sortHandBySuit() {
@@ -156,13 +156,11 @@ function sortHandBySuit() {
     }
   });
   refreshHand();
-  //if (hand.length > 3) {
+  if (hand.length > 3) {
     var audio = new Audio('resources/cardFan1.wav');
     audio.play();
-  //}
+  }
 }
-
-
 
 function refreshHand() {
   cleanHand();

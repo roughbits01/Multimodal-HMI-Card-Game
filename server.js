@@ -72,11 +72,17 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('pause',function(data) {
-    io.sockets.emit("pause", {});
+      
+     var player = room.getPlayer(socket.id); 
+      
+    io.sockets.emit("pause", {playerId:player.id});
   });
 
   socket.on('reprise',function(data) {
-    io.sockets.emit("reprise", {});
+      
+    var player = room.getPlayer(socket.id); 
+    io.sockets.emit("reprise", {playerId:player.id});
+      
   });
 
   /*

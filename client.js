@@ -381,6 +381,16 @@ socket.on("tableFull", function(){
   $("#tableFull").fadeIn("slow");
 });
 
+socket.on("endPlayerTurnView", function(data){
+  for(var i = 0; i < data.allPlayers.length; i++){
+    if(data.allPlayers[i].id == data.playerIdEndTurn)
+      $("#avatar"+data.allPlayers[i].id).parent().removeClass("label-primary").addClass("label-default");
+    else
+      $("#avatar"+data.allPlayers[i].id).parent().removeClass("label-default").addClass("label-primary");
+  }
+});
+
+
 $(document).ready(function() {
   $("#tableFull").hide();
   $("#playArea").hide();
@@ -476,6 +486,17 @@ $("#join").click(function() {
 $(document).ready(function(){
   $(".triggerLoggs").on('touchstart touchend click', function(){
     $(".loggs").toggle("fast");
+    $(this).toggleClass("active");
+    return false;
+  });
+});
+
+
+// Fonction d'activation des divs laterales masquées
+$(document).ready(function(){
+  $(".triggerTableInHand").on('touchstart touchend click', function(){
+    console.log("heyyyy");
+    $(".tableInHand").toggle("fast");
     $(this).toggleClass("active");
     return false;
   });

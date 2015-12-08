@@ -51,22 +51,39 @@
 
     <div class="row fullHeight">
 
-        <div id="joinForm">
-          <form class="form-inline">
-            <label for="joinPlayerName">Your name:</label>
-            <input type="text" class="input" id="joinPlayerName" placeholder="Name">
-            <label for="joinTableKey">Key for the game:</label>
-            <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
-            <button type="submit" class="btn btn-success" id="join">Join Table</button>
-            <label id="error"></label>
-          </form>
-        </div>
 
-        <div id="takePhoto">
-          <input type="file" accept="image/*;capture=camera" id="avatarar">
-        </div>
 
-        <div class="outerDiv" id="playArea">
+      <div class="tableInHand">
+        <div class="fullHeight">
+
+          <div id="table" class="halfHeight">
+          </div>
+
+          <div id="pack" class="textAlignCenter"></div>
+          <div id="tableDeck" class="fullHeight fullWidth" style="display: inline-block;"></div>
+         
+        </div>
+      </div>
+      <a class="triggerTableInHand" href="#">Table</a>
+  
+      
+
+      <div id="joinForm">
+        <form class="form-inline">
+          <label for="joinPlayerName">Your name:</label>
+          <input type="text" class="input" id="joinPlayerName" placeholder="Name">
+          <label for="joinTableKey">Key for the game:</label>
+          <input type="text" class="input" id="joinTableKey" placeholder="Ex: ADGB">
+          <button type="submit" class="btn btn-success" id="join">Join Table</button>
+          <label id="error"></label>
+        </form>
+      </div>
+
+      <div id="takePhoto">
+        <input type="file" accept="image/*;capture=camera" id="avatarar">
+      </div>
+
+      <div class="outerDiv" id="playArea">
 
         <div id="table">
         </div>
@@ -116,7 +133,8 @@
         </div>
       </div>
       <a class="triggerLoggs" href="#">Logs</a>
-  </div>
+
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>

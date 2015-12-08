@@ -176,6 +176,9 @@
         }, 500);
         requestElementUpdate();
         logEvent(ev.type);
+
+        playCard(el.getAttribute("val"));
+        
     }
     el.resetElement();
   }

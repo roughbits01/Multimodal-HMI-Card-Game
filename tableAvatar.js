@@ -12,8 +12,8 @@ function addAvatar(player) {
                               "<div class='outerDiv'>"+
                                 "<div class='innerDivMiddleTableAvatar'>"+
                                   "<div class='row fullHeight'>"+
-                                    "<div class='col-xs-3 col-md-3 fullHeight label label-info'>"+
-                                      "<img id='avatar"+player.id+"' height='100%' width='100%' src=''>"+
+                                    "<div class='col-xs-3 col-md-3 fullHeight label label-default'>"+
+                                      "<img id='avatar"+player.id+"' height='80%' width='100%' src=''>"+
                                       "</br><h5>"+player.name+"</h5>" +
                                     "</div>"+
                                     "<div class='col-xs-9 col-md-9 fullHeight'>"+

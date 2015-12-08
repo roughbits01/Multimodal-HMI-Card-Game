@@ -31,6 +31,16 @@ Game.prototype._shufflePack = function(pack) {
    }
   return pack;
 }
+
+Game.prototype._getPack = function(which) {
+  var pack = [];
+  if (which == "first") {
+    pack = ["6H", "12H", "4S", "11H", "3H", "2D", "13S", "7H", "3S", "8H", "2D", "11S", "13C", "4H", "1D", "7D"];
+  } else if (which == "first") {
+
+  }
+  return pack;
+}
 //draw one card from the pack of cards, initial T|F appends cards in hand
   Game.prototype.drawCard = function(pack, amount, hand, initial) {
     var cards = [];

@@ -56,7 +56,11 @@ io.sockets.on('connection', function (socket) {
     table.key = room.generateKey();
     table.playerLimit = 2;//data.playerLimit;
     table.gameObj = game;
-    table.pack = game.pack;//adds the shuffled pack from the constructor
+    if (table.name == "chezmoi") {
+      table.pack = game._getPack("first");
+    } else {
+      table.pack = game.pack;//adds the shuffled pack from the constructor
+    }
     table.setStatus("available");
 
     // Connect a board with its socket.id
@@ -72,17 +76,17 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('pause',function(data) {
-      
-     var player = room.getPlayer(socket.id); 
-      
-    io.sockets.emit("pause", {playerId:player.id});
+
+     //var player = room.getPlayer(socket.id);
+
+    //io.sockets.emit("pause", {playerId:player.id});
   });
 
   socket.on('reprise',function(data) {
-      
-    var player = room.getPlayer(socket.id); 
-    io.sockets.emit("reprise", {playerId:player.id});
-      
+
+    //var player = room.getPlayer(socket.id);
+    //io.sockets.emit("reprise", {playerId:player.id});
+
   });
 
   /*
@@ -157,7 +161,11 @@ io.sockets.on('connection', function (socket) {
     var table = room.getTableById(player.tableID);
     player.status = "playing";
     table.readyToPlayCounter++;
+
     var randomNumber = Math.floor(Math.random() * table.playerLimit);
+    if (table.name == "chezmoi") {
+      randomNumber = 0;
+    }
     if (table.readyToPlayCounter == table.playerLimit) {
       table.status = "unavailable"; //set the table status to unavailable
       var firstCardOnTable = table.cardsOnTable = table.gameObj.playFirstCardToTable(table.pack); //assign first card on table

@@ -1,44 +1,50 @@
 var socket = io.connect("http://localhost:8080");
+
+var audioDraw = new Audio('resources/cardSlide7.wav');
+var audioSort = new Audio('resources/cardFan1.wav');
+var audioWin = new Audio('resources/win.ogg');
+var audioLose = new Audio('resources/boo.wav');
+
 var Pause_sent = false ;
 
-window.addEventListener('deviceorientation', function(evenement) {
-    
-    
+/*window.addEventListener('deviceorientation', function(evenement) {
+
+
     var t1 ;
     var t2 ;
-    
-    
-    
+
+
+
     if ((evenement.beta > 165 ) || (evenement.beta < -165 &&  evenement.gamma < 40 )){
-        
+
         if ( Pause_sent==false) {
-            
-             clearTimeout(t2); 
-            
-           t1 = setTimeout(socket.emit("pause", {}), 5000); 
-       
-            Pause_sent = true ; 
-                   
-          
+
+             clearTimeout(t2);
+
+           t1 = setTimeout(socket.emit("pause", {}), 5000);
+
+            Pause_sent = true ;
+
+
         }
-      
-        
-        
+
+
+
         }else if ((evenement.beta < 95 ) || (evenement.beta > -115 &&  evenement.gamma > 80 )) {
-           
+
             if ( Pause_sent==true) {
-                
+
                 clearTimeout(t1);
             //alert('reprise');
             t2 = setTimeout(socket.emit("reprise", {}), 5000);
             Pause_sent = false ;
-                
-                        
+
+
             }
         }
-    
-  
-    },false);
+
+
+    },false);*/
 hand = [];
 
 var timer;
@@ -71,28 +77,28 @@ window.addEventListener('touchend', function(e){
 }, false)
 
 socket.on("pause", function (data) {
-    
+
    // $('#boxPlayer1').hide();
-    
+
    if ($('#boxPlayer1').attr("playerId")== data.playerId){
-        
+
         $('#boxPlayer1').hide();
     }else if($('#boxPlayer2').attr("playerId")== data.playerId){
-        
+
         $('#boxPlayer2').hide();
     }
-        
+
     // console.log(data.player)
   $("#updates").append("<li>joueur "+ data.playerId +" en pause </li>");
 });
 
 socket.on("reprise", function (data) {
-    
+
     if ($('#boxPlayer1').attr("playerId")== data.playerId){
-        
+
         $('#boxPlayer1').show();
     }else if($('#boxPlayer2').attr("playerId")== data.playerId){
-        
+
         $('#boxPlayer2').show();
     }
   $("#updates").append("<li>joueur "+ data.playerId +"reprise </li>");
@@ -137,8 +143,8 @@ function sortHandByValue() {
   });
   refreshHand();
   if (hand.length > 3) {
-    var audio = new Audio('resources/cardFan1.wav');
-    audio.play();
+    audioSort.pause();
+    audioSort.play();
   }
 }
 
@@ -164,8 +170,8 @@ function sortHandBySuit() {
   });
   refreshHand();
   if (hand.length > 3) {
-    var audio = new Audio('resources/cardFan1.wav');
-    audio.play();
+    audioSort.pause();
+    audioSort.play();
   }
 }
 
@@ -261,8 +267,8 @@ socket.on("play", function(data) {
   console.log(hand);
 	refreshHand();
   if(data.hand.length == 1) {
-    var audio = new Audio('resources/cardSlide7.wav');
-    audio.play();
+    audioDraw.pause();
+    audioDraw.play();
   }
 
   if (firstCall)
@@ -343,7 +349,6 @@ socket.on("updatePlayerCardsOnTable", function(data){
   marginCardsAvatar();
 });
 
-
 socket.on("turn", function(data) {
   if(data.won) {
     $("#playArea").hide();
@@ -352,12 +357,12 @@ socket.on("turn", function(data) {
       $("#youWinLose").html('<img src="resources/Vous-avez-gagne.png"/>');
       $("#youWinLose").show();
       navigator.vibrate([30,100,30,100]);
-      var audio = new Audio('resources/win.ogg');
-      audio.play();
+      audioWin.pause();
+      audioWin.play();
     } else {
       navigator.vibrate(500);
-      var audio = new Audio('resources/boo.wav');
-      audio.play();
+      audioLose.pause();
+      audioLose.play();
       $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
       $("#youWinLose").html('<img src="resources/Vous-avez-perdu.png"/>');
       $("#youWinLose").show();

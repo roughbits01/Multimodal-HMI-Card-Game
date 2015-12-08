@@ -302,7 +302,7 @@ socket.on("updatePackCount", function(data) {
     if(data.packCount > 1) // si au moins 2 cartes, afficher une image en background représentant la 2ème carte (et les autres derrière)
       $("#tableDeck").html("<img height='100%' src='resources/redBack.png' style='float:left'>");
   }
-  
+
   if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte
     carteDeck(data.table);// suivant si on dessine sur une table ou non, la def de l'image change
 
@@ -416,10 +416,14 @@ socket.on("showRequestedSuite", function(data){
   $("#requestedSuite").show();
 });
 
-
 socket.on("hideRequestedSuite", function(data){
   $("#requestedSuite").text("");
   $("#requestedSuite").hide();
+});
+
+socket.on("key", function(data){
+  $("#infoKey").html(data.key);
+  console.log(data.key);
 });
 
 
@@ -434,6 +438,7 @@ $(document).ready(function() {
   $("#numberRequest").hide();
   $("#suiteRequest").hide();
   $("#requestedSuite").hide();
+  $("#tableInfoForm").hide();
   $("form").submit(function(event){
     event.preventDefault();
   });
@@ -442,8 +447,9 @@ $("#create").click(function() {
   var name = $("#createTableName").val();
   var count = $("#count").val();
   socket.emit("createTable", {name:name, playerLimit:count});
-  $("#joinForm").hide();
   $("#createForm").hide();
+  $("#infoName").html(name);
+  $("#tableInfoForm").show();
 });
 
 $("#join").click(function() {

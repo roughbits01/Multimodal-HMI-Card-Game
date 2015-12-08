@@ -1,43 +1,43 @@
-var socket = io.connect("http://localhost:8080");
+var socket = io.connect("http://192.168.1.15:8080");
 var Pause_sent = false ;
 
 window.addEventListener('deviceorientation', function(evenement) {
-    
-    
+
+
     var x ;
     var y ;
-    
-    
-    
+
+
+
     if ((evenement.beta > 165 ) || (evenement.beta < -165 &&  evenement.gamma < 40 )){
-        
+
         if ( Pause_sent==false) {
-            
-             clearTimeout(y); 
-            
-           x = setTimeout(socket.emit("pause", {}), 5000); 
-       
-            Pause_sent = true ; 
-                   
-          
+
+             clearTimeout(y);
+
+           x = setTimeout(socket.emit("pause", {}), 5000);
+
+            Pause_sent = true ;
+
+
         }
-      
-        
-        
+
+
+
         }else if ((evenement.beta < 95 ) || (evenement.beta > -115 &&  evenement.gamma > 80 )) {
-           
+
             if ( Pause_sent==true) {
-                
+
                 clearTimeout(x);
             //alert('reprise');
             y = setTimeout(socket.emit("reprise", {}), 5000);
             Pause_sent = false ;
-                
-                        
+
+
             }
         }
-    
-  
+
+
     },false);
 hand = [];
 
@@ -91,7 +91,6 @@ socket.on("reprise", function (data) {
   $("#updates").append("<li>joueur reprise </li>");
 });
 
-
 //function to call when shake occurs
 function shakeEventDidOccur () {
   if (touched) sortHandByValue();
@@ -130,6 +129,10 @@ function sortHandBySuit() {
     }
   });
   refreshHand();
+  if (hand.length > 3) {
+    var audio = new Audio('resources/cardFan1.wav');
+    audio.play();
+  }
 }
 
 function sortHandByValue() {
@@ -153,18 +156,19 @@ function sortHandByValue() {
     }
   });
   refreshHand();
+  if (hand.length > 3) {
+    var audio = new Audio('resources/cardFan1.wav');
+    audio.play();
+  }
 }
+
+
 
 function refreshHand() {
   cleanHand();
   $.each(hand, function(k, v) {
     carteHand("resources/" + v + ".png", v);
   });
-
-  if (hand.length > 3) {
-    var audio = new Audio('resources/cardFan1.wav');
-    audio.play();
-  }
 }
 
 var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
@@ -231,7 +235,7 @@ function cleanPlayerHandOnTable(player) {
 }
 
 function playCard(value) {
-  socket.emit("playCard", {playedCard: value});
+  socket.emit("playCard", {playedCard: value, index: hand.indexOf(value)});
 }
 
 function sendSuiteRequest(suite) {
@@ -240,19 +244,33 @@ function sendSuiteRequest(suite) {
   $("#suiteRequest").hide();
 };
 
+var firstCall = true;
+
 socket.on("play", function(data) {
-  cleanHand();
   $("#hand").text("");
   $('#cards').find('option').remove().end();
 
   hand = hand.concat(data.hand);
   console.log(hand);
 	refreshHand();
+  if(data.hand.length == 1) {
+    var audio = new Audio('resources/cardSlide7.wav');
+    audio.play();
+  }
+
+  if (firstCall)
+  {
+    setTimeout(function() {
+     refreshHand();
+   }, 100);
+    firstCall = false;
+  }
 });
 
 socket.on("cardAccepted", function(data) {
   clearTimeout(timer);
-  var index = hand.indexOf(data.playedCard);
+  //var index = hand.indexOf(data.playedCard);
+  var index = data.index;
   console.log(data.playedCard+" : "+index)
   if (index !== -1)
   {
@@ -436,8 +454,12 @@ $("#join").click(function() {
     socket.emit("drawCard", {});
   });
 
-  $("#sortHand").click(function() {
+  $("#sortHandByValue").click(function() {
     sortHandByValue();
+  });
+
+  $("#sortHandBySuit").click(function() {
+    sortHandBySuit();
   });
 
   /*penalising card taken button*/

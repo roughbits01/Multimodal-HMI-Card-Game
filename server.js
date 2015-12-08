@@ -41,7 +41,7 @@ io.sockets.on('connection', function (socket) {
   */
   socket.on('connectToServer',function(data) {
     var player = new Player(socket.id);
-    player.setName(data.name);
+    if (data.name) player.setName(data.name);
     player.setAvatar(data.avatar);
     room.addPlayer(player); //add to room -- all players go to a room first
     io.sockets.emit("logging", {message: data.name + " has connected."});
@@ -216,7 +216,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           console.log("HAND ==> " + player.hand);
           socket.emit("playOption", { value: false }); //OPTION - TRUE
           var cards = table.gameObj.drawCard(table.pack, table.forcedDraw, player.hand, 0);
-          messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+          messaging.sendEventToAPlayer("play", {hand: cards}, io, table.players, player); //send the card in hands to player
           //socket.emit("play", { hand: cards }); //send the card in hands to player
           io.sockets.emit('updatePackCount', {packCount: table.pack.length});
           table.forcedDraw = 0; //reset forced Draw variable
@@ -258,7 +258,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             } else { //no requested suite nor contra-action card in hand, force draw
               console.log("Forced draw");
               var cards = table.gameObj.drawCard(table.pack, 1, player.hand, 0);
-              messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
+              messaging.sendEventToAPlayer("play", {hand: cards}, io, table.players, player); //send the card in hands to player
               //socket.emit("play", { hand: cards }); //send the card in hands to player
               //table.gameObj.drawCard(table.pack, 1, player.hand, 0);
               //socket.emit("play", { hand: player.hand }); //send the card in hands to player
@@ -447,6 +447,7 @@ socket.on("preliminaryRoundCheck", function(data) {
 
       if (!player.turnFinished) {
         var playedCard = data.playedCard;
+        var playedCardIndex = data.index;
         var index = utils.indexOf(player.hand, data.playedCard);// L'indice dans la main
         if (index > -1) {
           errorFlag = false;
@@ -520,10 +521,10 @@ socket.on("preliminaryRoundCheck", function(data) {
 
                     }
                     if (!winner) {
-                      socket.emit("cardAccepted", {playedCard: playedCard});
+                      socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                     } else {
                     //game is finished
-                    socket.emit("cardAccepted", {playedCard: playedCard});
+                    socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                     messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                     messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
                     socket.emit("gameover", {gameover: true});
@@ -560,10 +561,10 @@ socket.on("preliminaryRoundCheck", function(data) {
                 messaging.sendEventToAllPlayersButPlayer("cardInHandCount", {cardsInHand: player.hand.length}, io, table.players, player);
                 var winner = table.gameObj.isWinning(player.hand);
                 if (!winner) {
-                  socket.emit("cardAccepted", {playedCard: playedCard});
+                  socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                 } else {
                 //game is finished
-                socket.emit("cardAccepted", {playedCard: playedCard});
+                socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                 messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                 messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
                 socket.emit("gameover", {gameover: true});
@@ -608,10 +609,10 @@ socket.on("preliminaryRoundCheck", function(data) {
 
                   var winner = table.gameObj.isWinning(player.hand);
                   if (!winner) {
-                    socket.emit("cardAccepted", {playedCard: playedCard});
+                    socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                   } else {
                     //game is finished
-                    socket.emit("cardAccepted", {playedCard: playedCard});
+                    socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                     messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                     messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
                     socket.emit("gameover", {gameover: true});
@@ -682,10 +683,10 @@ socket.on("preliminaryRoundCheck", function(data) {
 
               var winner = table.gameObj.isWinning(player.hand);
               if (!winner) {
-                socket.emit("cardAccepted", {playedCard: playedCard});
+                socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
               } else {
                 //game is finished
-                socket.emit("cardAccepted", {playedCard: playedCard});
+                socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                 messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                 messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
                 socket.emit("gameover", {gameover: true});

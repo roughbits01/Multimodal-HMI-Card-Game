@@ -12,7 +12,7 @@
     var img = document.createElement('img');
     el.appendChild(img);
     img.setAttribute("src", "resources/redBack.png");
-    img.setAttribute("style", "visibility:hidden");
+    img.setAttribute("style", "visibility:hidden; position:absolute;");
     /* End of Mock */
 
     el.style.backgroundImage= "url(resources/redBack.png)";
@@ -20,8 +20,8 @@
     el.style.backgroundRepeat= "no-repeat";
     if(onTable) // si on dessine sur une table alors l'image ne dépasse pas en largeur
         el.style.maxWidth= "100%";
-    else // si on dessine sur une table alors l'image ne dépasse pas en hauteur
-        el.style.maxHeight= "100%";
+    else // sinon on dessine sur une main alors l'image est à 100% en hauteur
+        el.style.height= "100%";
     el.START_X = 0;
     el.START_Y = 0;
     el.START_Z = 0;

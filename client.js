@@ -341,13 +341,13 @@ socket.on("turn", function(data) {
   } else {
     if(data.myturn) {
       navigator.vibrate([50,100,50]);
-      $("#progressUpdate").html("<span class='label label-info'>It's your turn.</span>");
+      $("#progressUpdate").html("<h3><span class='label label-info'>It's your turn.</span></h3>");
       timer = setTimeout(function() {
        navigator.vibrate([50,200,50]);
       }, 15000);
       socket.emit("preliminaryRoundCheck", {}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
     } else {
-      $("#progressUpdate").html("<span class='label label-default'>It's not your turn.</span>");
+      $("#progressUpdate").html("<h3><span class='label label-default'>It's not your turn.</span></h3>");
     }
   }
 });

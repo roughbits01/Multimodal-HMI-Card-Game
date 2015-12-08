@@ -13,6 +13,7 @@ function addAvatar(player) {
                                 "<div class='innerDivMiddleTableAvatar'>"+
                                   "<div class='row fullHeight'>"+
                                     "<div class='col-xs-3 col-md-3 fullHeight label label-default'>"+
+                                      "<div id='avatar"+player.id+"Pause' class='fullHeight fullWidth voileAvatar' style='position: absolute; display:none; background-color: rgba(0, 0, 0, 0.6); text-align: center; font-size: large'>En pause</div>"+
                                       "<img id='avatar"+player.id+"' height='80%' width='100%' src=''>"+
                                       "</br><h5>"+player.name+"</h5>" +
                                     "</div>"+

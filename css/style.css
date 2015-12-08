@@ -202,7 +202,7 @@ color: #cccccc;
 a.triggerLoggs{
 position: absolute;
 text-decoration: none;
-top: 50px; right: 0;
+top: 0px; right: 0;
 font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;
@@ -223,7 +223,7 @@ display: block;
 a.triggerLoggs:hover{
 position: absolute;
 text-decoration: none;
-top: 50px; right: 0;
+top: 0px; right: 0;
 font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;
@@ -280,7 +280,7 @@ color: #cccccc;
 a.triggerTableInHand{
 position: absolute;
 text-decoration: none;
-top: 50px; left: 0;
+top: 0px; left: 0;
 font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;
@@ -302,7 +302,7 @@ z-index:1;
 a.triggerTableInHand:hover{
 position: absolute;
 text-decoration: none;
-top: 50px; left: 0;
+top: 0px; left: 0;
 font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;

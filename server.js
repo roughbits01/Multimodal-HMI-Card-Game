@@ -76,18 +76,18 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('pause',function(data) {
+    console.log("pause");
+    var player = room.getPlayer(socket.id);
+    io.sockets.emit("pause", {player:player});
 
-     //var player = room.getPlayer(socket.id);
+});
 
-    //io.sockets.emit("pause", {playerId:player.id});
-  });
+socket.on('reprise',function(data) {
+    console.log("reprise");
+    var player = room.getPlayer(socket.id);
+    io.sockets.emit("reprise", {player:player});
 
-  socket.on('reprise',function(data) {
-
-    //var player = room.getPlayer(socket.id);
-    //io.sockets.emit("reprise", {playerId:player.id});
-
-  });
+});
 
   /*
   When someone connects to a table we need to do a few things:

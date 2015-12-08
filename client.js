@@ -331,6 +331,8 @@ socket.on("updatePlayerCardsOnTable", function(data){
 socket.on("turn", function(data) {
   if(data.won) {
     $("#playArea").hide();
+    $(".triggerTableInHand").show();
+    $(".triggerLoggs").show();
     if (data.won == "yes") {
       $("#progressUpdate").html("<span class='label label-success'>You won - well done! Game over.</span>");
       $("#youWinLose").html('<img src="resources/Vous-avez-gagne.png"/>');
@@ -429,6 +431,8 @@ socket.on("winner", function(data){
 });
 
 $(document).ready(function() {
+  $(".triggerTableInHand").hide();
+  $(".triggerLoggs").hide();
   $("#youWinLose").hide();
   $("#tableFull").hide();
   $("#playArea").hide();
@@ -474,6 +478,8 @@ $("#join").click(function() {
 					socket.on("ready", function(data){
 						$("#waiting").hide();
 						$("#playArea").show();
+            $(".triggerTableInHand").show();
+            $(".triggerLoggs").show();
 						$("#progressUpdate").show();
 					});
 				}
@@ -487,6 +493,8 @@ $("#join").click(function() {
 				socket.on("ready", function(data){
 					$("#waiting").hide();
 					$("#playArea").show();
+          $(".triggerTableInHand").show();
+          $(".triggerLoggs").show();
 					$("#progressUpdate").show();
 				});
 			}

@@ -554,6 +554,7 @@ socket.on("preliminaryRoundCheck", function(data) {
                     socket.emit("cardAccepted", {playedCard: playedCard, index: playedCardIndex});
                     messaging.sendEventToAPlayer("turn", {won: "yes"}, io, table.players, player);
                     messaging.sendEventToAllPlayersButPlayer("turn", {won: "no"}, io, table.players, player);
+                    messaging.sendEventToABoard("winner", {id: player.id}, io, table.board);
                     socket.emit("gameover", {gameover: true});
                     io.sockets.emit("logging", {message: player.name + " is the WINNER!"});
                     }

@@ -66,8 +66,8 @@ io.sockets.on('connection', function (socket) {
     table.assignBoard(board);
 
     room.addTable(table);
-
-    io.sockets.emit("logging", {message: "Waiting for " + table.playerLimit + " players to join. <strong>" + table.key + "</strong>"});
+    socket.emit("key", {key:table.key});
+    socket.emit("logging", {message: "Waiting for " + table.playerLimit + " players to join. <strong>" + table.key + "</strong>"});
     console.log("Table " + Table.name + " has been successfully created with " + table.key + " as key!");
   });
 
@@ -222,7 +222,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           var cards = table.gameObj.drawCard(table.pack, table.forcedDraw, player.hand, 0);
           messaging.sendEventToAPlayer("play", {hand: cards}, io, table.players, player); //send the card in hands to player
           //socket.emit("play", { hand: cards }); //send the card in hands to player
-          
+
           messaging.sendEventToABoard('updatePackCount', { packCount: table.pack.length , table: true}, io, table.board);
           messaging.sendEventToAllPlayers("updatePackCount", { packCount: table.pack.length, table: false}, io, table.players);
           table.forcedDraw = 0; //reset forced Draw variable
@@ -397,7 +397,7 @@ socket.on("preliminaryRoundCheck", function(data) {
             messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
             //socket.emit("play", {hand: card});
             messaging.sendEventToAPlayer("logging", {message: "You took " + card + " from the pack."}, io, table.players, player);
-           
+
             messaging.sendEventToABoard('updatePackCount', { packCount: table.pack.length , table: true}, io, table.board);
             messaging.sendEventToAllPlayers("updatePackCount", { packCount: table.pack.length, table: false}, io, table.players);
 
@@ -426,7 +426,7 @@ socket.on("preliminaryRoundCheck", function(data) {
           messaging.sendEventToAPlayer("play", {hand: card}, io, table.players, player); //send the card in hands to player
           //socket.emit("play", {hand: card});
           messaging.sendEventToAPlayer("logging", {message: "You took " + card + " from the pack."}, io, table.players, player);
-          
+
           messaging.sendEventToABoard('updatePackCount', { packCount: table.pack.length , table: true}, io, table.board);
           messaging.sendEventToAllPlayers("updatePackCount", { packCount: table.pack.length, table: false}, io, table.players);
 

@@ -49,13 +49,23 @@
         <div class="panel-heading"><h2 class="panel-title">Créer une partie</h2></div>
         <div class="panel-body">
         <form class="form">
-          <h3><label for="createTableName">Nom de la table (opt): </label></h3>
+          <h3><label for="createTableName">Nom de la table : </label></h3>
           <input type="text" class="form-control input-lg" id="createTableName" placeholder="Nom de la table">
           <br/>
           <button type="submit" class="btn btn-success btn-lg" id="create">Créer une table</button>
         </form>
       </div>
     </div>
+
+    <div class="panel panel-default col-md-4 col-md-offset-4" id="tableInfoForm">
+      <div class="panel-heading"><h2 class="panel-title">Information sur la partie</h2></div>
+      <div class="panel-body">
+      <form class="form">
+        <h3><label for="createTableName">Nom de la table : </label> <label id="infoName"></label></h3>
+        <h3><label for="createTableName">Clé de la table : </label> <label id="infoKey"></label></h3>
+      </form>
+    </div>
+  </div>
 
       <div  id="playArea">
         <div class="headerTable">

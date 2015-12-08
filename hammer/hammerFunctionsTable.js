@@ -1,5 +1,5 @@
 
-  function carteDeck() {
+  function carteDeck(onTable) {
     var reqAnimationFrame = (function () {
         return window[Hammer.prefixed(window, 'requestAnimationFrame')] || function (callback) {
             window.setTimeout(callback, 1000 / 60);
@@ -18,7 +18,10 @@
     el.style.backgroundImage= "url(resources/redBack.png)";
     el.style.backgroundSize= "contain";
     el.style.backgroundRepeat= "no-repeat";
-    el.style.maxWidth= "100%";
+    if(onTable) // si on dessine sur une table alors l'image ne dépasse pas en largeur
+        el.style.maxWidth= "100%";
+    else // si on dessine sur une table alors l'image ne dépasse pas en hauteur
+        el.style.maxHeight= "100%";
     el.START_X = 0;
     el.START_Y = 0;
     el.START_Z = 0;

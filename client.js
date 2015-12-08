@@ -285,17 +285,26 @@ socket.on("cardAccepted", function(data) {
 });
 
 socket.on("updatePackCount", function(data) {
+
   $("#pack").text("");
   $("#pack").html("<span class='label label-info'>" + data.packCount + " card(s)</span>");
 
   // Update deck view
   $("#tableDeck").text("");
-  if(data.packCount > 1) // si au moins 2 cartes, afficher une image en background représentant la 2ème carte (et les autres derrière)
-    $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left'>");
-  /*else
-    $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left; visibility:hidden'>");*/
+
+  if(data.table){ // si on dessine sur une table alors image width = 100%
+    if(data.packCount > 1) // si au moins 2 cartes, afficher une image en background représentant la 2ème carte (et les autres derrière)
+      $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left'>");
+    /*else
+      $("#tableDeck").html("<img width='100%' src='resources/redBack.png' style='float:left; visibility:hidden'>");*/
+  }
+  else{ // sinon on dessine sur une main alors image height = 100%
+    if(data.packCount > 1) // si au moins 2 cartes, afficher une image en background représentant la 2ème carte (et les autres derrière)
+      $("#tableDeck").html("<img height='100%' src='resources/redBack.png' style='float:left'>");
+  }
+  
   if(data.packCount >= 1) // si au moins 1 carte, afficher une image hammerjs représentant la 1ère carte
-    carteDeck();
+    carteDeck(data.table);// suivant si on dessine sur une table ou non, la def de l'image change
 
 });
 
@@ -306,7 +315,10 @@ socket.on("updateCardsOnTable", function(data){
   if (data.lastCardOnTable == "") {
     $("#table").text("");
   } else {
-    $("#table").append("<img width=100% src=resources/" + data.lastCardOnTable + ".png>");
+    if(data.table) // si on dessine sur une table alors image width = 100%
+      $("#table").append("<img width=100% src=resources/" + data.lastCardOnTable + ".png>");
+    else // sinon on dessine sur une main alors image height = 100%
+      $("#table").append("<img height=100% src=resources/" + data.lastCardOnTable + ".png>");
   }
 });
 

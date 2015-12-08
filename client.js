@@ -341,6 +341,7 @@ socket.on("turn", function(data) {
     $("#playArea").hide();
     if (data.won == "yes") {
       $("#progressUpdate").html("<span class='label label-success'>You won - well done! Game over.</span>");
+      $("#youWinLose").html('<img src="resources/Vous-avez-gagne.png"/>');
       navigator.vibrate([30,100,30,100]);
       var audio = new Audio('resources/win.ogg');
       audio.play();
@@ -349,6 +350,7 @@ socket.on("turn", function(data) {
       var audio = new Audio('resources/boo.wav');
       audio.play();
       $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
+      $("#youWinLose").html('<img src="resources/Vous-avez-perdu.png"/>');
     }
   } else {
     if(data.myturn) {

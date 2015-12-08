@@ -212,9 +212,11 @@ socket.on("playOption", function(data){
   $("#playOption").html(data.message);
   if (data.value) {
     $("#penalising").show();
+    $("#drawCard").hide();
   } else {
     $("#penalising").hide();
     $("#playOption").hide();
+    $("#drawCard").show();
   }
 });
 
@@ -348,6 +350,7 @@ socket.on("turn", function(data) {
     if (data.won == "yes") {
       $("#progressUpdate").html("<span class='label label-success'>You won - well done! Game over.</span>");
       $("#youWinLose").html('<img src="resources/Vous-avez-gagne.png"/>');
+      $("#youWinLose").show();
       navigator.vibrate([30,100,30,100]);
       var audio = new Audio('resources/win.ogg');
       audio.play();
@@ -357,17 +360,21 @@ socket.on("turn", function(data) {
       audio.play();
       $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
       $("#youWinLose").html('<img src="resources/Vous-avez-perdu.png"/>');
+      $("#youWinLose").show();
     }
   } else {
     if(data.myturn) {
       navigator.vibrate([50,100,50]);
       $("#progressUpdate").html("<h3><span class='label label-info'>It's your turn.</span></h3>");
+      $("#handActionButtons").show();
+
       timer = setTimeout(function() {
        navigator.vibrate([50,200,50]);
       }, 15000);
       socket.emit("preliminaryRoundCheck", {}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
     } else {
       $("#progressUpdate").html("<h3><span class='label label-default'>It's not your turn.</span></h3>");
+      $("#handActionButtons").hide();
     }
   }
 });
@@ -415,7 +422,7 @@ socket.on("showRequestedSuite", function(data){
   $("#requestedSuite").text("");
 
   if(data.table)
-    $("#requestedSuite").html("<img width='100%' src='resources/requested"+data.suite+".png'>");
+    $("#requestedSuite").html("<img width='100%' style='background-color: rgba(255, 255, 255, 0.8);' src='resources/requested"+data.suite+".png'>");
   else
     $("#requestedSuite").html("<img width='24%'  src='resources/"+data.suite+".png'>");
 
@@ -438,6 +445,7 @@ socket.on("winner", function(data){
 });
 
 $(document).ready(function() {
+  $("#youWinLose").hide();
   $("#tableFull").hide();
   $("#playArea").hide();
   $("#waiting").hide();
@@ -523,6 +531,7 @@ $("#join").click(function() {
     navigator.vibrate(100);
     socket.emit("penalisingTaken", {});
     $("#penalising").hide();
+    $("#drawCard").show();
   });
 
 });

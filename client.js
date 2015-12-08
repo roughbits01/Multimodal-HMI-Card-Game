@@ -2,43 +2,30 @@ var socket = io.connect("http://localhost:8080");
 var Pause_sent = false ;
 
 window.addEventListener('deviceorientation', function(evenement) {
-    
-    
-    var t1 ;
-    var t2 ;
-    
-    
-    
-    if ((evenement.beta > 165 ) || (evenement.beta < -165 &&  evenement.gamma < 40 )){
-        
-        if ( Pause_sent==false) {
-            
-             clearTimeout(t2); 
-            
-           t1 = setTimeout(socket.emit("pause", {}), 5000); 
-       
-            Pause_sent = true ; 
-                   
-          
-        }
-      
-        
-        
-        }else if ((evenement.beta < 95 ) || (evenement.beta > -115 &&  evenement.gamma > 80 )) {
-           
-            if ( Pause_sent==true) {
-                
-                clearTimeout(t1);
-            //alert('reprise');
-            t2 = setTimeout(socket.emit("reprise", {}), 5000);
-            Pause_sent = false ;
-                
-                        
-            }
-        }
-    
+ 
+  var t1 ;
+  var t2 ;
   
-    },false);
+  if ((evenement.beta > 165 ) || (evenement.beta < -165 &&  evenement.gamma < 40 )){
+    if ( Pause_sent==false) {
+      //clearTimeout(t2); 
+      console.log("onPause ==> OUT");
+      //t1 = setTimeout(socket.emit("pause", {}), 5000); 
+      socket.emit("pause", {}); 
+      Pause_sent = true ; 
+    }
+  }else if ((evenement.beta < 95 ) || (evenement.beta > -115 &&  evenement.gamma > 80 )) {
+    if ( Pause_sent==true) {
+      //clearTimeout(t1);
+        console.log("onPause ==> IN");
+      //alert('reprise');
+      //t2 = setTimeout(socket.emit("reprise", {}), 5000);
+      socket.emit("reprise", {});
+      Pause_sent = false ;
+    }
+  }
+},false);
+
 hand = [];
 
 var timer;
@@ -71,31 +58,23 @@ window.addEventListener('touchend', function(e){
 }, false)
 
 socket.on("pause", function (data) {
-    
-   // $('#boxPlayer1').hide();
-    
-   if ($('#boxPlayer1').attr("playerId")== data.playerId){
-        
-        $('#boxPlayer1').hide();
-    }else if($('#boxPlayer2').attr("playerId")== data.playerId){
-        
-        $('#boxPlayer2').hide();
-    }
-        
-    // console.log(data.player)
-  $("#updates").append("<li>joueur "+ data.playerId +" en pause </li>");
+ /*if ($('#boxPlayer1').attr("playerId")== data.player.name){
+    $('#boxPlayer1').hide();
+  }else if($('#boxPlayer2').attr("playerId")== data.player.name){
+    $('#boxPlayer2').hide();
+  }*/
+  $("#avatar"+data.player.id+"Pause").show();
+  $("#updates").append("<li>"+ data.player.name +" is on pause ... </li>");
 });
 
 socket.on("reprise", function (data) {
-    
-    if ($('#boxPlayer1').attr("playerId")== data.playerId){
-        
-        $('#boxPlayer1').show();
-    }else if($('#boxPlayer2').attr("playerId")== data.playerId){
-        
-        $('#boxPlayer2').show();
-    }
-  $("#updates").append("<li>joueur "+ data.playerId +"reprise </li>");
+  /*if ($('#boxPlayer1').attr("playerId")== data.player.name{
+    $('#boxPlayer1').show();
+  }else if($('#boxPlayer2').attr("playerId")== data.player.name){
+    $('#boxPlayer2').show();
+  }*/
+  $("#avatar"+data.player.id+"Pause").hide();
+  $("#updates").append("<li>"+ data.player.name +" came back ...</li>");
 });
 
 //function to call when shake occurs

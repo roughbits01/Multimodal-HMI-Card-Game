@@ -334,7 +334,6 @@ socket.on("turn", function(data) {
     $(".triggerTableInHand").hide();
     $(".triggerLoggs").hide();
     if (data.won == "yes") {
-      $("#progressUpdate").html("<span class='label label-success'>You won - well done! Game over.</span>");
       $("#youWinLose").html('<img class="fullWidth" src="resources/Vous-avez-gagne.png"/>');
       $("#youWinLose").show();
       navigator.vibrate([30,100,30,100]);
@@ -344,14 +343,13 @@ socket.on("turn", function(data) {
       navigator.vibrate(500);
       audioLose.pause();
       audioLose.play();
-      $("#progressUpdate").html("<span class='label label-info'>You lost - better luck next time. Game over.</span>");
       $("#youWinLose").html('<img class="fullWidth" src="resources/Vous-avez-perdu.png"/>');
       $("#youWinLose").show();
     }
   } else {
     if(data.myturn) {
       navigator.vibrate([50,100,50]);
-      $("#progressUpdate").html("<h3><span class='label label-info'>It's your turn.</span></h3>");
+      $("#progressUpdate").html("<h4><span class='label label-info'>It's your turn.</span></h4>");
       $("#handActionButtons").show();
 
       timer = setTimeout(function() {
@@ -359,7 +357,7 @@ socket.on("turn", function(data) {
       }, 15000);
       socket.emit("preliminaryRoundCheck", {}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
     } else {
-      $("#progressUpdate").html("<h3><span class='label label-default'>It's not your turn.</span></h3>");
+      $("#progressUpdate").html("<h4><span class='label label-default'>It's not your turn.</span></h4>");
       $("#handActionButtons").hide();
     }
   }

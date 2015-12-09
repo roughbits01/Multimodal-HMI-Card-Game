@@ -281,7 +281,7 @@ socket.on("cardAccepted", function(data) {
 socket.on("updatePackCount", function(data) {
 
   $("#pack").text("");
-  $("#pack").html("<span class='label label-info'>" + data.packCount + " card(s)</span>");
+  $("#pack").html("<span class='label label-info'>" + data.packCount + " carte(s)</span>");
 
   // Update deck view
   $("#tableDeck").text("");
@@ -351,7 +351,7 @@ socket.on("turn", function(data) {
   } else {
     if(data.myturn) {
       navigator.vibrate([50,100,50]);
-      $("#progressUpdate").html("<h4><span class='label label-info'>It's your turn.</span></h4>");
+      $("#progressUpdate").html("<h4><span class='label label-info'>Jouez !</span></h4>");
       $("#handActionButtons").show();
 
       timer = setTimeout(function() {
@@ -359,7 +359,7 @@ socket.on("turn", function(data) {
       }, 15000);
       socket.emit("preliminaryRoundCheck", {}); //When a player has a turn, we need to control a few items, this is what enables us to make it happen.
     } else {
-      $("#progressUpdate").html("<h4><span class='label label-default'>It's not your turn.</span></h4>");
+      $("#progressUpdate").html("<h4><span class='label label-default'>Patientez...</span></h4>");
       $("#handActionButtons").hide();
     }
   }
@@ -426,7 +426,8 @@ socket.on("key", function(data){
 });
 
 socket.on("winner", function(data){
-  $('#avatar'+data.id).attr("src", "resources/flatshadow_medal.png");
+  //$('#avatar'+data.id).attr("src", "resources/flatshadow_medal.png");
+  $('#cardsOfPlayer'+data.id).html("<img height='100%' src='resources/woohoo.jpg'>");
   //console.log("winner"+data.id);
 });
 

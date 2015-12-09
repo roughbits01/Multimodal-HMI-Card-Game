@@ -48,7 +48,7 @@
 
 <body background="resources/tableBackgroundbleu.jpg">
 
-  <div class="row fullHeight fullWidth">
+  <div class="row fullHeight">
 
     <div class="tableInHand">
       <div class="fullHeight">
@@ -87,18 +87,13 @@
       <div id="table">
       </div>
 
-      <div>
-        <button id="sortHandByValue" class="btn btn-success">Trier par valeur</button>
-        <button id="sortHandBySuit" class="btn btn-success">Trier par couleur</button>
-      </div>
-      <br>
       <!--p id="playOption"></p-->
-      <div id="handActionButtons" style="position: absolute; width: 100%;">
-        <button id="drawCard" class="btn btn-success btn-lg">Piocher une carte</button>
-        <button id="penalising" class="btn btn-warning btn-lg">Penalising cards</button>
+      <div id="handActionButtons" style="width: 100%;">
+        <button id="drawCard" class="btn btn-success btn-md">Piocher(1)</button>
+        <button id="penalising" class="btn btn-warning btn-md"></button>
       </div>
 
-      <div id="suiteRequest">
+      <div id="suiteRequest" style="padding-left:60px; padding-right:50px;">
         <img width='24%' onclick="sendSuiteRequest('H')" src='resources/H.png'>
         <img width='24%' onclick="sendSuiteRequest('C')" src='resources/C.png'>
         <img width='24%' onclick="sendSuiteRequest('D')" src='resources/D.png'>
@@ -115,7 +110,12 @@
           </div>
           <div class="col-xs-10 col-md-10 fullHeight">
 
-            <div id="progressUpdate"></div>
+
+            <div class="textAlignCenter" style="display:inline-block;">
+              <button id="sortHandByValue" class="btn btn-success btn-sm" style="float:left; margin-right:10px;">Tri(Valeur)</button>
+              <div id="progressUpdate" style="float:left;"></div>
+              <button id="sortHandBySuit" class="btn btn-success btn-sm" style="float:right; margin-left:10px;">Tri(Couleur)</button>
+            </div>
 
             <div class="tablePlayArea fullHeight">
               <div class="playerHandArea" id="cartes">

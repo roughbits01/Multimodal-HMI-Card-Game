@@ -228,7 +228,7 @@ socket.on("preliminaryRoundCheck", function(data) {
         console.log("it's a penalising card");
         if (table.gameObj.isInHand(last, player.hand)) { //Does the starting player have a response in hand?
           console.log("I have a 2, optionally i can play it"); //GIVE OPTIONS
-          socket.emit("playOption", { message: "You have a 2 card in your hand, you can either play it or take " + table.forcedDraw + " cards.", value: true}); //OPTION - TRUE
+          socket.emit("playOption", { message: "You have a 2 card in your hand, you can either play it or take " + table.forcedDraw + " cards.", value: true, nbPenality: table.forcedDraw}); //OPTION - TRUE
         } else {
           console.log("no 2 in hand, force me to draw"); //No penalising action card in hand, force draw
           console.log("HAND ==> " + player.hand);

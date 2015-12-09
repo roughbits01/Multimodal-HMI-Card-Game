@@ -196,9 +196,11 @@ socket.on("notYouTurn", function (data) {
 socket.on("playOption", function(data){
   $("#playOption").html(data.message);
   if (data.value) {
+    $("#penalising").html("Piocher"+data.nbPenality);
     $("#penalising").show();
     $("#drawCard").hide();
   } else {
+    $("#penalising").html("");
     $("#penalising").hide();
     $("#playOption").hide();
     $("#drawCard").show();
@@ -342,7 +344,7 @@ socket.on("turn", function(data) {
     } else {
       navigator.vibrate(500);
       audioLose.pause();
-      audioLose.play();
+      audioLose.play(); 
       $("#youWinLose").html('<img class="fullWidth" src="resources/Vous-avez-perdu.png"/>');
       $("#youWinLose").show();
     }
@@ -520,6 +522,7 @@ $("#join").click(function() {
   $("#penalising").click(function() {
     navigator.vibrate(100);
     socket.emit("penalisingTaken", {});
+    $("#penalising").html("");
     $("#penalising").hide();
     $("#drawCard").show();
   });

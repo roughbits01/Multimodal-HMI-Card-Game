@@ -56,30 +56,30 @@
         <div id="table" class="halfHeight">
         </div>
 
-        <div id="pack" class="textAlignCenter"></div>
+        <div id="pack" class="textAlignCenter" style="position: absolute; left:0px;"></div>
         <div id="tableDeck" class="halfHeight" style="display: inline-block;"></div>
 
       </div>
     </div>
     <a class="triggerTableInHand" href="#">Table</a>
 
-    <div class="panel panel-default col-md-4 col-md-offset-4" id="joinForm">
-      <div class="panel-heading"><h2 class="panel-title">Rejoindre une partie</h2></div>
+    <div class="panel panel-default halfWidth textAlignCenter" id="joinForm" style="margin:auto;">
+      <div class="panel-heading"><h4 class="panel-title">Rejoindre une partie</h4></div>
       <div class="panel-body">
         <form class="form">
-          <h3><label for="joinPlayerName">Pseudo : </label></h3>
-          <input type="text" class="form-control input-lg" id="joinPlayerName" placeholder="Name">
-          <h3><label for="joinTableKey">* Clé de la table : </label></h3>
-          <input type="text" class="form-control input-lg" id="joinTableKey" placeholder="Ex: ADGB">
-          <h3><label for="avatarar">Avatar : </label></h3>
-          <input type="file" class="form-control input-lg" accept="image/*;capture=camera" id="avatarar">
-          <h3><label id="error"></label></h3><br/>
-          <button type="submit" class="btn btn-success btn-lg" id="join">Join Table</button>
+          <h5><label for="joinPlayerName">Pseudo : </label></h5>
+          <input type="text" class="form-control input-sm" id="joinPlayerName" placeholder="Name">
+          <h5><label for="joinTableKey">* Clé de la table : </label></h5>
+          <input type="text" class="form-control input-sm" id="joinTableKey" placeholder="Ex: ADGB">
+          <h5><label for="avatarar">Avatar : </label></h5>
+          <input type="file" class="form-control input-sm" accept="image/*;capture=camera" id="avatarar">
+          <h5><label id="error"></label></h5><br/>
+          <button type="submit" class="btn btn-success btn-sm" id="join">Join Table</button>
         </form>
       </div>
     </div>
 
-    <div class="col-md-4 col-md-offset-4" id="youWinLose">
+    <div class="fullWidth textAlignCenter" id="youWinLose">
     </div>
 
     <div class="outerDiv" id="playArea">
@@ -87,18 +87,13 @@
       <div id="table">
       </div>
 
-      <div>
-        <button id="sortHandByValue" class="btn btn-success">Trier par valeur</button>
-        <button id="sortHandBySuit" class="btn btn-success">Trier par couleur</button>
-      </div>
-      <br>
       <!--p id="playOption"></p-->
-      <div id="handActionButtons" style="position: absolute; width: 100%;">
-        <button id="drawCard" class="btn btn-success btn-lg">Piocher une carte</button>
-        <button id="penalising" class="btn btn-warning btn-lg">Penalising cards</button>
+      <div id="handActionButtons" style="width: 100%;">
+        <button id="drawCard" class="btn btn-success btn-md">Piocher(1)</button>
+        <button id="penalising" class="btn btn-warning btn-md"></button>
       </div>
 
-      <div id="suiteRequest">
+      <div id="suiteRequest" style="padding-left:60px; padding-right:50px;">
         <img width='24%' onclick="sendSuiteRequest('H')" src='resources/H.png'>
         <img width='24%' onclick="sendSuiteRequest('C')" src='resources/C.png'>
         <img width='24%' onclick="sendSuiteRequest('D')" src='resources/D.png'>
@@ -115,7 +110,12 @@
           </div>
           <div class="col-xs-10 col-md-10 fullHeight">
 
-            <div id="progressUpdate"></div>
+
+            <div class="textAlignCenter" style="display:inline-block;">
+              <button id="sortHandByValue" class="btn btn-success btn-sm" style="float:left; margin-right:10px;">Tri(Valeur)</button>
+              <div id="progressUpdate" style="float:left;"></div>
+              <button id="sortHandBySuit" class="btn btn-success btn-sm" style="float:right; margin-left:10px;">Tri(Couleur)</button>
+            </div>
 
             <div class="tablePlayArea fullHeight">
               <div class="playerHandArea" id="cartes">

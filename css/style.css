@@ -164,7 +164,6 @@ html, body {
 
 
 
-
 /***************************************** Styles for collapsables lateral divs ***************************************************/
 
 
@@ -187,7 +186,7 @@ border:1px solid #111111;
 -webkit-border-bottom-left-radius: 20px;
 width: 330px;
 height: 100%;
-padding: 70px 20px 20px 20px;
+padding: 50px 15px 15px 15px;
 filter: alpha(opacity=85);
 opacity: .85;
 }
@@ -207,7 +206,7 @@ font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;
 color:#fff;
-padding: 20px 15px 20px 40px;
+padding: 15px 15px 15px 15px;
 font-weight: 700;
 background:#333333;
 border:1px solid #444444;
@@ -264,7 +263,7 @@ border:1px solid #111111;
 -webkit-border-bottom-right-radius: 20px;
 /*width: 330px;*/
 height: 100%;
-padding: 70px 30px 30px 30px;
+padding: 15px 15px 15px 70px;
 filter: alpha(opacity=85);
 opacity: .85;
 z-index:1;
@@ -285,7 +284,7 @@ font-size: 16px;
 letter-spacing:-1px;
 font-family: verdana, helvetica, arial, sans-serif;
 color:#fff;
-padding: 20px 15px 20px 40px;
+padding: 15px 15px 15px 15px;
 font-weight: 700;
 background:#333333;
 border:1px solid #444444;

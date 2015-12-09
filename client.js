@@ -15,7 +15,7 @@ window.addEventListener('deviceorientation', function(evenement) {
   if ((evenement.beta > 165 ) || (evenement.beta < -165 &&  evenement.gamma < 40 )){
     if ( Pause_sent==false) {
       //clearTimeout(t2);
-      console.log("onPause ==> OUT");
+      //console.log("onPause ==> OUT");
       //t1 = setTimeout(socket.emit("pause", {}), 5000);
       socket.emit("pause", {});
       Pause_sent = true ;
@@ -23,7 +23,7 @@ window.addEventListener('deviceorientation', function(evenement) {
   }else if ((evenement.beta < 95 ) || (evenement.beta > -115 &&  evenement.gamma > 80 )) {
     if ( Pause_sent==true) {
       //clearTimeout(t1);
-        console.log("onPause ==> IN");
+        //console.log("onPause ==> IN");
       //alert('reprise');
       //t2 = setTimeout(socket.emit("reprise", {}), 5000);
       socket.emit("reprise", {});
@@ -49,7 +49,7 @@ touched = false;
 
 window.addEventListener('touchstart', function(e){
   touched = true;
-  console.log("touchstart");
+  //console.log("touchstart");
   //e.preventDefault()
 }, false)
 
@@ -58,7 +58,7 @@ window.addEventListener('touchmove', function(e){
 }, false)
 
 window.addEventListener('touchend', function(e){
-  console.log("touchend");
+  //console.log("touchend");
   touched = false;
   //e.preventDefault()
 }, false)
@@ -196,7 +196,7 @@ socket.on("notYouTurn", function (data) {
 socket.on("playOption", function(data){
   $("#playOption").html(data.message);
   if (data.value) {
-    $("#penalising").html("Piocher"+data.nbPenality);
+    $("#penalising").html("Piocher("+data.nbPenality+")");
     $("#penalising").show();
     $("#drawCard").hide();
   } else {
@@ -208,7 +208,7 @@ socket.on("playOption", function(data){
 });
 
 socket.on("showRequestCardDialog", function(data) {
-  console.log("showRequestCardDialog");
+  //console.log("showRequestCardDialog");
   if (data.option == "suite") {
     $("#suiteRequest").show();
   }
@@ -234,7 +234,7 @@ function playCard(value) {
 
 function sendSuiteRequest(suite) {
   socket.emit("suiteRequest", {request: suite});
-  console.log("called with request ==> " + suite);
+  //console.log("called with request ==> " + suite);
   $("#suiteRequest").hide();
 };
 
@@ -245,7 +245,7 @@ socket.on("play", function(data) {
   $('#cards').find('option').remove().end();
 
   hand = hand.concat(data.hand);
-  console.log(hand);
+  //console.log(hand);
 	refreshHand();
   if(data.hand.length == 1) {
     audioDraw.pause();
@@ -265,11 +265,11 @@ socket.on("cardAccepted", function(data) {
   clearTimeout(timer);
   //var index = hand.indexOf(data.playedCard);
   var index = data.index;
-  console.log(data.playedCard+" : "+index)
+  //console.log(data.playedCard+" : "+index)
   if (index !== -1)
   {
     hand.splice(index, 1);
-    console.log(hand);
+    //console.log(hand);
     cleanHand();
     $.each(hand, function(k, v) {
       carteHand("resources/" + v + ".png", v);
@@ -303,7 +303,7 @@ socket.on("updatePackCount", function(data) {
 });
 
 socket.on("updateCardsOnTable", function(data){
-  console.log(data);
+  //console.log(data);
   $("#tableInfoForm").hide();
   $("#playArea").show();
   $("#table").text("");
@@ -318,11 +318,11 @@ socket.on("updateCardsOnTable", function(data){
 });
 
 socket.on("updatePlayerCardsOnTable", function(data){
-  console.log("updatePlayerCardsOnTable : hey")
-  console.log(data)
-  console.log(data.player.id)
-  console.log(data.player.name)
-  console.log(data.nbCards)
+  //console.log("updatePlayerCardsOnTable : hey")
+  //console.log(data)
+  //console.log(data.player.id)
+  //console.log(data.player.name)
+  //console.log(data.nbCards)
   cleanPlayerHandOnTable(data.player);
   for(var i=0; i<data.nbCards; i++){
     $("#cardsOfPlayer"+data.player.id).append("<img height='100%' src='resources/redBack.png' class='cardImgHorizontalAvatar'>");
@@ -378,12 +378,12 @@ socket.on("cardInHandCount", function(data) {
 });
 
 socket.on("playerConnected", function(player) {
-  console.log(player.id+" : "+player.name);
+  //console.log(player.id+" : "+player.name);
   addAvatar(player);
 });
 
 socket.on("playerDisconnected", function(data) {
-  console.log(data.playerId + " : " + data.playerName);
+  //console.log(data.playerId + " : " + data.playerName);
 });
 
 socket.on("updateTableAvatars", function(data) {
@@ -422,12 +422,12 @@ socket.on("hideRequestedSuite", function(data){
 
 socket.on("key", function(data){
   $("#infoKey").html(data.key);
-  console.log(data.key);
+  //console.log(data.key);
 });
 
 socket.on("winner", function(data){
   $('#avatar'+data.id).attr("src", "resources/flatshadow_medal.png");
-  console.log("winner"+data.id);
+  //console.log("winner"+data.id);
 });
 
 $(document).ready(function() {
@@ -464,7 +464,7 @@ $("#join").click(function() {
 
     if (key.length == 4) {
 			var file = document.querySelector('input[type=file]').files[0];
-			console.log(file);
+			//console.log(file);
 			if (file) {
 				var reader = new FileReader();
 				reader.readAsDataURL(file);
@@ -543,7 +543,7 @@ $(document).ready(function(){
 // Fonction d'activation des divs laterales masquées
 $(document).ready(function(){
   $(".triggerTableInHand").on('touchstart touchend click', function(){
-    console.log("heyyyy");
+    //console.log("heyyyy");
     $(".tableInHand").toggle("fast");
     $(this).toggleClass("active");
     return false;
